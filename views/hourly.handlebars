@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300&family=Roboto+Condensed:wght@300;700&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        body {
+            width: 100%;
+            height: 100%;
+            /* Text styles */
+            font-family: 'Lato',sans-serif;
+            font-size: 18px;
+            font-weight: 300;
+            color: #212121;
+            perspective: 4px; /* The depth */
+            overflow-x: hidden;
+            overflow-y: scroll;
+        }
+
+        header {
+            width: 100%;
+            min-height: 100vh;
+            position: relative;
+            transform-style: preserve-3d;
+        }
+
+            header::before {
+                content: "";
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                display: block;
+                background: url('/images/bg.jpg');
+                background-size: cover;
+                z-index: 0;
+                transform: translateZ(-4px) scale(2);
+            }
+
+            header div {
+                position: absolute;
+                z-index: 1;
+                top: 50%;
+                padding: 0 30px;
+                font-family: 'Roboto Condensed', sans-serif;
+                transform: translateZ(-2px) scale(1.5);
+            }
+
+            header h1 {
+                font-size: 4.5rem;
+                font-weight: 700;
+                color: #009688;
+            }
+
+            header h2 {
+                font-size: 2.2rem;
+                font-weight: 300;
+            }
+        section {
+            width: 100%;
+            background: white;
+            position: relative;
+            z-index: 2;
+        }
+
+        .container {
+            margin: auto; /* To center the text horizontally */
+            max-width: 1000px; /* Limiting the width for extra large screens */
+            padding: 80px 40px;
+        }
+
+            .container h3 {
+                font-family: 'Roboto Condensed', sans-serif;
+                font-weight: 700;
+                font-size: 3rem;
+            }
+
+            .container p {
+                padding-top: 30px;
+                line-height: 1.8;
+            }
+    </style>
+</head>
+<body>
+    <header>
+        <div>
+            <h1>Parallax Scrolling Effect</h1>
+            <h2>Create this simple parallax effect using pure CSS</h2>
+        </div>
+    </header>
+    <section>
+        <div class="container">
+            <h3>Some cool title here</h3>
+            <p>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Asperiores harum veritatis nemo magni odio reprehenderit atque, esse animi porro suscipit vero nobis modi quis. Exercitationem quasi beatae, assumenda officia illum sunt. Cum voluptas maiores vitae eius hic inventore deleniti placeat perferendis quam ut nostrum maxime optio voluptatibus ab laboriosam, quia consectetur atque minus?
+            </p>
+            <p>
+                Adipisci amet aut sint voluptates delectus aperiam? Veniam ab illum enim in libero nihil culpa explicabo perspiciatis veritatis non repellendus architecto excepturi nostrum porro voluptatem aperiam animi asperiores, a voluptatibus temporibus minima voluptas ipsa! Recusandae nostrum, aut, voluptates est error iusto, eaque excepturi soluta quas maiores amet.
+
+            </p>
+        </div>
+    </section>
+</body>
+</html>
