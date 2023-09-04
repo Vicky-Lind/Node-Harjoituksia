@@ -86,7 +86,7 @@ td {
 
 .navbar-logo {
     /*background-color: white;*/
-    font-size: 50px;
+    font-size: 49.77px;
     font-weight: bold;
     font-family: sans-serif;
     text-decoration: none;
@@ -107,7 +107,7 @@ td {
     .navbar-pages a {
         margin-left: 49px;
         margin-right: 10px;
-        font-size: 27px;
+        font-size: 28.8px;
         font-weight: bold;
         font-family: sans-serif;
         text-decoration: none;
@@ -157,7 +157,7 @@ td {
 .main-content1-left-title {
     animation: 1s ease-out 0s 1 slideInLeft;
     padding-left: 150px;
-    font-size: 43px;
+    font-size: 49.77px;
     font-weight: bold;
     font-family: sans-serif;
     color: #144E70;
@@ -182,7 +182,7 @@ td {
     padding: 50px 70px 50px 70px;
     color: white;
     text-align: center;
-    font-size: 22px;
+    font-size: 24px;
     font-weight: bold;
     font-family: sans-serif;
 }
@@ -212,6 +212,7 @@ td {
         font-family: sans-serif;
         font-weight: bold;
         transition: 300ms;
+        font-size: 20px;
     }
 
 .main-content1-right {
@@ -273,10 +274,31 @@ td {
 }
 
 .main-content2 {
+    position: relative;
     background-color: #474646;
     margin-top: 100px;
     padding-top: 150px;
     width: 100%;
     height: 100vh;
     position: relative;
+    align-content: center;
+    align-items: center;
+}
+
+.main-content2-title {
+    /*background-color: red;*/
+    color: white;
+    font-size: 49.77px;
+    font-family: sans-serif;
+    font-weight: bold;     
+    text-align: center;    
+    width: 657px;          
+    margin-left: 31%;      
+}
+
+.main-content2-ball {
+    align-self: center;
+    height: 120px;
+    width: 60px;
+    margin-left: 47%;
 }
