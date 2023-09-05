@@ -1,14 +1,14 @@
 
-<div class="background-gradient" style="align-content: center;">
+<div class="" style="margin: -8px;">
     <div class="navbar">
         <div class="navbar-logo">
-            SmartHome
+            <a href="/test-homepage">SmartHome</a>
         </div>
         <div class="navbar-pages">
             <a href="/test-homepage">Home</a>
             <a href="/hourly">Spot prices</a>
             <a href="/">Weather forecast</a>
-            
+
             <a href="/settings" style="margin-left: 20px; margin-right: 0px;">
                 <div class="settings-button"></div>
             </a>
@@ -20,7 +20,7 @@
     <div class="main-content1">
         <div class="main-content1-left">
             <div class="main-content1-left-title">
-                Welcome to <span style="color: white">SmartHome</span><br/>
+                Welcome to <span style="color: white">SmartHome</span><br />
                 - Your Energy and <br /> Weather Companion
             </div>
             <div class="main-content1-left-bottom">
@@ -40,11 +40,65 @@
     </div>
     <div class="main-content2">
         <div class="main-content2-title">
-            See <span style="background: -webkit-linear-gradient(90deg, rgba(255,168,0,1) 0%, rgba(255,76,0,1) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; ">Real-Time</span> Energy <br/> Prices
+            See <span>Real-Time</span> Energy <br /> Prices
         </div>
-        <img class="main-content2-ball" src="/images/ball-orange.png"/>
+        <img class="main-content2-ball" src="/images/ball-orange.png" />
+        <div style="width:800px; height:700px; margin:auto;">
+            <canvas id="myChart"></canvas>
+        </div>
     </div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 <script>
+    const plugin = {
+        id: 'customCanvasBackgroundColor',
+        beforeDraw: (chart, args, options) => {
+            const { ctx } = chart;
+            ctx.save();
+            ctx.globalCompositeOperation = 'destination-over';
+            ctx.fillStyle = options.color || '#ffff';
+            ctx.fillRect(0, 0, chart.width, chart.height);
+            ctx.restore();
+        }
+    };
+
+    const ctx = document.getElementById('myChart');
+
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['A', 'B', 'C'],
+            datasets: [
+                {
+                    label: 'Dataset 1',
+                    data: [1, 2, 3],
+                    borderColor: '#36A2EB',
+                    backgroundColor: '#9BD0F5',
+                },
+                {
+                    label: 'Dataset 2',
+                    data: [2, 3, 4],
+                    borderColor: '#FF6384',
+                    backgroundColor: '#FFB1C1',
+                }
+            ]
+        },
+        options: {
+            plugins: {
+                customCanvasBackgroundColor: {
+                    color: 'white',
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        },
+        plugins: [plugin],
+    });
+
+    
 </script>
