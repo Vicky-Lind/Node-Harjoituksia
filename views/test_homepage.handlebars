@@ -1,3 +1,4 @@
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <div class="" style="margin: -8px;">
     <div class="navbar">
@@ -6,7 +7,7 @@
         </div>
         <div class="navbar-pages">
             <a href="/test-homepage">Home</a>
-            <a href="/hourly">Spot prices</a>
+            <a href="/spot-prices">Spot prices</a>
             <a href="/">Weather forecast</a>
 
             <a href="/settings" style="margin-left: 20px; margin-right: 0px;">
@@ -42,10 +43,12 @@
         <div class="main-content2-title">
             See <span>Real-Time</span> Energy <br /> Prices
         </div>
-        <img class="main-content2-ball" src="/images/ball-orange.png" />
-        <div style="width:800px; height:700px; margin:auto;">
-            <canvas id="myChart"></canvas>
-        </div>
+        <!--<img class="main-content2-ball" src="/images/ball-orange.png" />-->
+        <div class="main-content2-left"></div>
+        <div class="main-content2-right"></div>
+    </div>
+    <div style="width:800px; height:700px; margin:auto;">
+        <canvas id="myChart"></canvas>
     </div>
 </div>
 
@@ -100,5 +103,6 @@
         plugins: [plugin],
     });
 
-    
+ 
 </script>
+
