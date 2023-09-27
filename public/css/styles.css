@@ -1,3 +1,17 @@
+@media (max-width: 768px) {
+    .main-content1-left {
+      font-size: 30px;
+    }
+  
+    .navbar {
+        padding: 25px 20px 0 20px;
+    }
+  
+    p {
+      font-size: 1rem;
+    }
+  }
+
 /* width */
 ::-webkit-scrollbar {
     width: 20px;

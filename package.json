@@ -6,7 +6,8 @@
     "express-handlebars": "^7.1.2",
     "node-cron": "^3.0.2",
     "node-fetch": "^3.3.2",
-    "nodemon": "^3.0.1"
+    "nodemon": "^3.0.1",
+    "pg": "^8.11.3"
   },
   "name": "node-harjoituksia",
   "description": "Web-palvelinten toimintaan liittyviä esimerkkejä toteutettuna Node.js kirjaston avulla",

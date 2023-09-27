@@ -29,17 +29,21 @@ app.set('views', './views')
 // --------------------
 
 // Kotisivun reitti ja dynaaminen data
-app.get('/', (req, res) => {
-    // Testidataa dynaamisen sivun testaamiseksi
-    // Handlebars needs a key to show data on a page, json is a good way to send it
-    let homePageData = {
-        'price': 32.25,
-        'wind': 4,
-        'temperature': 21
-    }
-    // Render index.handlebars and send dynamic data to the page
-    res.render('index', homePageData)
-})
+// app.get('/', (req, res) => {
+//     // Testidataa dynaamisen sivun testaamiseksi
+//     // Handlebars needs a key to show data on a page, json is a good way to send it
+//     let homePageData = {
+//         'price': 32.25,
+//         'wind': 4,
+//         'temperature': 21
+//     }
+//     // Render index.handlebars and send dynamic data to the page
+//     res.render('index', homePageData)
+// })
+
+// Sivu /pgpool, joka tekee pg.pool kutsun ja palauttaa datan jsonina
+const db = require('./views/testPgPool')
+app.get('/pgpool', db.getUsers)
 
 // Tuntihintasivun reitti ja dynaaminen data
 app.get('/spot-prices', (req, res) => {
