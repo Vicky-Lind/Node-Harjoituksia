@@ -1,3 +1,11 @@
+*.zip
+ProjectSettings.json
+slnx.sqlite
+VSWorkspaceState.json
+config/
+FileContentIndex/
+*.wsuo
+
 # Logs
 logs
 *.log
