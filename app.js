@@ -68,8 +68,12 @@ app.get('/weather-forecast', (req, res) => {
   res.render('test_weather_forecast')
 })
 
-app.get('/mobile', (req, res) => {
-  res.render('test_homepage_mobile')
+app.get('/bootstrap-test', (req, res) => {
+  res.render('bootstrap_test')
+})
+
+app.get('/tailwind-test', (req, res) => {
+  res.render('tailwind_test')
 })
 
 // PALVELIMEN KÄYNNISTYS

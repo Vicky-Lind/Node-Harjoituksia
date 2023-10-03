@@ -11,7 +11,7 @@ const cron = require('node-cron')
 const getPrices = require('./getNewPrices')
 
 // File system
-const fs = require('fs')
+const log = require('./logger')
 
 // APP SETTINGS
 // ------------
@@ -30,18 +30,23 @@ const pool = new Pool({
 
 // Use a date variable to keep track of successful data retrievals
 let lastFetchedDate = '1.1.2023' // Initial value, in production use settings file
-
+let message = ''
+const logFile = 'dataOperations.log'
 // Try to run an operation in 5 minute intervals from 3 to 4 PM
-const timestamp = new Date() // Get the current timestamp
-const dateStr = timestamp.toLocaleDateString() // Take datepart of the timestamp
-cron.schedule('*/1 13 * * *', () => {
+
+cron.schedule('*/1 16 * * *', () => {
   try {
+    const timestamp = new Date() // Get the current timestamp
+    const dateStr = timestamp.toLocaleDateString() // Take datepart of the timestamp
     // If the date of last successful fetch is not the current day, fetch data
     if (lastFetchedDate !== dateStr) {
-      fs.appendFile('dataOperations.log', '\nStarted fetching price data @ ' + dateStr, (err) => { // Log the start of the operation
-        if (err) throw err
-        console.log('Could not append data to log file')
-      })
+
+        // Log the start of the operation
+        message = 'Started fetching price data'
+
+        console.log(message)
+        log.log(message, logFile)
+
       getPrices.fetchLatestPriceData().then((json) => {
         // Loop through prices data and pick starDate and price elements
         json.prices.forEach(async (element) => {
@@ -52,25 +57,33 @@ cron.schedule('*/1 13 * * *', () => {
             'INSERT INTO public.hourly_price VALUES ($1, $2) ON CONFLICT DO NOTHING RETURNING *'
           // Function for running SQL operations asyncronously
           const runQuery = async () => {
-            const resultset = await pool.query(sqlClause, values)
+            let resultset = await pool.query(sqlClause, values)
             return resultset
           }
           // Call queryfunction and echo results to console
-          runQuery().then((resultset) => console.log(resultset.rows[0]))
+          runQuery().then((resultset) => {   if (resultset.rows[0] != undefined) {
+            message = 'Added a row to database'
+          } else {
+            message = 'Skipped an existing row'
+          }
+
+          console.log(message)
+          log.log(message, logFile)
         })
       })
-      lastFetchedDate = dateStr // Set fetch date to current date
-      fs.appendFile('dataOperations.log', '\nFetched successfully @ ' + dateStr, (err) => {
-        if (err) throw err
-        console.log('Could not append data to log file')
       })
+      lastFetchedDate = dateStr // Set fetch date to current date
+      message = 'Fetched at ' + lastFetchedDate
+      console.log(message)
+      log.log(message, logFile)
     } else {
-      console.log('Data has been successfully retrieved earlier today')
-    }
+      message = 'Data was already fetched earlier today'
+      console.log(message)
+      log.log(message, logFile)
+    } 
   } catch (error) {
-    fs.appendFile('dataOperations.log', '\nAn error occurred, trying again in 5 minutes until 4 PM @ ' + dateStr, (err) => {
-      if (err) throw err
-      console.log('Could not append data to log file')
-    })
-  }
-})
+      message = 'An error occured (' + error.toString() + '), trying again in 5 minutes until 4 PM'
+      console.log(message)
+      log.log(message, logFile)
+    }
+  })
