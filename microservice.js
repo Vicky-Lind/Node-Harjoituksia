@@ -31,7 +31,6 @@ const pool = new Pool({
 // Use a date variable to keep track of successful data retrievals
 let lastFetchedDate = '1.1.2023' // Initial value, in production use settings file
 let message = ''
-const logFile = 'dataOperations.log'
 // Try to run an operation in 5 minute intervals from 3 to 4 PM
 
 cron.schedule('*/1 16 * * *', () => {
@@ -45,7 +44,7 @@ cron.schedule('*/1 16 * * *', () => {
         message = 'Started fetching price data'
 
         console.log(message)
-        log.log(message, logFile)
+        log.log(message)
 
       getPrices.fetchLatestPriceData().then((json) => {
         // Loop through prices data and pick starDate and price elements
@@ -68,22 +67,22 @@ cron.schedule('*/1 16 * * *', () => {
           }
 
           console.log(message)
-          log.log(message, logFile)
+          log.log(message)
         })
       })
       })
       lastFetchedDate = dateStr // Set fetch date to current date
       message = 'Fetched at ' + lastFetchedDate
       console.log(message)
-      log.log(message, logFile)
+      log.log(message)
     } else {
       message = 'Data was already fetched earlier today'
       console.log(message)
-      log.log(message, logFile)
+      log.log(message)
     } 
   } catch (error) {
       message = 'An error occured (' + error.toString() + '), trying again in 5 minutes until 4 PM'
       console.log(message)
-      log.log(message, logFile)
+      log.log(message)
     }
   })
