@@ -8,6 +8,13 @@
 const express = require('express')
 const { engine } = require('express-handlebars')
 
+// Custom module to get current price
+const cprice = require('./getHomePageData')
+
+const cpriceTable = require('./getHourlyPageData')
+
+
+
 // EXPRESS-SOVELLUKSEN ASETUKSET
 // -----------------------------
 
@@ -28,6 +35,38 @@ app.set('views', './views')
 // REITTIEN MÄÄRITYKSET
 // --------------------
 
+app.get('/', (req, res) => {
+
+  // Handlebars needs a key to show data on a page, json is a good way to send it
+  let homePageData = {
+      'price': 0,
+      'wind': 0,
+      'temperature': 0
+  };
+
+  cprice.getCurrentPrice().then((resultset) => {
+      console.log(resultset.rows[0])
+
+      homePageData.price = resultset.rows[0]['price'];
+      
+      // Render index.handlebars and send dynamic data to the page
+      res.render('index', homePageData)
+    })
+    
+    
+  });
+  
+app.get('/hourly', (req, res) => {
+  cpriceTable.getCurrentPriceTable().then((resultset) => {
+    let tableData = resultset.rows
+    let hourlyPageData = {
+      'tableData': tableData
+    }
+    console.log(hourlyPageData)
+    res.render('hourly', hourlyPageData)
+  })
+})
+
 // Kotisivun reitti ja dynaaminen data
 // app.get('/', (req, res) => {
 //     // Testidataa dynaamisen sivun testaamiseksi
@@ -46,6 +85,10 @@ const db = require('./views/testPgPool')
 app.get('/pgpool', db.getUsers)
 
 app.get('/', (req, res) => {
+  res.render('index')
+})
+
+app.get('/test-home', (req, res) => {
   res.render('test_homepage')
 })
 // Tuntihintasivun reitti ja dynaaminen data
@@ -64,9 +107,6 @@ app.get('/spot-prices', (req, res) => {
   res.render('spot_prices', hourlyPageData)
 })
 
-app.get('/weather-forecast', (req, res) => {
-  res.render('test_weather_forecast')
-})
 
 app.get('/bootstrap-test', (req, res) => {
   res.render('bootstrap_test')
@@ -75,6 +115,11 @@ app.get('/bootstrap-test', (req, res) => {
 app.get('/tailwind-test', (req, res) => {
   res.render('tailwind_test')
 })
+
+app.get('/threejs', (req, res) => {
+  res.render('threejs_test')
+})
+
 
 // PALVELIMEN KÄYNNISTYS
 app.listen(PORT)

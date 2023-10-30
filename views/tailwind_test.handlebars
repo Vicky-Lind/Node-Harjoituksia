@@ -1,3 +1,316 @@
-  <h1 class="text-3xl font-bold underline">
-    Hello world!
-  </h1>
+<!doctype html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+  .my-button.items-center svg path {
+    stroke: white;
+    transition: stroke 0.2s ease-in-out;
+  }
+
+  .my-button.items-center:hover svg path {
+    stroke: #144E70;
+  }
+
+  .my-svg {
+    background-image: url('images/background.svg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    width: calc(100vw - 15px);
+    height: 100vh;
+
+  }
+  #hero-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    z-index: 2;
+    pointer-events: none;
+  }
+  #hero-section {
+    z-index: 1;
+    position: relative;
+    
+  }
+  #second-section {
+    z-index: 1;
+    position: relative;
+    
+  }
+  #second-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 1;
+    z-index: 2;
+    pointer-events: none;
+  }
+  /* Hide the iframes on screens smaller than 1024 pixels */
+  @media (max-width: 923px) {
+    #hero-section iframe,
+    #second-section iframe {
+      visibility: hidden;
+    }
+
+    #second-section {
+        visibility: hidden;
+    }
+  }
+</style>
+</head>
+<body id="my-scrollbar">
+    {{!-- TODO: MAKE EVERYTHING THAT NEEDS TO HOVER - HOVER --}}
+    {{!-- Navbar --}}
+    <nav class="sticky top-6 z-50 main-menu mx-20 mt-6 bg-[rgba(255,255,255,0.2)] rounded-t-3xl rounded-b-3xl backdrop-blur-lg shadow-md">
+        <div class="flex items-center justify-between mx-auto px-7 py-2">
+
+        {{!-- Logo --}}
+        <a href="/" class="flex items-center my-hover">
+            <span class="text-[24px] font-semibold text-white transition duration-300 inline-block">SmartHome</span>
+        </a>
+        
+
+        {{!-- Pages --}}
+        <div class="flex space-x-7">
+            <div class="hidden min-[970px]:flex items-center space-x-5 text-[16.67px]">
+                    <a href="/" class=" px-2 font-semibold text-white hover:text-[#144E70] transition duration-300">Home</a>
+                    <a href="/hourly" class=" px-2 text-white font-semibold hover:text-[#144E70] transition duration-300">Spot Prices</a>
+                    <a href="/" class=" px-2 text-white font-semibold hover:text-[#144E70] transition duration-300">Weather Forecast</a>
+                </div>
+            </div>
+
+            {{!-- End part with the buttons --}}
+            <div class="hidden min-[970px]:flex items-center space-x-3 text-[16.67px]">
+                <button type="button" class="items-center my-button">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" class="w-9 h-9">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12a7.5 7.5 0 0015 0m-15 0a7.5 7.5 0 1115 0m-15 0H3m16.5 0H21m-1.5 0H12m-8.457 3.077l1.41-.513m14.095-5.13l1.41-.513M5.106 17.785l1.15-.964m11.49-9.642l1.149-.964M7.501 19.795l.75-1.3m7.5-12.99l.75-1.3m-6.063 16.658l.26-1.477m2.605-14.772l.26-1.477m0 17.726l-.26-1.477M10.698 4.614l-.26-1.477M16.5 19.794l-.75-1.299M7.5 4.205L12 12m6.894 5.785l-1.149-.964M6.256 7.178l-1.15-.964m15.352 8.864l-1.41-.513M4.954 9.435l-1.41-.514M12.002 12l-3.75 6.495" />
+                    </svg>
+                </button>
+                <button type="button" class="items-center my-button">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" class="w-8 h-8">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z" />
+                    </svg>                  
+                </button>
+            </div>
+            <div class="min-[970px]:hidden flex items-center ml-5">
+                <button class="outline-none mobile-menu-button">
+                <svg class=" w-6 h-6 text-gray-500 hover:text-green-500 "
+                    x-show="!showMenu"
+                    fill="none"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path d="M4 6h16M4 12h16M4 18h16"></path>
+                </svg>
+            </button>
+            </div>
+        </div>
+    </nav>
+    {{!-- END OF NAV --}}
+
+    {{!-- The hamburger menu --}}
+    <div class="bg-red-50 fixed hidden mobile-menu mx-20 z-50 w-max">
+        <ul class="">
+            <li class="active"><a href="#" class="block text-[16.67px] text-white bg-green-500 font-semibold">Home</a></li>
+            <li><a href="#" class="block text-[16.67px] px-2  hover:bg-green-500 transition duration-300">Spot Prices</a></li>
+            <li><a href="#" class="block text-[16.67px] px-2  hover:bg-green-500 transition duration-300">Weather Forecast</a></li>
+            <li><a href="#" class="block text-[16.67px] px-2  hover:bg-green-500 transition duration-300">settings</a></li>
+            <li><a href="#" class="block text-[16.67px] px-2  hover:bg-green-500 transition duration-300">theme</a></li>
+        </ul>
+    </div>
+    <script>
+        const main_menu = document.querySelector(".main-menu");
+        const btn = document.querySelector("button.mobile-menu-button");
+        const menu = document.querySelector(".mobile-menu");
+
+        btn.addEventListener("click", () => {
+            menu.classList.toggle("hidden");
+        });
+        // if btn is not shown then close the menu
+        window.addEventListener("resize", () => {
+            if (window.innerWidth > 970) {
+                menu.classList.add("hidden");
+                main_menu.classList.add("rounded-t-3xl");
+                main_menu.classList.add("rounded-b-3xl");
+            }
+        });
+        // if the mobile-menu is shown, make the main menu bottom border radius to 0
+        btn.addEventListener("click", () => {
+            if (menu.classList.contains("hidden")) {
+                main_menu.classList.add("rounded-t-3xl");
+                main_menu.classList.add("rounded-b-3xl");
+            } else {
+                main_menu.classList.remove("rounded-b-3xl");
+            }
+        });
+    </script>
+    </nav>
+
+    {{!-- This is the hero section --}}
+    <div id="hero-section" class="w-[98.5vw] h-[100vh] -mt-56 bg-[url('/images/background.svg')] bg-no-repeat bg-cover">
+
+        <iframe id="hero-background" class="object-cover right-10"  src='https://my.spline.design/windturbine-f0e43f85c0d471eaffeb486cc713e33d/' frameborder='0' width='100%' height='100%'></iframe>
+
+        {{!-- Section content --}}
+        <div class="relative container flex flex-col px-0 py-10 top-36 mt-36 mx-auto space-y-6 lg:py-16 lg:flex-row lg:items-center">
+
+            <div class="w-full lg:w-1/2">
+
+                <div class="flex flex-col justify-center items-center text-center">
+
+                    <h1 class="flex-none font-bold leading-none text-[#144E70] text-center text-[36.56px] text-center">
+                        Welcome to <span style="color: white">SmartHome</span><br />
+                        - Your Energy and <br /> Weather Companion
+                    </h1>
+                    
+                    <div class="mt-16 space-y-5 bg-[#2f2b61A6] backdrop-blur-[6px] shadow-xl rounded-[37px] w-[400px] sm:w-[500px] text-center">
+                        <p class="mx-auto items-center -mx-2 font-normal text-white py-6 text-center
+                        sm:px-20 text-lg md:text-xl max-w-[250px] sm:max-w-none leading-relaxed">
+                        Get <span class="font-medium">real-time updates</span> on <span class="font-medium">energy prices and weather conditions</span> with our app.
+                        </p>
+                        <button type="button" class="h-10 px-4 py-2 self-center bottom-5 text-white transition-colors duration-300 transform bg-blue-700 rounded-lg hover:bg-blue-500 relative shadow-lg hover:shadow-xl">Get Started
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+  <script>
+    const heroBackground = document.getElementById("hero-background");
+
+    // Set the opacity of the iframe to 1 when the page is loaded
+    window.addEventListener("load", () => {
+      heroBackground.style.opacity = 1;
+    });
+  </script>
+    <script>
+    if (window.innerWidth >= 1024) {
+                document.querySelector(".my-second-box").classList.remove("hidden");
+    } else {
+        document.querySelector(".my-second-box").classList.add("hidden");
+    }
+    window.addEventListener("resize", () => {
+            if (window.innerWidth >= 1024) {
+                document.querySelector(".my-second-box").classList.remove("hidden");
+            } else {
+                document.querySelector(".my-second-box").classList.add("hidden");
+            }
+        });
+
+        if (window.innerWidth >= 1024) {
+            document.querySelector(".my-image-box").classList.remove("hidden");
+    } else {
+        document.querySelector(".my-image-box").classList.add("hidden");
+    }
+    window.addEventListener("resize", () => {
+            if (window.innerWidth >= 1024) {
+                document.querySelector(".my-image-box").classList.remove("hidden");
+            } else {
+                document.querySelector(".my-image-box").classList.add("hidden");
+            }
+    })
+    </script>
+  
+  </div>
+</div>
+{{!-- END OF HERO SECTION --}}
+
+{{!-- This is the second section --}}
+<div id="second-section" class="hidden lg:block w-[98.5vw] h-[100vh] -mt-52  bg-white bg-no-repeat bg-cover">
+
+    <iframe id="second-background" class="object-cover" src='https://my.spline.design/iphone14procopy-6fcff9915736761703fec2c9a3b2564c/' frameborder='0' width='100%' height='100%'></iframe>
+
+    {{!-- Section content --}}
+    <div class="bg-blue-200 relative container flex flex-col px-0 py-10 top-36 mt-36 mx-auto space-y-6 lg:py-16 lg:flex-row lg:items-end">
+
+        <div class="md:bg-red-400 lg:bg-red-200 w-full lg:w-1/2 lg:ml-[40rem]">
+
+            <div class="flex flex-col justify-center items-center text-center">
+
+                <h1 class="flex-none font-bold leading-none text-[#144E70] text-center text-[36.56px] text-center">
+                    Welcome to <span style="color: white">SmartHome</span><br />
+                    - Your Energy and <br /> Weather Companion
+                </h1>
+                
+                <div class="mt-16 space-y-5 bg-[#2f2b61A6] backdrop-blur-[6px] shadow-xl rounded-[37px] w-[400px] sm:w-[500px] text-center">
+                    <p class="mx-auto items-center -mx-2 font-normal text-white py-6 text-center
+                    sm:px-20 text-lg md:text-xl max-w-[250px] sm:max-w-none leading-relaxed">
+                    Get <span class="font-medium">real-time updates</span> on <span class="font-medium">energy prices and weather conditions</span> with our app.
+                    </p>
+                    <button type="button" class="h-10 px-4 py-2 self-center bottom-5 text-white transition-colors duration-300 transform bg-blue-700 rounded-lg hover:bg-blue-500 relative shadow-lg hover:shadow-xl">Get Started
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+    {{!-- END OF SECOND SECTION --}}
+
+    
+
+<footer class="bg-gray-600">
+  <div class="mx-auto w-full max-w-screen-xl p-4 py-6 lg:py-8">
+      <div class="md:flex md:justify-between">
+        <div class="mb-6 md:mb-0">
+            <a href="https://flowbite.com/" class="flex items-center">
+                <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">SmartHome</span>
+            </a>
+        </div>
+        <div class="grid grid-cols-2 gap-8 sm:gap-6 sm:grid-cols-3">
+            <div>
+                <h2 class="sm:ml-5 text-sm font-semibold text-gray-900 uppercase dark:text-white">Project made by students of Raseko
+                </h2>
+            </div>
+            <div>
+                <h2 class="-mb-[2px] text-sm font-semibold text-gray-900 uppercase dark:text-white">Github link</h2>
+                <ul class="text-gray-500 dark:text-gray-400 font-medium">
+                    <li class="mb-4">
+                        <a href="https://github.com/lehtjan/smarthome-application" class="hover:underline ">Github</a>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2 class="-mb-[2px] text-sm font-semibold text-gray-900 uppercase dark:text-white">Legal</h2>
+                <ul class="text-gray-500 dark:text-gray-400 font-medium">
+                    <li class="-mb-[2px]">
+                        <a href="#" class="hover:underline">Privacy Policy</a>
+                    </li>
+                    <li>
+                        <a href="#" class="hover:underline">Terms &amp; Conditions</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <hr class="my-6 border-gray-200 sm:mx-auto dark:border-gray-700 lg:my-8" />
+    <div class="sm:flex sm:items-center sm:justify-between">
+        <span class="text-sm text-gray-500 sm:text-center dark:text-gray-400">© 2023 <a href="http://127.0.0.1:5500/test.html" class="hover:underline">SmartHome™</a>. All Rights Reserved.
+        </span>
+        <div class="flex mt-4 space-x-5 sm:justify-center sm:mt-0">
+            <a href="https://github.com/lehtjan/smarthome-application" class="text-gray-500 hover:text-gray-900 dark:hover:text-white">
+                <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                      <path fill-rule="evenodd" d="M10 .333A9.911 9.911 0 0 0 6.866 19.65c.5.092.678-.215.678-.477 0-.237-.01-1.017-.014-1.845-2.757.6-3.338-1.169-3.338-1.169a2.627 2.627 0 0 0-1.1-1.451c-.9-.615.07-.6.07-.6a2.084 2.084 0 0 1 1.518 1.021 2.11 2.11 0 0 0 2.884.823c.044-.503.268-.973.63-1.325-2.2-.25-4.516-1.1-4.516-4.9A3.832 3.832 0 0 1 4.7 7.068a3.56 3.56 0 0 1 .095-2.623s.832-.266 2.726 1.016a9.409 9.409 0 0 1 4.962 0c1.89-1.282 2.717-1.016 2.717-1.016.366.83.402 1.768.1 2.623a3.827 3.827 0 0 1 1.02 2.659c0 3.807-2.319 4.644-4.525 4.889a2.366 2.366 0 0 1 .673 1.834c0 1.326-.012 2.394-.012 2.72 0 .263.18.572.681.475A9.911 9.911 0 0 0 10 .333Z" clip-rule="evenodd"/>
+                </svg>
+                <span class="sr-only">GitHub account</span>
+            </a>
+            <a href="#" class="text-gray-500 hover:text-gray-900 dark:hover:text-white">
+                <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M10 0a10 10 0 1 0 10 10A10.009 10.009 0 0 0 10 0Zm6.613 4.614a8.523 8.523 0 0 1 1.93 5.32 20.094 20.094 0 0 0-5.949-.274c-.059-.149-.122-.292-.184-.441a23.879 23.879 0 0 0-.566-1.239 11.41 11.41 0 0 0 4.769-3.366ZM8 1.707a8.821 8.821 0 0 1 2-.238 8.5 8.5 0 0 1 5.664 2.152 9.608 9.608 0 0 1-4.476 3.087A45.758 45.758 0 0 0 8 1.707ZM1.642 8.262a8.57 8.57 0 0 1 4.73-5.981A53.998 53.998 0 0 1 9.54 7.222a32.078 32.078 0 0 1-7.9 1.04h.002Zm2.01 7.46a8.51 8.51 0 0 1-2.2-5.707v-.262a31.64 31.64 0 0 0 8.777-1.219c.243.477.477.964.692 1.449-.114.032-.227.067-.336.1a13.569 13.569 0 0 0-6.942 5.636l.009.003ZM10 18.556a8.508 8.508 0 0 1-5.243-1.8 11.717 11.717 0 0 1 6.7-5.332.509.509 0 0 1 .055-.02 35.65 35.65 0 0 1 1.819 6.476 8.476 8.476 0 0 1-3.331.676Zm4.772-1.462A37.232 37.232 0 0 0 13.113 11a12.513 12.513 0 0 1 5.321.364 8.56 8.56 0 0 1-3.66 5.73h-.002Z" clip-rule="evenodd"/>
+              </svg>
+                <span class="sr-only">Dribbble account</span>
+            </a>
+        </div>
+    </div>
+  </div>
+</footer>
+<script src="scroll.js"></script>
+</body>
+</html>

@@ -1,0 +1,112 @@
+{{!-- Load a script to create Chart.js charts --}}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+
+{{!-- Load script to create Google Chart --}}
+<script src="https://www.gstatic.com/charts/loader.js"></script>
+
+
+<h1 style="color: white;">Sähkön tuntihinnat seuraavalle 24 tunnille</h1>
+
+<table>
+    <tr>
+        <th>Päivä</th>
+        <th>Tunti</th>
+        <th>Hinta (snt/kWh)</th>
+    </tr>
+    
+    <!-- Loop every item in tabledata list, tableData is the key for the list-->
+    {{#each tableData}}
+
+    <!-- Create a row and put values into columns according to keys hour and price-->
+    <tr>
+        <td>{{day}}</td>
+        <td>{{hour}}:00</td>
+        <td>{{price}}</td>
+    </tr>
+
+    {{!-- Loop must end with {{/each tag}}, btw this is a handlebars comment --}}
+    {{/each}}
+</table>
+<p>{{chartData}}</p>
+<div>
+    <br>
+    <br>
+</div>
+
+{{!-- Create a named element as a placeholder for the chart.js chart --}}
+<canvas id="hourlyChartChartJS" style="width:100%;max-width:90vw; background-color:antiquewhite; box-shadow:4px;padding:30px; border-radius:15px;"></canvas>
+
+<script>
+    const xValues = [];
+    const yValues = [];
+    const barColors = [];
+
+    // Iterate over the tableData list and extract the hour and price values
+    {{#each tableData}}
+        xValues.push({{hour}} + ":00");
+        yValues.push({{price}});
+        barColors.push("blue"); // You can set the bar color dynamically if needed
+    {{/each}}
+
+    new Chart("hourlyChartChartJS", {
+        type: "bar",
+        data: {
+            labels: xValues,
+            datasets: [{
+                label: "snt/kWh",
+                backgroundColor: barColors,
+                data: yValues
+            }]
+        },
+        options: {
+            legend: {
+                display: true
+             },
+            title: {
+                display: true,
+                text: "Sähkön tuntihinnat"
+            }
+        }
+    });
+</script>
+<div>
+    <br>
+    <br>
+</div>
+
+{{!-- Create a named element as a placeholder for the Google chart --}}
+<div id="hourlyChartGoogleChart"></div>
+
+<script type="text/javascript">
+    google.charts.load("current", { packages: ['corechart'] });
+    google.charts.setOnLoadCallback(drawChart);
+    function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+            ["Tunti", "Hinta snt/kwh", { role: "style" }],
+            ["13", 10, "blue"],
+            ["14", 8, "green"],
+            ["15", 10, "blue"],
+            ["16", 14, "red"],
+            ["16", 15, "red"]
+        ]);
+
+        var view = new google.visualization.DataView(data);
+
+        var options = {
+            title: "Seuraavien 24 h tuntihinnat",
+            width: 600,
+            height: 400,
+            bar: { groupWidth: "95%" },
+            legend: { position: "none" },
+            vAxes: {
+                // Adds titles to each axis.
+                0: { title: 'hinta snt/kWh' }
+
+            }
+        };
+
+
+        var chart = new google.visualization.ColumnChart(document.getElementById("hourlyChartGoogleChart"));
+        chart.draw(view, options);
+    }
+</script>

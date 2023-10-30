@@ -33,7 +33,7 @@ let lastFetchedDate = '1.1.2023' // Initial value, in production use settings fi
 let message = ''
 // Try to run an operation in 5 minute intervals from 3 to 4 PM
 
-cron.schedule('*/1 16 * * *', () => {
+cron.schedule('*/1 9 * * *', () => {
   try {
     const timestamp = new Date() // Get the current timestamp
     const dateStr = timestamp.toLocaleDateString() // Take datepart of the timestamp
