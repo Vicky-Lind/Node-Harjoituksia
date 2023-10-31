@@ -1,0 +1,11 @@
+{
+  "database": {
+    "user": "postgres",
+    "password": "viclin123",
+    "host": "localhost",
+    "database": "smarthome",
+    "port": 5432
+  },
+  "dataFetch": "*/1 12 * * *",
+  "lastFetchedDate": "31/10/2023"
+}
