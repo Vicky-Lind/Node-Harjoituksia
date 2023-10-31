@@ -40,7 +40,7 @@ class Microservices {
   }
   
   scheduleLatestDataFetch() {
-    cron.schedule(settings.dataFetch, async () => {
+    cron.schedule(settings.scheduler.timepattern, async () => {
       try {
         const timestamp = new Date(); // Get the current timestamp
         const dateStr = timestamp.toLocaleDateString(); // Take datepart of the timestamp

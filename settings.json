@@ -6,6 +6,8 @@
     "database": "smarthome",
     "port": 5432
   },
-  "dataFetch": "*/1 12 * * *",
+  "scheduler": {
+    "timepattern": "*/1 13 * * *"
+  },
   "lastFetchedDate": "31/10/2023"
 }
