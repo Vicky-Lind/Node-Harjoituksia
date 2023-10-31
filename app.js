@@ -8,11 +8,23 @@
 const express = require('express')
 const { engine } = require('express-handlebars')
 
-// Custom module to get current price
-const cprice = require('./getHomePageData')
+const { Pool } = require('pg')
 
-const cpriceTable = require('./getHourlyPageData')
+const fs = require('fs')
 
+// APP SETTINGS
+// ------------
+// Read settings from JSON file
+const settings = JSON.parse(fs.readFileSync('settings.json', 'utf8'))
+
+// Import the Microservices class
+const Microservices = require('./microservices');
+
+// Create a new pool for Postgres connections
+const pool = new Pool(settings.database);
+
+// Create an instance of the Microservices class
+const microservices = new Microservices(pool);
 
 
 // EXPRESS-SOVELLUKSEN ASETUKSET
@@ -44,20 +56,18 @@ app.get('/', (req, res) => {
       'temperature': 0
   };
 
-  cprice.getCurrentPrice().then((resultset) => {
+  microservices.getCurrentPrice().then((resultset) => {
       console.log(resultset.rows[0])
 
       homePageData.price = resultset.rows[0]['price'];
       
       // Render index.handlebars and send dynamic data to the page
       res.render('index', homePageData)
-    })
-    
-    
+    })    
   });
   
 app.get('/hourly', (req, res) => {
-  cpriceTable.getCurrentPriceTable().then((resultset) => {
+  microservices.getCurrentPriceTable().then((resultset) => {
     let tableData = resultset.rows
     let hourlyPageData = {
       'tableData': tableData
@@ -66,23 +76,6 @@ app.get('/hourly', (req, res) => {
     res.render('hourly', hourlyPageData)
   })
 })
-
-// Kotisivun reitti ja dynaaminen data
-// app.get('/', (req, res) => {
-//     // Testidataa dynaamisen sivun testaamiseksi
-//     // Handlebars needs a key to show data on a page, json is a good way to send it
-//     let homePageData = {
-//         'price': 32.25,
-//         'wind': 4,
-//         'temperature': 21
-//     }
-//     // Render index.handlebars and send dynamic data to the page
-//     res.render('index', homePageData)
-// })
-
-// Sivu /pgpool, joka tekee pg.pool kutsun ja palauttaa datan jsonina
-const db = require('./views/testPgPool')
-app.get('/pgpool', db.getUsers)
 
 app.get('/', (req, res) => {
   res.render('index')
@@ -116,28 +109,6 @@ app.get('/tailwind-test', (req, res) => {
   res.render('tailwind_test')
 })
 
-app.get('/threejs', (req, res) => {
-  res.render('threejs_test')
-})
-
-
 // PALVELIMEN KÄYNNISTYS
 app.listen(PORT)
 console.log(`Palvelin kuuntelee porttia ${PORT}`)
-
-// Create cron to output 'hello' every other second in console
-// const cron = require('node-cron')
-// const job = cron.schedule('*/2 * * * * *', () => {
-//     console.log('hello')
-// })
-// var CronJob = require('cron').CronJob
-// var job = new CronJob(
-//     '* * * * * *',
-//     function() {
-//         console.log('You will see this message every second')
-//     },
-//     null,
-//     true,
-//     'America/Los_Angeles'
-// )
-// job.start() - See note below when to use this
