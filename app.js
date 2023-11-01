@@ -48,6 +48,33 @@ app.set('views', './views')
 // --------------------
 
 app.get('/', (req, res) => {
+  res.render('index')
+})
+
+app.get('/hourly', (req, res) => {
+  microservices.getCurrentPriceTable().then((resultset) => {
+    let tableData = resultset.rows
+    let hourlyPageData = {
+      'tableData': tableData
+    }
+    console.log(hourlyPageData)
+    res.render('hourly', hourlyPageData)
+  })
+})
+
+// Tuntihintasivun reitti ja dynaaminen data
+app.get('/spot-prices', (req, res) => {
+  microservices.getCurrentPriceTable().then((resultset) => {
+    let tableData = resultset.rows
+    let hourlyPageData = {
+      'tableData': tableData
+    }
+    console.log(hourlyPageData)
+    res.render('spot_prices', hourlyPageData)
+  })
+})
+
+app.get('/original', (req, res) => {
 
   // Handlebars needs a key to show data on a page, json is a good way to send it
   let homePageData = {
@@ -62,52 +89,9 @@ app.get('/', (req, res) => {
       homePageData.price = resultset.rows[0]['price'];
       
       // Render index.handlebars and send dynamic data to the page
-      res.render('index', homePageData)
+      res.render('original', homePageData)
     })    
-  });
-  
-app.get('/hourly', (req, res) => {
-  microservices.getCurrentPriceTable().then((resultset) => {
-    let tableData = resultset.rows
-    let hourlyPageData = {
-      'tableData': tableData
-    }
-    console.log(hourlyPageData)
-    res.render('hourly', hourlyPageData)
-  })
-})
-
-app.get('/', (req, res) => {
-  res.render('index')
-})
-
-app.get('/test-home', (req, res) => {
-  res.render('test_homepage')
-})
-// Tuntihintasivun reitti ja dynaaminen data
-app.get('/spot-prices', (req, res) => {
-  // Testidataa dynaamisen sivun testaamiseksi
-  // Data will be represented in a table. To loop all rows we need a key for table and for column data
-  const hourlyPageData = {
-    tableData: [
-      { hour: 8, price: 31.22 },
-      { hour: 9, price: 32.55 },
-      { hour: 10, price: 31.44 },
-      { hour: 11, price: 34.11 }
-    ]
-  }
-
-  res.render('spot_prices', hourlyPageData)
-})
-
-
-app.get('/bootstrap-test', (req, res) => {
-  res.render('bootstrap_test')
-})
-
-app.get('/tailwind-test', (req, res) => {
-  res.render('tailwind_test')
-})
+});
 
 // PALVELIMEN KÄYNNISTYS
 app.listen(PORT)
