@@ -27,7 +27,7 @@ const pool = new Pool(
 class Microservices {
   constructor(pool) {
     this.pool = pool;
-    this.lastFetchedDate = '1.1.2023'; // Initial value, in production use settings file
+    this.lastFetchedDate = settings.lastFetchedDate;
     this.message = '';
   }
 
@@ -98,17 +98,27 @@ class Microservices {
     });
   }
 
-  // Get the latest, hourly price data from the database
+  // Get the latest, hourly price + timeslot data from the database
   async getCurrentPriceTable() {
     let resultset = await pool.query('SELECT * FROM public.hourly_page');
     return resultset;
 }
 
+  // Get the latest, hourly price data from the database
   async getCurrentPrice() {
     let resultset = await pool.query('SELECT price FROM public.current_prices');
     return resultset;
   }
 
+  async getEveningPrice() {
+    let resultset = await pool.query('SELECT price FROM public.evening_price');
+    return resultset;
+  }
+
+  async getLowestPriceToday() {
+    let resultset = await pool.query('SELECT price, timeslot FROM public.lowest_price_today');
+    return resultset;
+  }
 }
 // Export the Microservices class
 module.exports = Microservices;

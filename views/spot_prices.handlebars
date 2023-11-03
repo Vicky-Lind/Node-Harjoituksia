@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
   <style>
   .my-svg {
     background-image: url('images/background.svg');
@@ -18,13 +19,122 @@
     position: relative;
     
   }
+  @media (max-width: 1228px) {
+    .my-side-page {
+        visibility: hidden;
+    }
+    .my-main {
+        height: 150vh;
+    }
+    .my-inner-main {
+        width: 100%;
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+    .my-main-header {
+        padding-left: 10px;
+    }
+  }
 </style>
 </head>
 <body>
-    <div id="my-main" class=" w-[98.5vw] h-[100vh] -mt-20 bg-[url('/images/background.svg')] bg-no-repeat bg-cover">
-        <div>
+    <!-- main container -->
+    <div class="my-main bg-white w-full h-[130vh] flex">
+        <div class="my-inner-main w-3/4 h-full pt-16 px-20 ">
+        <!-- inside container -->
+            <h1 class="my-main-header py-10 text-4xl font-bold">
+                Spot Prices <span class="font-normal text-xl">(snt/kWh)</span>
+            </h1>
             
+            <!-- quick view boxes -->
+            <div class="w-full h-auto min-h-[15vh] xl:h-[15vh] grid gap-x-7 gap-y-6 grid-cols-1 xl:grid-cols-3 lg:bg-red-400 content-center">
+                
+                <!-- price now box -->
+                <div class="bg-white rounded-3xl h-[14vh] drop-shadow-xl flex">
+                    <div class="ml-3 mt-3 w-[105px] h-[105px] flex justify-center items-center rounded-3xl bg-[url(/icons/electricity-bolt.png)] bg-contain bg-no-repeat bg-center">
+                    </div>
+                    <div class="w-1/2 flex flex-col justify-center items-start p-4">
+                        <h1 class="mt-4 text-2xl font-semibold">
+                            Nyt
+                        </h1>
+                        <p class="font-mono mt-2 text-2xl font-semibold">
+                            {{priceNow}}
+                        </p>
+                    </div>
+                </div>
+
+                <!-- price evening box -->
+                <div class="bg-white rounded-3xl h-[14vh] drop-shadow-xl flex">
+                    <div class="ml-3 mt-3 mt-3 w-[105px] h-[105px]  flex justify-center items-center rounded-3xl bg-[url(/icons/night.png)] bg-cover">
+                    </div>
+                    <div class="w-1/2 flex flex-col justify-center items-start p-4">
+                        <h1 class="mt-4 text-2xl font-semibold">
+                            Illalla
+                        </h1>
+                        <p class="font-mono mt-2 text-2xl font-semibold">
+                            {{priceEvening}}, <span class="text-xl font-normal font-sans"> kl.19:00</span>
+                        </p>
+                    </div>
+                </div>
+
+                <!-- lowest price today box -->
+                <div class="bg-white rounded-3xl h-[14vh] drop-shadow-xl flex">
+                    <div class="ml-3 mt-3 mt-3 w-[105px] h-[105px]  flex justify-center items-center rounded-3xl bg-[url(/icons/lowest.png)] bg-cover">
+                    </div>
+                    <div class="w-1/2 flex flex-col justify-center items-start p-4">
+                        <h1 class="mt-4 text-2xl font-semibold">
+                            Alin tänään
+                        </h1>
+                        <p class="font-mono mt-2 text-2xl font-semibold">
+                            {{lowestPriceToday}}, <span class="text-xl font-normal font-sans"> kl.{{formatDate lowestPriceTodayTimeslot}}</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- table -->
+            <div class="bg-[#F7F8FC] border-2 border-[#5397FC] rounded-3xl w-full mt-10 p-10">
+            <h1 class="text-2xl font-semibold">
+                Tuntihinnat
+            </h1>
+            <canvas id="hourlyChartChartJS" ></canvas>
+            <script>
+                const xValues = [];
+                const yValues = [];
+                const barColors = [];
+
+                // Iterate over the tableData list and extract the hour and price values
+                {{#each tableData}}
+                    xValues.push({{hour}} + ":00");
+                    yValues.push({{price}});
+                    barColors.push("#5397FC"); // You can set the bar color dynamically if needed
+                {{/each}}
+
+                new Chart("hourlyChartChartJS", {
+                    type: "bar",
+                    data: {
+                        labels: xValues,
+                        datasets: [{
+                            label: "snt/kWh",
+                            backgroundColor: barColors,
+                            data: yValues
+                        }]
+                    },
+                    options: {
+                        legend: {
+                            display: true
+                        },
+                    }
+                });
+            </script>
+            </div>
+       </div>
+
+        <div class="my-side-page w-1/4 h-full -mt-20">
+            <div class="bg-[#116677] w-full h-[150vh] overflow">
+            </div>
         </div>
+
     </div>
 </body>
 </html>
