@@ -1,3 +1,5 @@
+.vs
+
 *.zip
 ProjectSettings.json
 slnx.sqlite
