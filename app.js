@@ -75,26 +75,43 @@ app.get('/hourly', (req, res) => {
 })
 
 // Tuntihintasivun reitti ja dynaaminen data
-app.get('/spot-prices', (req, res) => {
+app.get('/general', (req, res) => {
 
-  Promise.all([microservices.getCurrentPrice(), microservices.getCurrentPriceTable(), microservices.getEveningPrice(), microservices.getLowestPriceToday()])
-    .then(([priceResult, tableResult, eveningPriceResult, lowestPriceTodayResult]) => {
+  Promise.all([microservices.getCurrentPrice(),
+    microservices.getCurrentPriceTable(),
+    microservices.getEveningPrice(),
+    microservices.getLowestPriceToday(),
+    microservices.getHighestPriceToday(),
+  ])
+    .then(([priceResult,
+      tableResult,
+      eveningPriceResult,
+      lowestPriceTodayResult,
+      highestPriceTodayResult,
+    ]) => {
       
       let priceNow = priceResult.rows[0]['price'];
       let priceEvening = eveningPriceResult.rows[0]['price'];
       let lowestPriceToday = lowestPriceTodayResult.rows[0]['price'];
       let lowestPriceTodayTimeslot = lowestPriceTodayResult.rows[0]['timeslot'];
+      let highestPriceToday = highestPriceTodayResult.rows[0]['price'];
+      let highestPriceTodayTimeslot = highestPriceTodayResult.rows[0]['timeslot'];
       let tableData = tableResult.rows;
       
       let data = {
         'priceNow': priceNow,
         'priceEvening': priceEvening,
+
         'lowestPriceToday': lowestPriceToday,
         'lowestPriceTodayTimeslot': lowestPriceTodayTimeslot,
+
+        'highestPriceToday': highestPriceToday,
+        'highestPriceTodayTimeslot': highestPriceTodayTimeslot,
+
         'tableData': tableData
       };
       console.log(data);
-      res.render('spot_prices', data);
+      res.render('generalv2', data);
     })
 })
 

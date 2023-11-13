@@ -19,7 +19,7 @@
     position: relative;
     
   }
-  @media (max-width: 1228px) {
+  @media (max-width: 1578px) {
     .my-side-page {
         visibility: hidden;
     }
@@ -39,15 +39,16 @@
 </head>
 <body>
     <!-- main container -->
-    <div class="my-main bg-white w-full h-[130vh] flex">
-        <div class="my-inner-main w-3/4 h-full pt-16 px-20 ">
+    <div class="my-main bg-[#FFFFF] -mt-20 w-full h-[170vh] flex">
+
         <!-- inside container -->
+        <div class="my-inner-main w-3/4 h-full pt-36 px-20">
             <h1 class="my-main-header py-10 text-4xl font-bold">
-                Spot Prices <span class="font-normal text-xl">(snt/kWh)</span>
+                General <span class="font-normal text-xl">(snt/kWh)</span>
             </h1>
-            
+
             <!-- quick view boxes -->
-            <div class="w-full h-auto min-h-[15vh] xl:h-[15vh] grid gap-x-7 gap-y-6 grid-cols-1 xl:grid-cols-3 lg:bg-red-400 content-center">
+            <div class="mt-20 mb-20 w-full h-auto min-h-[15vh] xl:h-[15vh] grid gap-x-7 gap-y-6 grid-cols-1 lg:grid-cols-2 content-center">
                 
                 <!-- price now box -->
                 <div class="bg-white rounded-3xl h-[14vh] drop-shadow-xl flex">
@@ -55,7 +56,7 @@
                     </div>
                     <div class="w-1/2 flex flex-col justify-center items-start p-4">
                         <h1 class="mt-4 text-2xl font-semibold">
-                            Nyt
+                            Nyt, Kallis
                         </h1>
                         <p class="font-mono mt-2 text-2xl font-semibold">
                             {{priceNow}}
@@ -90,10 +91,24 @@
                         </p>
                     </div>
                 </div>
+
+                <!-- highest price today box -->
+                <div class="bg-white rounded-3xl h-[14vh] drop-shadow-xl flex">
+                    <div class="ml-3 mt-3 mt-3 w-[105px] h-[105px]  flex justify-center items-center rounded-3xl bg-[url(/icons/highest.png)] bg-cover">
+                    </div>
+                    <div class="w-1/2 flex flex-col justify-center items-start p-4">
+                        <h1 class="mt-4 text-2xl font-semibold">
+                            Korkein tänään
+                        </h1>
+                        <p class="font-mono mt-2 text-2xl font-semibold">
+                            {{highestPriceToday}}, <span class="text-xl font-normal font-sans"> kl.{{formatDate highestPriceTodayTimeslot}}</span>
+                        </p>
+                    </div>
+                </div>
             </div>
             
             <!-- table -->
-            <div class="bg-[#F7F8FC] border-2 border-[#5397FC] rounded-3xl w-full mt-10 p-10">
+            <div class="bg-[#F7F8FC] border-2 border-[#5397FC] rounded-3xl w-full 2xl:max-w-[90%] mt-24 p-10">
             <h1 class="text-2xl font-semibold">
                 Tuntihinnat
             </h1>
@@ -130,8 +145,9 @@
             </div>
        </div>
 
-        <div class="my-side-page w-1/4 h-full -mt-20">
-            <div class="bg-[#116677] w-full h-[150vh] overflow">
+        <!-- side panel -->
+        <div class="my-side-page w-1/4 h-[full] -mt-20 flex overflow-hidden">
+            <div class="bg-[#F7F7F7] w-full h-[full] overflow-hidden">
             </div>
         </div>
 

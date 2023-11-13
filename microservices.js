@@ -7,6 +7,8 @@ const Pool = require('pg').Pool
 // The node-cron library to schedule API call to porssisahko.net
 const cron = require('node-cron')
 
+const { transform, prettyPrint } = require('camaro');
+
 // File system
 const log = require('./logger')
 const fs = require('fs')
@@ -119,7 +121,37 @@ class Microservices {
     let resultset = await pool.query('SELECT price, timeslot FROM public.lowest_price_today');
     return resultset;
   }
+
+  async getHighestPriceToday() {
+    let resultset = await pool.query('SELECT price, timeslot FROM public.highest_price_today');
+    return resultset;
+  }
+
+  async fetchHourlyWeatherData() {
+    const response = await fetch('https://opendata.fmi.fi/wfs?service=WFS&version=2.0.0&request=getFeature&storedquery_id=fmi::observations::weather::hourly::multipointcoverage&place=turku&parameters=WindDirection,WindSpeedMS,Temperature');
+
+    const xmlData = await response.text();
+  
+    const template = [
+      'wfs:FeatureCollection/wfs:member/omso:GridSeriesObservation/om:result/gmlcov:MultiPointCoverage/gml:rangeSet/gml:DataBlock', 
+      {
+        data: 'gml:doubleOrNilReasonTupleList'
+      }
+    ];
+    
+    (async function () {
+      const result = await transform(xmlData, template);
+
+      console.log(result);
+
+      const values = result.map(item => `('${item.windDirection} ${item.windSpeed} ${item.temperature}')`).join(', ');
+
+      console.log(values);
+    })();
+
+  }
 }
+
 // Export the Microservices class
 module.exports = Microservices;
 
@@ -128,3 +160,4 @@ const microservices = new Microservices(pool);
 
 // Call the scheduleLatestDataFetch method
 microservices.scheduleLatestDataFetch();
+// microservices.fetchHourlyWeatherData();

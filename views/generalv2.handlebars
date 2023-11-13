@@ -1,0 +1,278 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+    <style>
+    </style>    
+</head>
+<body>
+    
+    <!-- main container -->
+    <div class="bg-white flex w-[100vw] h-[100vh]">
+
+        <!-- menu -->
+        <div class="w-[120px] h-full p-6">
+            
+            <!-- logo -->
+            <div class="py-4">
+                <a href="/" class="py-4 hover:drop-shadow-lg transition duration-300">
+                    <img src="icons/up.png" alt="logo" class="w-full h-full">
+                </a>
+            </div>
+
+            <!-- menu items -->
+            <div class="grid grid-cols-1 grid-rows-3 gap-y-10 mx-2 mt-12">
+                <a href="/general" id="general-button" class="rounded-2xl hover:drop-shadow-lg transition duration-300">
+                    <img src="icons/highest.png" alt="logo" class="w-full h-full p-2">
+                </a>
+                <a href="/spot-prices" id="spot-prices-button" class="rounded-2xl hover:drop-shadow-lg transition duration-300">
+                    <img src="icons/electricity-bolt.png" alt="logo" class="w-full h-full p-2">
+                </a>
+                <a href="/weather" id="weather-button" class="rounded-2xl hover:drop-shadow-lg transition duration-300">
+                    <img src="icons/lowest.png" alt="logo" class="w-full h-full p-2">
+                </a>
+            </div>
+
+            <!-- second menu items -->
+            <div class="grid grid-cols-1 grid-rows-2 gap-y-10 mx-2 mt-72">
+                <a href="/settings" id="settings-button" class="rounded-2xl hover:drop-shadow-lg transition duration-300">
+                    <img src="icons/highest.png" alt="logo" class="w-full h-full p-2">
+                </a>
+                <a href="/theme" id="theme-button" class="rounded-2xl hover:drop-shadow-lg transition duration-300">
+                    <img src="icons/night.png" alt="logo" class="w-full h-full p-2">
+                </a>
+            </div>
+        </div>
+
+        <!-- main content -->
+        <div class="w-3/4 h-full px-12 py-12">
+
+            <!-- top content -->
+            <div class="w-full h-[11%] mb-7 flex">
+
+                <!-- left content -->
+                <div class="w-1/2 h-full flex">
+                    <!-- user icon -->
+                    <div class="w-[60px] h-[50px] self-center">
+                        <img src="icons/lowest.png" alt="user" class="w-full h-full rounded-full">
+                    </div>
+
+                    <!-- user welcome -->
+                    <div class="w-full h-full pl-3 content-center">
+                        <p class="text-3xl font-normal text-gray-800 self-center">
+                            Hello,
+                        </p>
+                        <p class="text-4xl font-semibold pt-1 pl-1">
+                            User
+                        </p>
+                    </div>
+                </div>
+
+                <!-- right content -->
+                <div class="w-1/2 h-full"></div>
+            </div>
+
+            <!-- middle content -->
+            <div class="w-full h-[45%] grid grid-cols-2 grid-rows-1 gap-x-5 pb-3">
+
+                <!-- left content -->
+                <div class="bg-[url('/images/windturbine-bg2.png')] bg-cover bg-center bg-no-repeat w-full h-full flex rounded-[25px]">
+
+                </div>
+                <!-- right content -->
+                <div class="bg-[url('/images/sunny-bg3.png')] bg-cover bg-center bg-no-repeat w-full h-full flex rounded-[25px]">
+                </div>
+            </div>
+
+            <!-- bottom content -->
+            <div class="w-full h-[45%] grid grid-cols-3 grid-rows-1 gap-x-5 pt-3">
+                
+                <!-- left chart -->
+                <div class="col-span-2 bg-white w-full h-full rounded-[25px]">
+                    <h1 class="text-2xl font-semibold">
+                        Tuntihinnat <span class="font-normal text-xl">(snt/kWh)</span>
+                    </h1>
+                    <canvas class="max-h-[90%]" id="hourlyChartChartJS"></canvas>
+                    <script>
+                        const xValues = [];
+                        const yValues = [];
+                        const barColors = [];
+
+                        // Iterate over the tableData list and extract the hour and price values
+                        {{#each tableData}}
+                            xValues.push({{hour}} + ":00");
+                            yValues.push({{price}});
+                            barColors.push("#F57F28"); // You can set the bar color dynamically if needed
+                        {{/each}}
+
+                        new Chart("hourlyChartChartJS", {
+                            type: "bar",
+                            data: {
+                                labels: xValues,
+                                datasets: [{
+                                    label: "snt/kWh",
+                                    backgroundColor: barColors,
+                                    data: yValues
+                                }]
+                            },
+                            options: {
+                                legend: {
+                                    display: false
+                                },
+                            }
+                        });
+                    </script>
+                </div>
+
+                <!-- right content -->
+                <div class="bg-[url('/images/sunny-bg3.png')] bg-cover bg-center bg-no-repeat w-full h-full flex rounded-[25px]">
+            </div>
+            </div>
+        </div>
+        <!-- side content -->
+        <div class="bg-[#F7F7F7] w-1/4 h-full p-12">
+            
+            <!-- top title -->
+            <div class="w-full h-[10%] grid grid-cols-3 grid-rows-1">
+                <div class="col-span-2">
+                    <h1 class="text-2xl font-semibold">
+                        Sun
+                    </h1>
+                    <p>
+                        Varsinais-Suomi, Finland
+                    </p>
+                </div>
+                <div class="">
+                    <h1 class="text-5xl text-[#F57F28] font-semibold self-center">
+                        22°
+                    </h1>
+                </div>
+            </div>
+
+            <hr>
+
+            <!-- top content -->
+            <div class="pt-12">
+
+                <!-- sun icon -->
+                <div class="w-full flex justify-center">
+                    <img src="/icons/sun.png" class="self-center w-[35px] h-[35px] " alt="">
+                </div>
+
+                <!-- sun chart -->
+                <div>
+                    <canvas class="px-3" id="sunChartChartjs"></canvas>
+                    <script>
+
+                        // Get the sunrise and sunset times
+                        // This is just placeholder data, you would replace this with the actual times
+                        var sunriseTime = new Date('2023-11-10T08:18:00');
+                        var sunsetTime = new Date('2023-11-10T16:10:00');
+
+                        // Create the gauge chart
+                        var ctx = document.getElementById('sunChartChartjs').getContext('2d');
+                        // Create a gradient
+                        var gradient = ctx.createLinearGradient(0, 0, 0, 200);
+                        gradient.addColorStop(0, '#FFC489'); // Orange at the top
+                        gradient.addColorStop(1, '#F7F7F7'); // #F7F7F7 at the bottom
+
+                        var chart = new Chart(ctx, {
+                            type: 'pie',
+                            data: {
+                                datasets: [{
+                                    data: [0, 1],
+                                    backgroundColor: [gradient, '#F7F7F7'],
+                                    borderColor: '#F57F28',
+                                    borderWidth: 1,
+                                }]
+                            },
+                            options: {
+                                circumference: Math.PI,
+                                rotation: -Math.PI
+                            },
+                        });
+
+                        // Function to update the chart
+                        function updateChart() {
+                            // Get the current time
+                            var currentTime = new Date();
+
+                            // Calculate the current time as a percentage of the time between sunrise and sunset
+                            var totalDaylightTime = sunsetTime - sunriseTime;
+                            var elapsedTimeSinceSunrise = currentTime - sunriseTime;
+                            var percentageOfDaylightTimePassed = elapsedTimeSinceSunrise / totalDaylightTime;
+
+                            // Update the chart data
+                            chart.data.datasets[0].data = [percentageOfDaylightTimePassed, 1 - percentageOfDaylightTimePassed];
+
+                            // Redraw the chart
+                            chart.update();
+                        }
+
+                        // Update the chart immediately
+                        updateChart();
+
+                        // Update the chart every second
+                        setInterval(updateChart, 60 * 1000);
+                    </script>
+                </div>
+
+                <!-- sun times -->
+                <div class="w-full flex justify-between">
+                    <div class="">
+                        <h1 class="text-md font-semibold ">
+                        Sunrise
+                        </h1>
+                        <p class="pl-2 text-sm ">
+                            08:18
+                        </p>
+                    </div>
+                    <div class="">
+                        <h1 class="text-md font-semibold ">
+                        Sunset
+                        </h1>
+                        <p class="pl-2 text-sm ">
+                            16:10
+                        </p>
+                    </div>
+                </div>
+
+                <!-- weather forecast -->
+                <div class="grid grid-cols-2 grid-rows-4 mt-20">
+                    <div class="col-span-2">
+                        <h1 class="text-3xl font-semibold">
+                            Weather Forecast
+                        </h1>
+                    </div>
+
+                    <div class="-mt-4 col-span-2 bg-white rounded-3xl grid grid-cols-4 grid-rows-1 w-full h-20">
+                        
+                    </div>
+
+                    <div class="mb-8 col-span-2 bg-white rounded-3xl grid grid-cols-4 grid-rows-1 w-full h-20">
+
+                    </div>
+
+                    <div class="col-start-2 bg-white rounded-3xl">
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    <script>
+        window.onload = function() {
+            var url = window.location.href;
+            if (url.indexOf('general') > -1) {
+                var general_button = document.getElementById('general-button')
+                general_button.classList.add('bg-[#F57F28]');
+                general_button.classList.add('drop-shadow-xl');
+                general_button.classList.add('shadow-orange-500');
+            }
+        }
+        document.querySelector('.my-nav').remove();
+    </script>
+</body>
