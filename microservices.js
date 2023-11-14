@@ -132,23 +132,45 @@ class Microservices {
 
     const xmlData = await response.text();
   
-    const template = [
+    const xml2objectArray = async (xmlData, template) => {
+      const result = await transform(xmlData, template);
+      return result
+  }
+    const weatherData = [
       'wfs:FeatureCollection/wfs:member/omso:GridSeriesObservation/om:result/gmlcov:MultiPointCoverage/gml:rangeSet/gml:DataBlock', 
       {
         data: 'gml:doubleOrNilReasonTupleList'
       }
     ];
     
-    (async function () {
-      const result = await transform(xmlData, template);
+  // Call the function, get results and then log them to the console
+  xml2objectArray(xmlData, weatherData).then(result => {
+      const cleanedResult = result.map(item => {
 
-      console.log(result);
+        // Removes first all line breaks, then trims the string and finally splits it after three or more whitespaces
+        const sets = item.data.replace(/\n/g, '').trim().split(/\s\s\s+/);
+        
+        // Map the sets array and split each set into three values
+        return sets.map(set => {
 
-      const values = result.map(item => `('${item.windDirection} ${item.windSpeed} ${item.temperature}')`).join(', ');
+          // Split each set into three values
+          const [windDirection, windSpeed, temperature] = set.split(/\s/);
+          return { windDirection, windSpeed, temperature };
+        });
+      });
+      console.log(cleanedResult);
+    })
 
-      console.log(values);
-    })();
+  const locationTimeData = [
+    'wfs:FeatureCollection/wfs:member/omso:GridSeriesObservation/om:result/gmlcov:MultiPointCoverage/gml:domainSet/gmlcov:SimpleMultiPoint',
+    {
+      positions: 'gmlcov:positions'
+    }
+  ];
 
+  xml2objectArray(xmlData, locationTimeData).then(result => {
+    console.log(result)
+  })
   }
 }
 
@@ -160,4 +182,4 @@ const microservices = new Microservices(pool);
 
 // Call the scheduleLatestDataFetch method
 microservices.scheduleLatestDataFetch();
-// microservices.fetchHourlyWeatherData();
+microservices.fetchHourlyWeatherData();
