@@ -26,7 +26,7 @@ const pool = new Pool(
 // GET, PROCESS AND SAVE DATA
 // --------------------------
 
-class Microservices {
+class PriceMicroservices {
   constructor(pool) {
     this.pool = pool;
     this.lastFetchedDate = settings.lastFetchedDate;
@@ -126,60 +126,125 @@ class Microservices {
     let resultset = await pool.query('SELECT price, timeslot FROM public.highest_price_today');
     return resultset;
   }
+}
 
-  async fetchHourlyWeatherData() {
+class WeatherMicroservices {
+  constructor(windDirection, windSpeed, temperature, latitude, longitude, time) {
+    this.windDirection = windDirection;
+    this.windSpeed = windSpeed;
+    this.temperature = temperature;
+    this.latitude = latitude;
+    this.longitude = longitude;
+    this.time = time;
+  }
+
+  async fetchHourlyWeatherData1() {
     const response = await fetch('https://opendata.fmi.fi/wfs?service=WFS&version=2.0.0&request=getFeature&storedquery_id=fmi::observations::weather::hourly::multipointcoverage&place=turku&parameters=WindDirection,WindSpeedMS,Temperature');
-
     const xmlData = await response.text();
   
-    const xml2objectArray = async (xmlData, template) => {
-      const result = await transform(xmlData, template);
-      return result
-  }
-    const weatherData = [
+    const weatherDataTemplate = [
       'wfs:FeatureCollection/wfs:member/omso:GridSeriesObservation/om:result/gmlcov:MultiPointCoverage/gml:rangeSet/gml:DataBlock', 
       {
         data: 'gml:doubleOrNilReasonTupleList'
       }
     ];
-    
-  // Call the function, get results and then log them to the console
-  xml2objectArray(xmlData, weatherData).then(result => {
-      const cleanedResult = result.map(item => {
+    const xml2objectArray = async (xmlData, template) => {
+      const result = await transform(xmlData, template);
+      return result
+    }
 
-        // Removes first all line breaks, then trims the string and finally splits it after three or more whitespaces
-        const sets = item.data.replace(/\n/g, '').trim().split(/\s\s\s+/);
-        
-        // Map the sets array and split each set into three values
-        return sets.map(set => {
+    let weatherDataToDb = [];
 
-          // Split each set into three values
-          const [windDirection, windSpeed, temperature] = set.split(/\s/);
-          return { windDirection, windSpeed, temperature };
+    // Call the function, get results and then log them to the console
+    xml2objectArray(xmlData, weatherDataTemplate).then(result => {
+        result.map(item => {
+
+          // Removes first all line breaks, then trims the string and finally splits it after three or more whitespaces
+          const sets = item.data.replace(/\n/g, '').trim().split(/\s\s\s+/);
+          
+          // Map the sets array and split each set into three values
+          return sets.map(set => {
+
+            // Split each set into three values
+            const [windDirection, windSpeed, temperature] = set.split(" ");
+            return { windDirection, windSpeed, temperature };
+          });
         });
-      });
-      console.log(cleanedResult);
     })
 
-  const locationTimeData = [
-    'wfs:FeatureCollection/wfs:member/omso:GridSeriesObservation/om:result/gmlcov:MultiPointCoverage/gml:domainSet/gmlcov:SimpleMultiPoint',
-    {
-      positions: 'gmlcov:positions'
+    const locationTimeDataTemplate = [
+        'wfs:FeatureCollection/wfs:member/omso:GridSeriesObservation/om:result/gmlcov:MultiPointCoverage/gml:domainSet/gmlcov:SimpleMultiPoint',
+        {
+          data: 'gmlcov:positions'
+        }
+    ];  
+    let locationTimeDataToDb = [];
+    
+    // Call the function, get results and then log them to the console
+    xml2objectArray(xmlData, locationTimeDataTemplate).then(result => {
+      result.map(item => {
+        const sets = item.data.replace(/\n/g, '').trim().split(/\s\s\s+/);
+        return sets.map(set => {
+          
+            // Split each set into three values
+            const [coordinates, time] = set.split("  ");
+            const [latitude, longitude] = coordinates.split(" ");
+            return { latitude, longitude, time };
+          });
+        });
+        let dataToDb = []
+        let objToAdd = new WeatherMicroservices(windDirection, windSpeed, temperature, latitude, longitude, time);
+        dataToDb.push(objToAdd)
+        console.log(dataToDb)
+    })
+    
+  }
+  async fetchTemperatureData() {
+    const response = await fetch('https://opendata.fmi.fi/wfs/fin?service=WFS&version=2.0.0&request=GetFeature&storedquery_id=fmi::observations::weather::timevaluepair&place=Turku&parameters=t2m');
+    const xmlData = await response.text();
+  
+    const weatherDataTemplate = [
+      'wfs:FeatureCollection/wfs:member/omso:GridSeriesObservation/om:result/gmlcov:MultiPointCoverage/gml:rangeSet/gml:DataBlock', 
+      {
+        data: 'gml:doubleOrNilReasonTupleList'
+      }
+    ];
+    const xml2objectArray = async (xmlData, template) => {
+      const result = await transform(xmlData, template);
+      return result
     }
-  ];
 
-  xml2objectArray(xmlData, locationTimeData).then(result => {
-    console.log(result)
-  })
+    let weatherDataToDb = [];
+
+    // Call the function, get results and then log them to the console
+    xml2objectArray(xmlData, weatherDataTemplate).then(result => {
+        result.map(item => {
+
+          // Removes first all line breaks, then trims the string and finally splits it after three or more whitespaces
+          const sets = item.data.replace(/\n/g, '').trim().split(/\s\s\s+/);
+          
+          // Map the sets array and split each set into three values
+          return sets.map(set => {
+
+            // Split each set into three values
+            const [temperature] = set.split(" ");
+            return { temperature };
+          });
+        });
+    })
+  
   }
 }
 
+// let objToAdd = new WeatherMicroservices(latitude, longitude, time);
+//             locationTimeDataToDb.push(objToAdd)
 // Export the Microservices class
-module.exports = Microservices;
+module.exports = PriceMicroservices, WeatherMicroservices;
 
 // Create an instance of the Microservices class
-const microservices = new Microservices(pool);
+const priceMicroservices = new PriceMicroservices(pool);
+const weatherMicroservices = new WeatherMicroservices();
 
 // Call the scheduleLatestDataFetch method
-microservices.scheduleLatestDataFetch();
-microservices.fetchHourlyWeatherData();
+priceMicroservices.scheduleLatestDataFetch();
+weatherMicroservices.fetchHourlyWeatherData();
