@@ -246,6 +246,7 @@ module.exports = PriceMicroservices;
 const priceMicroservices = new PriceMicroservices(pool);
 const weatherMicroservices = new WeatherMicroservices(pool);
 
+
 // Call the scheduleLatestDataFetch method
 priceMicroservices.scheduleLatestDataFetch();
 weatherMicroservices.fetchHourlyTemperature();
