@@ -262,7 +262,7 @@ class WeatherMicroservices {
 }
 
 // Export the Microservices class
-module.exports = PriceMicroservices;
+module.exports = PriceMicroservices, WeatherMicroservices;
 
 // Create an instance of the Microservices class
 const priceMicroservices = new PriceMicroservices(pool);
