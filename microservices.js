@@ -5,13 +5,13 @@
 const Pool = require('pg').Pool
 
 // The node-cron library to schedule API call to porssisahko.net
-const cron = require('node-cron')
+const cron = require('cron')
 
 // Axios for using http or https requests to get data
 const axios = require('axios');
 
 // Camaro for transforming XML to JSON
-const { transform, prettyPrint } = require('camaro');
+const { transform } = require('camaro');
 
 // File system
 const log = require('./logger')
@@ -46,7 +46,7 @@ class PriceMicroservices {
   }
   
   scheduleLatestPriceDataFetch() {
-    cron.schedule(settings.scheduler.timepattern, async () => {
+    const job = new cron.CronJob(settings.scheduler.timepattern, async () => {
       try {
         const timestamp = new Date(); // Get the current timestamp
         const dateStr = timestamp.toLocaleDateString(); // Take datepart of the timestamp
@@ -101,7 +101,11 @@ class PriceMicroservices {
         console.log(this.message);
         log.log(this.message);
       }
-    });
+    },
+    null,
+    true,
+    'Europe/Helsinki'
+    );
   }
 
   // Get the latest, hourly price + timeslot data from the database
@@ -202,7 +206,7 @@ class WeatherMicroservices {
     }
   }
   scheduleHourlyTemperatureFetch() {
-    cron.schedule(settings.scheduler.timepattern, async () => {
+    const job = new cron.CronJob(settings.scheduler.timepattern, async () => {
       this.scheduleTemplate(
         'Temperature',
         'https://opendata.fmi.fi/wfs?request=getFeature&storedquery_id=fmi::observations::weather::timevaluepair&place=Turku&parameters=t2m&',
@@ -213,10 +217,14 @@ class WeatherMicroservices {
         'Turku Artukainen',
         'INSERT INTO public.temperature_observation VALUES ($1, $2, $3) ON CONFLICT DO NOTHING RETURNING *'
       );
-    });
+    },
+    null,
+    true,
+    'Europe/Helsinki'
+    );
   }
   scheduleHourlyWindDirectionFetch() {
-    cron.schedule(settings.scheduler.timepattern, async () => {
+    const job = new cron.CronJob(settings.scheduler.timepattern, async () => {
       this.scheduleTemplate(
         'Wind direction',
         'https://opendata.fmi.fi/wfs/fin?service=WFS&version=2.0.0&request=GetFeature&storedquery_id=fmi::observations::weather::timevaluepair&place=Turku&parameters=WindDirection',
@@ -227,10 +235,14 @@ class WeatherMicroservices {
         'Turku Artukainen',
         'INSERT INTO public.wind_direction_observation VALUES ($1, $2, $3) ON CONFLICT DO NOTHING RETURNING *'
       );
-    });
+    },
+    null,
+    true,
+    'Europe/Helsinki'
+    );
   }
   scheduleHourlyWindSpeedFetch() {
-    cron.schedule(settings.scheduler.timepattern, async () => {
+    const job = new cron.CronJob(settings.scheduler.timepattern, async () => {
       this.scheduleTemplate(
         'Wind speed',
         'https://opendata.fmi.fi/wfs/fin?service=WFS&version=2.0.0&request=GetFeature&storedquery_id=fmi::observations::weather::timevaluepair&place=Turku&parameters=WindSpeedMS',
@@ -241,7 +253,11 @@ class WeatherMicroservices {
         'Turku Artukainen',
         'INSERT INTO public.wind_speed_observation VALUES ($1, $2, $3) ON CONFLICT DO NOTHING RETURNING *'
       );
-    });
+    },
+    null,
+    true,
+    'Europe/Helsinki'
+    );
   }
 }
 
