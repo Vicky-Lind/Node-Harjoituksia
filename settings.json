@@ -9,5 +9,6 @@
   "scheduler": {
     "timepattern": "*/1 10 * * *"
   },
-  "lastFetchedDate": "15/11/2023"
+  "lastFetchedPriceDate": "21/11/2023",
+  "lastFetchedWeatherDate": "1/11/2023"
 }

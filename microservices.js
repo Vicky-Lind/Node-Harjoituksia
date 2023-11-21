@@ -7,6 +7,10 @@ const Pool = require('pg').Pool
 // The node-cron library to schedule API call to porssisahko.net
 const cron = require('node-cron')
 
+// Axios for using http or https requests to get data
+const axios = require('axios');
+
+// Camaro for transforming XML to JSON
 const { transform, prettyPrint } = require('camaro');
 
 // File system
@@ -29,7 +33,7 @@ const pool = new Pool(
 class PriceMicroservices {
   constructor(pool) {
     this.pool = pool;
-    this.lastFetchedDate = settings.lastFetchedDate;
+    this.lastFetchedDate = settings.lastFetchedPriceDate;
     this.message = '';
   }
 
@@ -129,122 +133,121 @@ class PriceMicroservices {
 }
 
 class WeatherMicroservices {
-  constructor(windDirection, windSpeed, temperature, latitude, longitude, time) {
-    this.windDirection = windDirection;
-    this.windSpeed = windSpeed;
-    this.temperature = temperature;
-    this.latitude = latitude;
-    this.longitude = longitude;
-    this.time = time;
+  constructor(pool) {
+    this.pool = pool;
+    this.lastFetchedDate = settings.lastFetchedWeatherDate;
+    this.message = '';
   }
 
-  async fetchHourlyWeatherData1() {
-    const response = await fetch('https://opendata.fmi.fi/wfs?service=WFS&version=2.0.0&request=getFeature&storedquery_id=fmi::observations::weather::hourly::multipointcoverage&place=turku&parameters=WindDirection,WindSpeedMS,Temperature');
-    const xmlData = await response.text();
-  
-    const weatherDataTemplate = [
-      'wfs:FeatureCollection/wfs:member/omso:GridSeriesObservation/om:result/gmlcov:MultiPointCoverage/gml:rangeSet/gml:DataBlock', 
-      {
-        data: 'gml:doubleOrNilReasonTupleList'
-      }
-    ];
-    const xml2objectArray = async (xmlData, template) => {
-      const result = await transform(xmlData, template);
-      return result
-    }
+  async fetchHourlyTemperature() {
+    const WEATHER_ENDPOINT = 'https://opendata.fmi.fi/wfs?request=getFeature&storedquery_id=fmi::observations::weather::timevaluepair&place=Turku&parameters=t2m&';
+    const response = await axios.get(WEATHER_ENDPOINT);
+    const xml = response.data;
+    const template = ['wfs:FeatureCollection/wfs:member/omso:PointTimeSeriesObservation/om:result/wml2:MeasurementTimeseries/wml2:point/wml2:MeasurementTVP', {
+      time: 'wml2:time',
+      value: 'wml2:value'
+    }];
 
-    let weatherDataToDb = [];
+    const result = await transform(xml, template);
 
-    // Call the function, get results and then log them to the console
-    xml2objectArray(xmlData, weatherDataTemplate).then(result => {
-        result.map(item => {
+    // Loop through result data and pick elements
+    result.forEach(async (element) => {
+      const values = [element.time, element.value, 'Turku Artukainen'];
+      
+      const sqlClause = 'INSERT INTO public.temperature_observation VALUES ($1, $2, $3) ON CONFLICT DO NOTHING RETURNING *';
 
-          // Removes first all line breaks, then trims the string and finally splits it after three or more whitespaces
-          const sets = item.data.replace(/\n/g, '').trim().split(/\s\s\s+/);
-          
-          // Map the sets array and split each set into three values
-          return sets.map(set => {
-
-            // Split each set into three values
-            const [windDirection, windSpeed, temperature] = set.split(" ");
-            return { windDirection, windSpeed, temperature };
-          });
-        });
-    })
-
-    const locationTimeDataTemplate = [
-        'wfs:FeatureCollection/wfs:member/omso:GridSeriesObservation/om:result/gmlcov:MultiPointCoverage/gml:domainSet/gmlcov:SimpleMultiPoint',
-        {
-          data: 'gmlcov:positions'
+      // Function for running SQL operations asynchronously
+      const runQuery = async () => {
+        let resultset = await this.pool.query(sqlClause, values);
+        return resultset;
+      };
+      runQuery().then((resultset) => {
+        if (resultset.rows[0] != undefined) {
+          this.message = 'Added a row to database';
+        } else {
+          this.message = 'Skipped an existing row';
         }
-    ];  
-    let locationTimeDataToDb = [];
-    
-    // Call the function, get results and then log them to the console
-    xml2objectArray(xmlData, locationTimeDataTemplate).then(result => {
-      result.map(item => {
-        const sets = item.data.replace(/\n/g, '').trim().split(/\s\s\s+/);
-        return sets.map(set => {
-          
-            // Split each set into three values
-            const [coordinates, time] = set.split("  ");
-            const [latitude, longitude] = coordinates.split(" ");
-            return { latitude, longitude, time };
-          });
-        });
-        let dataToDb = []
-        let objToAdd = new WeatherMicroservices(windDirection, windSpeed, temperature, latitude, longitude, time);
-        dataToDb.push(objToAdd)
-        console.log(dataToDb)
-    })
-    
+        console.log(this.message);
+      })
+    });
   }
-  async fetchTemperatureData() {
-    const response = await fetch('https://opendata.fmi.fi/wfs/fin?service=WFS&version=2.0.0&request=GetFeature&storedquery_id=fmi::observations::weather::timevaluepair&place=Turku&parameters=t2m');
-    const xmlData = await response.text();
-  
-    const weatherDataTemplate = [
-      'wfs:FeatureCollection/wfs:member/omso:GridSeriesObservation/om:result/gmlcov:MultiPointCoverage/gml:rangeSet/gml:DataBlock', 
-      {
-        data: 'gml:doubleOrNilReasonTupleList'
-      }
-    ];
-    const xml2objectArray = async (xmlData, template) => {
-      const result = await transform(xmlData, template);
-      return result
-    }
+  async fetchHourlyWindDirection() {
+    const WEATHER_ENDPOINT = 'https://opendata.fmi.fi/wfs/fin?service=WFS&version=2.0.0&request=GetFeature&storedquery_id=fmi::observations::weather::timevaluepair&place=Turku&parameters=WindDirection';
+    const response = await axios.get(WEATHER_ENDPOINT);
+    const xml = response.data;
+    const template = ['wfs:FeatureCollection/wfs:member/omso:PointTimeSeriesObservation/om:result/wml2:MeasurementTimeseries/wml2:point/wml2:MeasurementTVP', {
+      time: 'wml2:time',
+      value: 'wml2:value'
+    }];
 
-    let weatherDataToDb = [];
+    const result = await transform(xml, template);
 
-    // Call the function, get results and then log them to the console
-    xml2objectArray(xmlData, weatherDataTemplate).then(result => {
-        result.map(item => {
+    // Loop through result data and pick elements
+    result.forEach(async (element) => {
+      const values = [element.time, element.value, 'Turku Artukainen'];
+      
+      const sqlClause = 'INSERT INTO public.wind_direction_observation VALUES ($1, $2, $3) ON CONFLICT DO NOTHING RETURNING *';
 
-          // Removes first all line breaks, then trims the string and finally splits it after three or more whitespaces
-          const sets = item.data.replace(/\n/g, '').trim().split(/\s\s\s+/);
-          
-          // Map the sets array and split each set into three values
-          return sets.map(set => {
+      // Function for running SQL operations asynchronously
+      const runQuery = async () => {
+        let resultset = await this.pool.query(sqlClause, values);
+        return resultset;
+      };
+      runQuery().then((resultset) => {
+        if (resultset.rows[0] != undefined) {
+          this.message = 'Added a row to database';
+        } else {
+          this.message = 'Skipped an existing row';
+        }
+        console.log(this.message);
+      })
+    });
+  }
+  async fetchHourlyWindSpeed() {
+    const WEATHER_ENDPOINT = 'https://opendata.fmi.fi/wfs/fin?service=WFS&version=2.0.0&request=GetFeature&storedquery_id=fmi::observations::weather::timevaluepair&place=Turku&parameters=WindSpeedMS';
+    const response = await axios.get(WEATHER_ENDPOINT);
+    const xml = response.data;
+    const template = ['wfs:FeatureCollection/wfs:member/omso:PointTimeSeriesObservation/om:result/wml2:MeasurementTimeseries/wml2:point/wml2:MeasurementTVP', {
+      time: 'wml2:time',
+      value: 'wml2:value'
+    }];
 
-            // Split each set into three values
-            const [temperature] = set.split(" ");
-            return { temperature };
-          });
-        });
-    })
-  
+    const result = await transform(xml, template);
+
+    // Loop through result data and pick elements
+    result.forEach(async (element) => {
+      const values = [element.time, element.value, 'Turku Artukainen'];
+      
+      const sqlClause = 'INSERT INTO public.wind_speed_observation VALUES ($1, $2, $3) ON CONFLICT DO NOTHING RETURNING *';
+
+      // Function for running SQL operations asynchronously
+      const runQuery = async () => {
+        let resultset = await this.pool.query(sqlClause, values);
+        return resultset;
+      };
+      runQuery().then((resultset) => {
+        if (resultset.rows[0] != undefined) {
+          this.message = 'Added a row to database';
+        } else {
+          this.message = 'Skipped an existing row';
+        }
+        console.log(this.message);
+      })
+    });
   }
 }
 
 // let objToAdd = new WeatherMicroservices(latitude, longitude, time);
 //             locationTimeDataToDb.push(objToAdd)
 // Export the Microservices class
-module.exports = PriceMicroservices, WeatherMicroservices;
+module.exports = PriceMicroservices;
 
 // Create an instance of the Microservices class
 const priceMicroservices = new PriceMicroservices(pool);
-const weatherMicroservices = new WeatherMicroservices();
+const weatherMicroservices = new WeatherMicroservices(pool);
 
 // Call the scheduleLatestDataFetch method
 priceMicroservices.scheduleLatestDataFetch();
-weatherMicroservices.fetchHourlyWeatherData();
+weatherMicroservices.fetchHourlyTemperature();
+weatherMicroservices.fetchHourlyWindDirection();
+weatherMicroservices.fetchHourlyWindSpeed();
