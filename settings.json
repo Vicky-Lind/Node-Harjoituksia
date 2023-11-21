@@ -7,7 +7,7 @@
     "port": 5432
   },
   "scheduler": {
-    "timepattern": "*/1 15 * * *"
+    "timepattern": "*/1 17 * * *"
   },
   "lastFetchedPriceDate": "21/11/2023",
   "lastFetchedWeatherDate": "21/11/2023"

@@ -138,175 +138,109 @@ class WeatherMicroservices {
     this.lastFetchedDate = settings.lastFetchedWeatherDate;
     this.message = '';
   }
+  async scheduleTemplate(whatStr, endpoint, templateParam, placeStr, sqlClauseParam) {
+    try {
+      const what = whatStr.toLowerCase();
+      const WEATHER_ENDPOINT = endpoint;
+      const template = templateParam;
+      const place = placeStr;
+      const sqlClause = sqlClauseParam;
 
+      const timestamp = new Date(); // Get the current timestamp
+      const dateStr = timestamp.toLocaleDateString(); // Take datepart of the timestamp
+      
+      // If the date of last successful fetch is not the current day, fetch data
+      if (this.lastFetchedDate !== dateStr) {
+        // Log the start of the operation
+        this.message = `Started fetching ${what} data`;
+        console.log(this.message);
+        log.log(this.message);
+
+        const response = await axios.get(WEATHER_ENDPOINT);
+        const xml = response.data;
+
+        const result = await transform(xml, template);
+            
+        // Loop through result data and pick elements
+        result.forEach(async (element) => {
+          const values = [element.time, element.value, place];
+
+          // Function for running SQL operations asynchronously
+          const runQuery = async () => {
+            let resultset = await this.pool.query(sqlClause, values);
+            return resultset;
+          };
+          
+          runQuery().then((resultset) => {
+            if (resultset.rows[0] != undefined) {
+              this.message = 'Added a row to database';
+            } else {
+              this.message = 'Skipped an existing row';
+            }
+            console.log(this.message);
+          })
+          
+        })
+        this.lastFetchedWeatherDate = dateStr; // Set fetch date to current date
+
+        // Update lastFetchedDate in settings
+        settings.lastFetchedWeatherDate = this.lastFetchedWeatherDate;
+        
+        // Write updated settings back to JSON file
+        fs.writeFileSync('settings.json', JSON.stringify(settings, null, 2));
+
+        this.message = 'Fetched at ' + this.lastFetchedWeatherDate;
+        console.log(this.message);
+        log.log(this.message);
+      } else {
+        this.message = 'Data was already fetched earlier today';
+        console.log(this.message);
+        log.log(this.message);
+      }
+    } catch (error) {
+      console.error(`Error: ${error}`);
+    }
+  }
   scheduleHourlyTemperatureFetch() {
     cron.schedule(settings.scheduler.timepattern, async () => {
-      try {
-        const timestamp = new Date(); // Get the current timestamp
-        const dateStr = timestamp.toLocaleDateString(); // Take datepart of the timestamp
-        
-        // If the date of last successful fetch is not the current day, fetch data
-        if (this.lastFetchedDate !== dateStr) {
-          // Log the start of the operation
-          this.message = 'Started fetching temperature data';
-          console.log(this.message);
-          log.log(this.message);
-          
-          const WEATHER_ENDPOINT = 'https://opendata.fmi.fi/wfs?request=getFeature&storedquery_id=fmi::observations::weather::timevaluepair&place=Turku&parameters=t2m&';
-          const response = await axios.get(WEATHER_ENDPOINT);
-          const xml = response.data;
-          const template = ['wfs:FeatureCollection/wfs:member/omso:PointTimeSeriesObservation/om:result/wml2:MeasurementTimeseries/wml2:point/wml2:MeasurementTVP', {
-            time: 'wml2:time',
-            value: 'wml2:value'
-          }];
-    
-          const result = await transform(xml, template);
-          
-          // Loop through result data and pick elements
-          result.forEach(async (element) => {
-            const values = [element.time, element.value, 'Turku Artukainen'];
-            
-            const sqlClause = 'INSERT INTO public.temperature_observation VALUES ($1, $2, $3) ON CONFLICT DO NOTHING RETURNING *';
-
-            // Function for running SQL operations asynchronously
-            const runQuery = async () => {
-              let resultset = await this.pool.query(sqlClause, values);
-              return resultset;
-            };
-            runQuery().then((resultset) => {
-              if (resultset.rows[0] != undefined) {
-                this.message = 'Added a row to database';
-              } else {
-                this.message = 'Skipped an existing row';
-              }
-              console.log(this.message);
-            })
-            
-            this.lastFetchedWeatherDate = dateStr; // Set fetch date to current date
-
-            // Update lastFetchedDate in settings
-            settings.lastFetchedWeatherDate = this.lastFetchedWeatherDate;
-            
-            // Write updated settings back to JSON file
-            fs.writeFileSync('settings.json', JSON.stringify(settings, null, 2));
-
-            this.message = 'Fetched at ' + this.lastFetchedWeatherDate;
-            console.log(this.message);
-            log.log(this.message);
-          })
-        } else {
-          this.message = 'Data was already fetched earlier today';
-          console.log(this.message);
-          log.log(this.message);
-        }
-      } catch (error) {
-        console.error(`Error: ${error}`);
-      }
+      this.scheduleTemplate(
+        'Temperature',
+        'https://opendata.fmi.fi/wfs?request=getFeature&storedquery_id=fmi::observations::weather::timevaluepair&place=Turku&parameters=t2m&',
+        ['wfs:FeatureCollection/wfs:member/omso:PointTimeSeriesObservation/om:result/wml2:MeasurementTimeseries/wml2:point/wml2:MeasurementTVP', {
+          time: 'wml2:time',
+          value: 'wml2:value'
+        }],
+        'Turku Artukainen',
+        'INSERT INTO public.temperature_observation VALUES ($1, $2, $3) ON CONFLICT DO NOTHING RETURNING *'
+      );
     });
   }
   scheduleHourlyWindDirectionFetch() {
     cron.schedule(settings.scheduler.timepattern, async () => {
-      try {
-        const timestamp = new Date(); // Get the current timestamp
-        const dateStr = timestamp.toLocaleDateString(); // Take datepart of the timestamp
-        
-        // If the date of last successful fetch is not the current day, fetch data
-        if (this.lastFetchedDate !== dateStr) {
-          // Log the start of the operation
-          this.message = 'Started fetching wind direction data';
-          console.log(this.message);
-          log.log(this.message);
-
-          const WEATHER_ENDPOINT = 'https://opendata.fmi.fi/wfs/fin?service=WFS&version=2.0.0&request=GetFeature&storedquery_id=fmi::observations::weather::timevaluepair&place=Turku&parameters=WindDirection';
-          const response = await axios.get(WEATHER_ENDPOINT);
-          const xml = response.data;
-          const template = ['wfs:FeatureCollection/wfs:member/omso:PointTimeSeriesObservation/om:result/wml2:MeasurementTimeseries/wml2:point/wml2:MeasurementTVP', {
-            time: 'wml2:time',
-            value: 'wml2:value'
-          }];
-
-          const result = await transform(xml, template);
-
-          // Loop through result data and pick elements
-          result.forEach(async (element) => {
-            const values = [element.time, element.value, 'Turku Artukainen'];
-            
-            const sqlClause = 'INSERT INTO public.wind_direction_observation VALUES ($1, $2, $3) ON CONFLICT DO NOTHING RETURNING *';
-
-            // Function for running SQL operations asynchronously
-            const runQuery = async () => {
-              let resultset = await this.pool.query(sqlClause, values);
-              return resultset;
-            };
-            runQuery().then((resultset) => {
-              if (resultset.rows[0] != undefined) {
-                this.message = 'Added a row to database';
-              } else {
-                this.message = 'Skipped an existing row';
-              }
-              console.log(this.message);
-            })
-          });
-        } else {
-          this.message = 'Data was already fetched earlier today';
-          console.log(this.message);
-          log.log(this.message);
-        }
-      } catch (error) {
-        console.error(`Error: ${error}`);
-      }
+      this.scheduleTemplate(
+        'Wind direction',
+        'https://opendata.fmi.fi/wfs/fin?service=WFS&version=2.0.0&request=GetFeature&storedquery_id=fmi::observations::weather::timevaluepair&place=Turku&parameters=WindDirection',
+        ['wfs:FeatureCollection/wfs:member/omso:PointTimeSeriesObservation/om:result/wml2:MeasurementTimeseries/wml2:point/wml2:MeasurementTVP', {
+          time: 'wml2:time',
+          value: 'wml2:value'
+        }],
+        'Turku Artukainen',
+        'INSERT INTO public.wind_direction_observation VALUES ($1, $2, $3) ON CONFLICT DO NOTHING RETURNING *'
+      );
     });
   }
   scheduleHourlyWindSpeedFetch() {
     cron.schedule(settings.scheduler.timepattern, async () => {
-      try {
-        const timestamp = new Date(); // Get the current timestamp
-        const dateStr = timestamp.toLocaleDateString(); // Take datepart of the timestamp
-        
-        // If the date of last successful fetch is not the current day, fetch data
-        if (this.lastFetchedDate !== dateStr) {
-          // Log the start of the operation
-          this.message = 'Started fetching wind speed data';
-          console.log(this.message);
-          log.log(this.message);
-          const WEATHER_ENDPOINT = 'https://opendata.fmi.fi/wfs/fin?service=WFS&version=2.0.0&request=GetFeature&storedquery_id=fmi::observations::weather::timevaluepair&place=Turku&parameters=WindSpeedMS';
-          const response = await axios.get(WEATHER_ENDPOINT);
-          const xml = response.data;
-          const template = ['wfs:FeatureCollection/wfs:member/omso:PointTimeSeriesObservation/om:result/wml2:MeasurementTimeseries/wml2:point/wml2:MeasurementTVP', {
-            time: 'wml2:time',
-            value: 'wml2:value'
-          }];
-
-          const result = await transform(xml, template);
-
-          // Loop through result data and pick elements
-          result.forEach(async (element) => {
-            const values = [element.time, element.value, 'Turku Artukainen'];
-            
-            const sqlClause = 'INSERT INTO public.wind_speed_observation VALUES ($1, $2, $3) ON CONFLICT DO NOTHING RETURNING *';
-
-            // Function for running SQL operations asynchronously
-            const runQuery = async () => {
-              let resultset = await this.pool.query(sqlClause, values);
-              return resultset;
-            };
-            runQuery().then((resultset) => {
-              if (resultset.rows[0] != undefined) {
-                this.message = 'Added a row to database';
-              } else {
-                this.message = 'Skipped an existing row';
-              }
-              console.log(this.message);
-            })
-          });
-        } else {
-          this.message = 'Data was already fetched earlier today';
-          console.log(this.message);
-          log.log(this.message);
-        }
-      } catch (error) {
-        console.error(`Error: ${error}`);
-      }
+      this.scheduleTemplate(
+        'Wind speed',
+        'https://opendata.fmi.fi/wfs/fin?service=WFS&version=2.0.0&request=GetFeature&storedquery_id=fmi::observations::weather::timevaluepair&place=Turku&parameters=WindSpeedMS',
+        ['wfs:FeatureCollection/wfs:member/omso:PointTimeSeriesObservation/om:result/wml2:MeasurementTimeseries/wml2:point/wml2:MeasurementTVP', {
+          time: 'wml2:time',
+          value: 'wml2:value'
+        }],
+        'Turku Artukainen',
+        'INSERT INTO public.wind_speed_observation VALUES ($1, $2, $3) ON CONFLICT DO NOTHING RETURNING *'
+      );
     });
   }
 }
