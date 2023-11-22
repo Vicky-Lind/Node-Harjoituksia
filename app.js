@@ -17,15 +17,13 @@ const fs = require('fs')
 // Read settings from JSON file
 const settings = JSON.parse(fs.readFileSync('settings.json', 'utf8'))
 
-// Import the Microservices class
-const Microservices = require('./microservices');
+const { PriceMicroservices } = require('./microservices');
 
 // Create a new pool for Postgres connections
 const pool = new Pool(settings.database);
 
-// Create an instance of the Microservices class
-const microservices = new Microservices(pool);
-
+// Create an instance of the PriceMicroservices class
+const priceMicroservices = new PriceMicroservices(pool);
 
 // EXPRESS-SOVELLUKSEN ASETUKSET
 // -----------------------------
@@ -64,7 +62,7 @@ app.get('/', (req, res) => {
 })
 
 app.get('/hourly', (req, res) => {
-  microservices.getCurrentPriceTable().then((resultset) => {
+  priceMicroservices.selectXFromY('*', 'hourly_price').then((resultset) => {
     let tableData = resultset.rows
     let hourlyPageData = {
       'tableData': tableData
@@ -77,12 +75,12 @@ app.get('/hourly', (req, res) => {
 // Tuntihintasivun reitti ja dynaaminen data
 app.get('/general', (req, res) => {
 
-  Promise.all([microservices.getCurrentPrice(),
-    microservices.getCurrentPriceTable(),
-    microservices.getEveningPrice(),
-    microservices.getLowestPriceToday(),
-    microservices.getHighestPriceToday(),
-  ])
+  Promise.all([priceMicroservices.selectXFromY('price', 'current_prices'),
+  priceMicroservices.selectXFromY('*', 'hourly_page'),
+  priceMicroservices.selectXFromY('price', 'evening_price'),
+  priceMicroservices.selectXFromY('price, timeslot', 'lowest_price_today'),
+  priceMicroservices.selectXFromY('price, timeslot', 'highest_price_today'),
+  ]) 
     .then(([priceResult,
       tableResult,
       eveningPriceResult,
@@ -124,7 +122,7 @@ app.get('/original', (req, res) => {
       'temperature': 0
   };
 
-  microservices.getCurrentPrice().then((resultset) => {
+  priceMicroservices.selectXFromY('price', 'current_prices').then((resultset) => {
       console.log(resultset.rows[0])
 
       homePageData.price = resultset.rows[0]['price'];
