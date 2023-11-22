@@ -84,7 +84,7 @@ class PriceMicroservices {
           this.lastFetchedDate = dateStr; // Set fetch date to current date
 
           // Update lastFetchedDate in settings
-          settings.lastFetchedDate = this.lastFetchedDate;
+          settings.lastFetchedPriceDate = this.lastFetchedDate;
           
           // Write updated settings back to JSON file
           fs.writeFileSync('settings.json', JSON.stringify(settings, null, 2));
@@ -143,12 +143,12 @@ class WeatherMicroservices {
     this.lastFetchedDate = settings.lastFetchedWeatherDate;
     this.message = '';
   }
-  async scheduleTemplate(whatStr, endpoint, templateParam, placeStr, sqlClauseParam) {
+  async scheduleTemplate(whatStr, endpoint, templateParam, placeObs, sqlClauseParam) {
     try {
       const what = whatStr.toLowerCase();
       const WEATHER_ENDPOINT = endpoint;
       const template = templateParam;
-      const place = placeStr;
+      const place = placeObs;
       const sqlClause = sqlClauseParam;
 
       const timestamp = new Date(); // Get the current timestamp
@@ -206,16 +206,16 @@ class WeatherMicroservices {
       console.error(`Error: ${error}`);
     }
   }
-  scheduleHourlyTemperatureFetch() {
+  scheduleHourlyTemperatureFetch(placeUrl, placeObs) {
     const job = new cron.CronJob(settings.scheduler.timepattern, async () => {
       this.scheduleTemplate(
         'Temperature',
-        'https://opendata.fmi.fi/wfs?request=getFeature&storedquery_id=fmi::observations::weather::timevaluepair&place=Turku&parameters=t2m&',
+        `https://opendata.fmi.fi/wfs?request=getFeature&storedquery_id=fmi::observations::weather::timevaluepair&place=${placeUrl}&parameters=t2m&`,
         ['wfs:FeatureCollection/wfs:member/omso:PointTimeSeriesObservation/om:result/wml2:MeasurementTimeseries/wml2:point/wml2:MeasurementTVP', {
           time: 'wml2:time',
           value: 'wml2:value'
         }],
-        'Turku Artukainen',
+        `${placeObs}`,
         'INSERT INTO public.temperature_observation VALUES ($1, $2, $3) ON CONFLICT DO NOTHING RETURNING *'
       );
     },
@@ -224,16 +224,16 @@ class WeatherMicroservices {
     'Europe/Helsinki'
     );
   }
-  scheduleHourlyWindDirectionFetch() {
+  scheduleHourlyWindDirectionFetch(placeUrl, placeObs) {
     const job = new cron.CronJob(settings.scheduler.timepattern, async () => {
       this.scheduleTemplate(
         'Wind direction',
-        'https://opendata.fmi.fi/wfs/fin?service=WFS&version=2.0.0&request=GetFeature&storedquery_id=fmi::observations::weather::timevaluepair&place=Turku&parameters=WindDirection',
+        `https://opendata.fmi.fi/wfs/fin?service=WFS&version=2.0.0&request=GetFeature&storedquery_id=fmi::observations::weather::timevaluepair&place=${placeUrl}&parameters=WindDirection`,
         ['wfs:FeatureCollection/wfs:member/omso:PointTimeSeriesObservation/om:result/wml2:MeasurementTimeseries/wml2:point/wml2:MeasurementTVP', {
           time: 'wml2:time',
           value: 'wml2:value'
         }],
-        'Turku Artukainen',
+        `${placeObs}`,
         'INSERT INTO public.wind_direction_observation VALUES ($1, $2, $3) ON CONFLICT DO NOTHING RETURNING *'
       );
     },
@@ -242,16 +242,16 @@ class WeatherMicroservices {
     'Europe/Helsinki'
     );
   }
-  scheduleHourlyWindSpeedFetch() {
+  scheduleHourlyWindSpeedFetch(placeUrl, placeObs) {
     const job = new cron.CronJob(settings.scheduler.timepattern, async () => {
       this.scheduleTemplate(
         'Wind speed',
-        'https://opendata.fmi.fi/wfs/fin?service=WFS&version=2.0.0&request=GetFeature&storedquery_id=fmi::observations::weather::timevaluepair&place=Turku&parameters=WindSpeedMS',
+        `https://opendata.fmi.fi/wfs/fin?service=WFS&version=2.0.0&request=GetFeature&storedquery_id=fmi::observations::weather::timevaluepair&place=${placeUrl}&parameters=WindSpeedMS`,
         ['wfs:FeatureCollection/wfs:member/omso:PointTimeSeriesObservation/om:result/wml2:MeasurementTimeseries/wml2:point/wml2:MeasurementTVP', {
           time: 'wml2:time',
           value: 'wml2:value'
         }],
-        'Turku Artukainen',
+        `${placeObs}`,
         'INSERT INTO public.wind_speed_observation VALUES ($1, $2, $3) ON CONFLICT DO NOTHING RETURNING *'
       );
     },
@@ -270,6 +270,6 @@ const priceMicroservices = new PriceMicroservices(pool);
 const weatherMicroservices = new WeatherMicroservices(pool);
 
 priceMicroservices.scheduleLatestPriceDataFetch();
-weatherMicroservices.scheduleHourlyTemperatureFetch();
-weatherMicroservices.scheduleHourlyWindDirectionFetch();
-weatherMicroservices.scheduleHourlyWindSpeedFetch();
+weatherMicroservices.scheduleHourlyTemperatureFetch('Turku', 'Turku Artukainen');
+weatherMicroservices.scheduleHourlyWindDirectionFetch('Turku', 'Turku Artukainen');
+weatherMicroservices.scheduleHourlyWindSpeedFetch('Turku', 'Turku Artukainen');
