@@ -67,7 +67,6 @@ app.get('/hourly', (req, res) => {
     let hourlyPageData = {
       'tableData': tableData
     }
-    console.log(hourlyPageData)
     res.render('hourly', hourlyPageData)
   })
 })
@@ -108,7 +107,6 @@ app.get('/general', (req, res) => {
 
         'tableData': tableData
       };
-      console.log(data);
       res.render('generalv2', data);
     })
 })
@@ -123,8 +121,6 @@ app.get('/original', (req, res) => {
   };
 
   priceMicroservices.selectXFromY('price', 'current_prices').then((resultset) => {
-      console.log(resultset.rows[0])
-
       homePageData.price = resultset.rows[0]['price'];
       
       // Render index.handlebars and send dynamic data to the page
