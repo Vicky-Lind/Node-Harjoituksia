@@ -11,7 +11,7 @@
 <body>
     
     <!-- main container -->
-    <div class="bg-white flex w-[100vw] h-[100vh]">
+    <div class="bg-white flex w-full h-screen">
 
         <!-- menu -->
         <div class="w-[120px] h-full p-6">
@@ -75,42 +75,136 @@
                 <div class="w-1/2 h-full"></div>
             </div> --}}
 
+            <div class="w-full flex justify-end">
+                <h1 onload=showTime() id="clock" class="text-[#19283F] text-bold text-xl">
+                </h1>
+            </div>
+
             <!-- middle content -->
-            <div class="w-full h-[45%] grid grid-cols-2 grid-rows-1 gap-x-5 mt-16 pb-3">
+            <div class="w-full h-[45%] grid grid-cols-2 grid-rows-1 gap-x-7 mt-8 pb-6">
 
                 <!-- left content -->
-                <div class="bg-[#B9E7E7] bg-cover bg-center bg-no-repeat w-full h-full grid grid-cols-1 grid-rows-3 rounded-[25px] p-8">
+                <a href="/spot-prices" class="hover:drop-shadow-md hover:-translate-y-1 hover:scale-100 transition ease-in-out duration-300">
+                    <div class="bg-[url(/images/windturbine-bg.png)] bg-cover bg-center bg-no-repeat w-full h-full grid grid-cols-1 grid-rows-3 gap-y-4 rounded-[25px] p-8">
 
-                    <!-- title -->
-                    <div class="grid grid-cols-2 grid-rows-1">
-                        <div class="col-span-1 flex">
-                            <img src="/icons/electricity-orange.png" alt="logo" class="w-[40px] h-[40px] bg-white rounded-full p-1">
-                            <div class="ml-4">
-                                <h1 class="text-xl font-semibold text-black">
-                                    Tuntihinnat <span class="font-normal text-lg">
-                                        <br>
-                                        (snt/kWh)</span>
+                        <!-- title -->
+                        <div class="grid grid-cols-2 grid-rows-1">
+                            <div class="col-span-1 flex">
+                                <img src="/icons/electricity-orange.png" alt="logo" class="w-[40px] h-[40px] bg-white rounded-full p-1">
+                                <div class="ml-4">
+                                    <h1 class="text-xl font-bold text-[#19283F]">
+                                        Hinta nyt
+                                        <span class="font-semibold text-lg text-[#19283F]">
+                                            <br>
+                                            (snt/kWh)
+                                        </span>
+                                    </h1>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- price now -->
+                        <div class="bg-[#19283F] p-2 rounded-3xl flex items-center justify-center h-full w-[45%]">
+                            <div class="flex items-center justify-center">
+                                <h1 class="text-5xl text-right text-white font-semibold">
+                                    {{priceNow}}
                                 </h1>
                             </div>
                         </div>
+
+                        <!-- some kind of progress bar to show if price is high or low -->
+                        <div class="bg-white rounded-3xl flex p-3 grid grid-cols-1 grid-rows-2">
+
+                            <div class="w-full flex justify-between">
+                                <h1 class="text-[#19283F] text-bold text-md">
+                                    Matala
+                                </h1>
+                                <h1 class="text-[#19283F] text-bold text-md text-center">
+                                    Kohtuullinen
+                                </h1>
+                                <h1 class="text-[#19283F] text-bold text-md">
+                                    Korkea
+                                </h1>
+                            </div>
+
+                            <!-- progress bar -->
+                            <div>
+                                <div class="w-full bg-[#D9DDE6] rounded-full overflow-hidden">
+
+                                    <div id="progress" class="h-[20px] w-0 transition-[width] duration-500" style="background: repeating-linear-gradient(-45deg, #F57F28, #F57F28 10px, #fbaa6f 10px, #fbaa6f 20px);">
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-
-                    <!-- price now -->
-                    <div>
-
-                    </div>
-
-                    <!-- some kind of progress bar to show if price is high or low -->
-                    <div></div>
-                </div>
+                </a>
 
                 <!-- right content -->
-                <div class="bg-[#50A8E5] bg-cover bg-center bg-no-repeat w-full h-full flex rounded-[25px]">
-                </div>
+                <a href="/weather" class="hover:drop-shadow-md hover:-translate-y-1 hover:scale-100 transition ease-in-out duration-300">
+                    <div class="bg-[url(/images/kite3.png)] bg-cover bg-top bg-no-repeat w-full h-full flex grid grid-cols-1 grid-rows-3 gap-y-4 rounded-[25px] p-8">
+
+                        
+                        <!-- title -->
+                        <div class="grid grid-cols-2 grid-rows-1">
+                            <div class="col-span-1 flex">
+                                <img src="/icons/cloudy-orange.png" alt="logo" class="w-[40px] h-[40px] bg-white rounded-full p-1">
+                                <div class="ml-4">
+                                    <h1 class="text-xl font-semibold text-white">
+                                        Nykyinen sää
+                                        <span class="font-normal text-lg text-white">
+                                            <br>
+                                            (°C)
+                                        </span>
+                                    </h1>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- temperature now -->
+                        <div class="bg-white p-2 rounded-3xl flex items-center justify-center h-full w-[45%]">
+                            <div class="flex items-center justify-center">
+                                <h1 class="text-5xl text-right text-[#19283F] font-semibold">
+                                    -1.5°C
+                                </h1>
+                            </div>
+                        </div>
+
+                        <!-- quick view boxes -->
+                        <div class="flex grid grid-cols-3 grid-rows-1 gap-x-4 w-full h-full">
+
+                            <div class="bg-[#19283F] rounded-3xl w-full h-full flex justify-top items-center flex-col text-white">
+                                <h1 class="text-sm p-1">
+                                    Tuulen nopeus
+                                </h1>
+                                <h1 class="text-2xl text-bold">
+                                    2 m/s
+                                </h1>
+                            </div>
+                            <div class="bg-[#CCE16A] rounded-3xl w-full h-full flex justify-top items-center flex-col text-black">
+                                <h1 class="text-sm p-1">
+                                    Sade
+                                </h1>
+                                <h1 class="text-2xl text-bold">
+                                    2.2 mm
+                                </h1>
+                            </div>
+                            <div class="bg-white rounded-3xl w-full h-full flex justify-top items-center flex-col text-black">
+                                <h1 class="text-sm p-1">
+                                    Pilvisyys
+                                </h1>
+                                <h1 class="text-xl text-bold">
+                                    Pilvistä (8/8)
+                                </h1>
+                            </div>
+                            
+                        </div>
+                    </div>
+                </a>
             </div>
 
             <!-- bottom content -->
-            <div class="w-full h-[45%] grid grid-cols-3 grid-rows-1 gap-x-5 pt-3">
+            <div class="w-full h-[45%] grid grid-cols-3 grid-rows-1 gap-x-7 pt-6">
                 
                 <!-- left chart -->
                 <div class="col-span-2 bg-white w-full h-full rounded-[25px]">
@@ -168,7 +262,7 @@
         </div>
 
         <!-- side content -->
-        <div class="bg-[#F7F7F7] w-1/4 h-full p-12">
+        <div class="bg-[#F7F7F7] w-1/4 h-full p-12 overflow-hidden">
             
             <!-- title -->
             <div class="w-full h-[10%] grid grid-cols-3 grid-rows-1">
@@ -182,7 +276,7 @@
                 </div>
                 <div class="">
                     <h1 class="text-5xl text-[#F57F28] font-semibold self-center">
-                        22°
+                        22°C
                     </h1>
                 </div>
             </div>
@@ -346,9 +440,40 @@
             if (url.indexOf('general') > -1) {
                 var general_button = document.getElementById('general-button')
                 general_button.classList.add('bg-[#F57F28]');
-                general_button.classList.add('drop-shadow-[0px_2px_5px_#F57F28]');
+                general_button.classList.add('drop-shadow-lg');
             }
         }
         document.querySelector('.my-nav').remove();
+        
+        // progress-bar
+        const currentPrice = {{priceNow}};
+        const maxPrice = 15;
+        const progress = document.getElementById('progress');
+
+        // Calculate the percentage of the current price relative to the max price
+        const percentage = (currentPrice / maxPrice) * 100;
+
+        // Update the width of the progress bar
+        progress.style.width = `${percentage}%`;
+
+        // clock
+        function showTime() {
+        // Create a date object containing curent timestamp
+        var date = new Date();
+        // Separate hours, minutes and seconds
+        var h = date.getHours();
+        var m = date.getMinutes();
+        var s = date.getSeconds();
+        // Add leading zeros
+        h = (h < 10) ? "0" + h : h;
+        m = (m < 10) ? "0" + m : m;
+        s = (s < 10) ? "0" + s : s;
+        // Build a string for time and put it into h2 named clock
+        var time = h + "." + m + "." + s;
+        document.getElementById("clock").innerHTML = time
+        // After 1000 ms (1 s) call showTima again
+        setTimeout(showTime, 1000);
+    }
+    showTime();
     </script>
 </body>
