@@ -47,7 +47,7 @@ class PriceMicroservices {
   }
   
   scheduleLatestPriceDataFetch() {
-    const job = new cron.CronJob(settings.scheduler.timepattern, async () => {
+    const job = new cron.CronJob(settings.scheduler.priceTimepattern, async () => {
       try {
         const timestamp = new Date(); // Get the current timestamp
         const dateStr = timestamp.toLocaleDateString(); // Take datepart of the timestamp
@@ -120,7 +120,7 @@ class WeatherMicroservices {
     this.message = '';
   }
   async scheduleTemplateObservation(whatStr, placeUrl, paramCode, placeObs) {
-    const job = new cron.CronJob(settings.scheduler.timepattern, async () => {
+    const job = new cron.CronJob(settings.scheduler.weatherTimepattern, async () => {
       try {
         const what = whatStr.toLowerCase();
         const DBTable = what.replace(" ", "_") + '_observation';
@@ -169,7 +169,7 @@ class WeatherMicroservices {
     }, null, true, 'Europe/Helsinki');
   }
   async scheduleTemplateForecast(whatStr, placeUrl, paramCode, placeObs){
-    const job = new cron.CronJob(settings.scheduler.timepattern, async () => {
+    const job = new cron.CronJob(settings.scheduler.weatherTimepattern, async () => {
       try {
         const what = whatStr.toLowerCase();
         const DBTable = what.replace(" ", "_") + '_forecast';

@@ -88,6 +88,7 @@ app.get('/general', (req, res) => {
     ]) => {
       
       let priceNow = priceResult.rows[0]['price'];
+      
       let priceEvening = eveningPriceResult.rows[0]['price'];
       let lowestPriceToday = lowestPriceTodayResult.rows[0]['price'];
       let lowestPriceTodayTimeslot = lowestPriceTodayResult.rows[0]['timeslot'];
