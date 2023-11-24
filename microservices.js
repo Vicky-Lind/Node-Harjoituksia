@@ -216,8 +216,11 @@ class WeatherMicroservices {
       }
     }, null, true, 'Europe/Helsinki');
   }
+  async selectXFromY(selectItem, fromItem) {
+    let resultset = await pool.query(`SELECT ${selectItem} FROM public.${fromItem}`);
+    return resultset;
+  }
 }
-
 
 // Create an instance of the Microservices class
 const priceMicroservices = new PriceMicroservices(pool);

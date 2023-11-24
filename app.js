@@ -17,13 +17,15 @@ const fs = require('fs')
 // Read settings from JSON file
 const settings = JSON.parse(fs.readFileSync('settings.json', 'utf8'))
 
-const { PriceMicroservices } = require('./microservices');
+const { PriceMicroservices, WeatherMicroservices } = require('./microservices');
 
 // Create a new pool for Postgres connections
 const pool = new Pool(settings.database);
 
 // Create an instance of the PriceMicroservices class
 const priceMicroservices = new PriceMicroservices(pool);
+
+const weatherMicroservices = new WeatherMicroservices();
 
 // EXPRESS-SOVELLUKSEN ASETUKSET
 // -----------------------------
@@ -79,22 +81,31 @@ app.get('/general', (req, res) => {
   priceMicroservices.selectXFromY('price', 'evening_price'),
   priceMicroservices.selectXFromY('price, timeslot', 'lowest_price_today'),
   priceMicroservices.selectXFromY('price, timeslot', 'highest_price_today'),
+
+  weatherMicroservices.selectXFromY('temperature, wind_speed', 'current_weather_forecast'),
   ]) 
     .then(([priceResult,
       tableResult,
       eveningPriceResult,
       lowestPriceTodayResult,
       highestPriceTodayResult,
+      weatherResult,
     ]) => {
       
       let priceNow = priceResult.rows[0]['price'];
-      
+
       let priceEvening = eveningPriceResult.rows[0]['price'];
+
       let lowestPriceToday = lowestPriceTodayResult.rows[0]['price'];
       let lowestPriceTodayTimeslot = lowestPriceTodayResult.rows[0]['timeslot'];
+
       let highestPriceToday = highestPriceTodayResult.rows[0]['price'];
       let highestPriceTodayTimeslot = highestPriceTodayResult.rows[0]['timeslot'];
+
       let tableData = tableResult.rows;
+
+      let temperature = weatherResult.rows[0]['temperature'];
+      let windSpeed = weatherResult.rows[0]['wind_speed'];
       
       let data = {
         'priceNow': priceNow,
@@ -106,7 +117,10 @@ app.get('/general', (req, res) => {
         'highestPriceToday': highestPriceToday,
         'highestPriceTodayTimeslot': highestPriceTodayTimeslot,
 
-        'tableData': tableData
+        'tableData': tableData,
+
+        'temperature': temperature,
+        'windSpeed': windSpeed,
       };
       res.render('generalv2', data);
     })
