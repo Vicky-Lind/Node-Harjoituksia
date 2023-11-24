@@ -131,6 +131,11 @@
                 main_menu.classList.remove("rounded-b-3xl");
             }
         });
+
+        // if the current url is general, then remove the navbar
+        if (window.location.href.indexOf("general") > -1) {
+            document.querySelector(".my-nav").remove();
+        }
     </script>
     </nav>
     {{{body}}}

@@ -13,8 +13,10 @@
     <!-- main container -->
     <div class="bg-white flex w-full h-screen">
 
-        <!-- menu -->
-        <div class="w-[120px] h-full p-6">
+        <!-- placeholder -->
+        <div class="w-[120px] h-full p-6 lg:block hidden"></div>
+        <!-- lg menu -->
+        <div class="w-[120px] h-full p-6 lg:block hidden fixed">
             
             <!-- logo -->
             <div class="my-4 w-[60px] h-[60px] flex justify-center items-center m-2">
@@ -48,40 +50,59 @@
         </div>
 
         <!-- main content -->
-        <div class="w-3/4 h-full px-12 py-12">
+        <div class="2xl:w-3/4 w-full h-full px-1 sm:px-12 lg:py-8 md:py-4">
 
             <!-- top content -->
-            {{!-- <div class="w-full h-[11%] mb-7 flex">
+            <div class="w-full flex justify-between">
+                
+                <!-- md menu -->
+                <div class="lg:hidden block ">
+                    <button class="menu-button">
+                        <!-- hamburger icon -->
+                        <img src="icons/menu-squared-orange.png" alt="menu" class="w-[50px] h-[50px]">
+                    </button>
+                </div>
+                <!-- md menu -->
+                <div class="bg-[#F7F7F7] fixed lg:hidden hidden menu z-50 w-[200px] h-[200px] text-center rounded-3xl shadow-md top-16 grid grid-cols-1 grid-rows-6">
 
-                <!-- left content -->
-                <div class="w-1/2 h-full flex">
-                    <!-- user icon -->
-                    <div class="w-[60px] h-[50px] self-center">
-                        <img src="icons/lowest.png" alt="user" class="w-full h-full rounded-full">
-                    </div>
-
-                    <!-- user welcome -->
-                    <div class="w-full h-full pl-3 content-center">
-                        <p class="text-3xl font-normal text-gray-800 self-center">
-                            Hello,
-                        </p>
-                        <p class="text-4xl font-semibold pt-1 pl-1">
-                            User
-                        </p>
-                    </div>
+                    <a href="/" class="hover:bg-[#F57F28] hover:text-white text-[#19283F] text-lg font-semibold rounded-3xl">
+                        <h1>
+                            Etusivu
+                        </h1>
+                    </a>
+                    <a href="/general" class="hover:bg-[#F57F28] hover:text-white text-[#19283F] text-lg font-semibold rounded-3xl">
+                        <h1>
+                            General
+                        </h1>
+                    </a>
+                    <a href="/spot-prices" class="hover:bg-[#F57F28] hover:text-white text-[#19283F] text-lg font-semibold rounded-3xl">
+                        <h1>
+                            Spot Prices
+                        </h1>
+                    </a>
+                    <a href="/weather" class="hover:bg-[#F57F28] hover:text-white text-[#19283F] text-lg font-semibold rounded-3xl">
+                        <h1>
+                            Weather
+                        </h1>
+                    </a>
+                    <a href="/settings" class="hover:bg-[#F57F28] hover:text-white text-[#19283F] text-lg font-semibold rounded-3xl">
+                        <h1>
+                            Settings
+                        </h1>
+                    </a>
+                    <a href="/theme" class="hover:bg-[#F57F28] hover:text-white text-[#19283F] text-lg font-semibold rounded-3xl">
+                        <h1>
+                            Theme
+                        </h1>
+                    </a>
                 </div>
 
-                <!-- right content -->
-                <div class="w-1/2 h-full"></div>
-            </div> --}}
-
-            <div class="w-full flex justify-end">
-                <h1 onload=showTime() id="clock" class="text-[#19283F] text-bold text-xl">
+                <h1 onload=showTime() id="clock" class="text-[#19283F] text-bold text-xl flex items-center justify-center">
                 </h1>
             </div>
 
             <!-- middle content -->
-            <div class="w-full h-[45%] grid grid-cols-2 grid-rows-1 gap-x-7 mt-8 pb-6">
+            <div class="w-full h-[324] xl:h-[45%] grid xl:grid-cols-2 grid-cols-1 xl:grid-rows-1 grid-rows-2 xl:gap-x-7 xl:gap-y-none gap-y-6 mt-8 pb-6">
 
                 <!-- left content -->
                 <a href="/spot-prices" class="hover:-translate-y-1 hover:scale-100 transition ease-in-out duration-300">
@@ -177,7 +198,7 @@
                                 <h1 class="text-sm p-1">
                                     Tuulen nopeus
                                 </h1>
-                                <h1 class="text-2xl text-bold">
+                                <h1 class="sm:text-2xl text-xl text-bold">
                                     2 m/s
                                 </h1>
                             </div>
@@ -185,7 +206,7 @@
                                 <h1 class="text-sm p-1">
                                     Sade
                                 </h1>
-                                <h1 class="text-2xl text-bold">
+                                <h1 class="sm:text-2xl text-xl text-bold">
                                     2.2 mm
                                 </h1>
                             </div>
@@ -193,7 +214,7 @@
                                 <h1 class="text-sm p-1">
                                     Pilvisyys
                                 </h1>
-                                <h1 class="text-xl text-bold">
+                                <h1 class="sm:text-2xl text-lg text-bold">
                                     Pilvistä (8/8)
                                 </h1>
                             </div>
@@ -204,7 +225,7 @@
             </div>
 
             <!-- bottom content -->
-            <div class="w-full h-[45%] grid grid-cols-3 grid-rows-1 gap-x-7 pt-6">
+            <div class="w-full h-[324] xl:h-[45%] grid xl:grid-cols-3 grid-cols-1 xl:grid-rows-1 grid-rows-2 xl:gap-x-7 xl:gap-y-none gap-y-6 xl:pt-6 xl:pb-none pb-6">
                 
                 <!-- left chart -->
                 <div class="col-span-2 bg-white w-full h-full rounded-[25px]">
@@ -324,8 +345,10 @@
             </div>
         </div>
 
+        <!-- placeholder -->
+        {{!-- <div class="bg-[#F7F7F7] w-1/4 h-full p-12 overflow-hidden lg:block hidden"></div> --}}
         <!-- side content -->
-        <div class="bg-[#F7F7F7] w-1/4 h-full p-12 overflow-hidden">
+        <div class="bg-[#F7F7F7] w-1/4 h-full p-12 overflow-hidden 2xl:block hidden">
             
             <!-- title -->
             <div class="w-full h-[10%] grid grid-cols-3 grid-rows-1">
@@ -498,15 +521,28 @@
             </div>
         </div>
     <script>
-        window.onload = function() {
-            var url = window.location.href;
-            if (url.indexOf('general') > -1) {
-                var general_button = document.getElementById('general-button')
-                general_button.classList.add('bg-[#F57F28]');
-                general_button.classList.add('drop-shadow-lg');
-            }
+        
+
+    // ------------------------------
+    // Smaller menu
+    
+
+    // ------------------------------
+    window.onload = function() {
+        var url = window.location.href;
+        if (url.indexOf('general') > -1) {
+            var general_button = document.getElementById('general-button')
+            general_button.classList.add('bg-[#F57F28]');
+            general_button.classList.add('drop-shadow-lg');
         }
-        document.querySelector('.my-nav').remove();
+        
+        const btn = document.querySelector(".menu-button");
+        const menu = document.querySelector(".menu");
+
+        btn.addEventListener("click", () => {
+            menu.classList.toggle("hidden");
+        });
+
         
         // ------------------------------
         // progress-bar
@@ -515,8 +551,8 @@
         const progress = document.getElementById('progress');
 
         // Calculate the percentage of the current price relative to the max price
-        const percentage = (currentPrice / maxPrice) * 100;
-        if (percentage <= 0) {
+        let percentage = (currentPrice / maxPrice) * 100;
+        if (percentage <= 1) {
             percentage = 1;
         }
 
@@ -543,5 +579,6 @@
         setTimeout(showTime, 1000);
     }
     showTime();
+    }
     </script>
 </body>
