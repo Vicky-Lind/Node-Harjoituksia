@@ -17,31 +17,31 @@
         <div class="w-[120px] h-full p-6">
             
             <!-- logo -->
-            <div class="py-4">
-                <a href="/" class="py-4 hover:drop-shadow-lg transition duration-300">
-                    <img src="icons/house.png" alt="logo" class="w-full h-full">
+            <div class="my-4 w-[60px] h-[60px] flex justify-center items-center m-2">
+                <a href="/" class="hover:drop-shadow-lg transition duration-300 w-[60px] h-[60px] items-center justify-center flex">
+                    <img src="icons/house.png" alt="logo" class="w-[60px] h-[60px]">
                 </a>
             </div>
 
             <!-- menu items -->
-            <div class="grid grid-cols-1 grid-rows-3 gap-y-10 mx-2 mt-12">
-                <a href="/general" id="general-button" class="rounded-2xl hover:drop-shadow-lg transition duration-300">
+            <div class="grid grid-cols-1 grid-rows-3 gap-y-10 mt-12 place-items-center">
+                <a href="/general" id="general-button" class="rounded-2xl hover:drop-shadow-lg transition duration-300 w-[50px] h-[50px]">
                     <img src="icons/chart-active.png" alt="logo" class="w-[50px] h-[50px] p-2">
                 </a>
-                <a href="/spot-prices" id="spot-prices-button" class="rounded-2xl hover:drop-shadow-lg transition duration-300">
+                <a href="/spot-prices" id="spot-prices-button" class="rounded-2xl hover:drop-shadow-lg transition duration-300 w-[50px] h-[50px]">
                     <img src="icons/electricity.png" alt="logo" class="w-[50px] h-[50px] p-2">
                 </a>
-                <a href="/weather" id="weather-button" class="rounded-2xl hover:drop-shadow-lg transition duration-300">
+                <a href="/weather" id="weather-button" class="rounded-2xl hover:drop-shadow-lg transition duration-300 w-[50px] h-[50px]">
                     <img src="icons/cloudy.png" alt="logo" class="w-[50px] h-[50px] p-2">
                 </a>
             </div>
 
             <!-- second menu items -->
-            <div class="grid grid-cols-1 grid-rows-2 gap-y-10 mx-2 mt-72">
-                <a href="/settings" id="settings-button" class="rounded-2xl hover:drop-shadow-lg transition duration-300">
-                    <img src="icons/settings.png" alt="logo" class="w-full h-full p-2">
+            <div class="grid grid-cols-1 grid-rows-2 gap-y-10 mt-72 place-items-center">
+                <a href="/settings" id="settings-button" class="rounded-2xl hover:drop-shadow-lg transition duration-300 p-2 w-[50px] h-[50px]">
+                    <img src="icons/settings.png" alt="logo" class="w-full h-full">
                 </a>
-                <a href="/theme" id="theme-button" class="rounded-2xl hover:drop-shadow-lg transition duration-300">
+                <a href="/theme" id="theme-button" class="rounded-2xl hover:drop-shadow-lg transition duration-300 w-[50px] h-[50px]">
                     <img src="icons/theme.png" alt="logo" class="w-full h-full p-2">
                 </a>
             </div>
@@ -84,7 +84,7 @@
             <div class="w-full h-[45%] grid grid-cols-2 grid-rows-1 gap-x-7 mt-8 pb-6">
 
                 <!-- left content -->
-                <a href="/spot-prices" class="hover:drop-shadow-md hover:-translate-y-1 hover:scale-100 transition ease-in-out duration-300">
+                <a href="/spot-prices" class="hover:-translate-y-1 hover:scale-100 transition ease-in-out duration-300">
                     <div class="bg-[url(/images/windturbine-bg.png)] bg-cover bg-center bg-no-repeat w-full h-full grid grid-cols-1 grid-rows-3 gap-y-4 rounded-[25px] p-8">
 
                         <!-- title -->
@@ -141,7 +141,7 @@
                 </a>
 
                 <!-- right content -->
-                <a href="/weather" class="hover:drop-shadow-md hover:-translate-y-1 hover:scale-100 transition ease-in-out duration-300">
+                <a href="/weather" class="hover:-translate-y-1 hover:scale-100 transition ease-in-out duration-300">
                     <div class="bg-[url(/images/kite3.png)] bg-cover bg-top bg-no-repeat w-full h-full flex grid grid-cols-1 grid-rows-3 gap-y-4 rounded-[25px] p-8">
 
                         
@@ -221,7 +221,7 @@
                         {{#each tableData}}
                             xValues.push({{hour}} + ":00");
                             yValues.push({{price}});
-                            barColors.push("#F57F28"); // You can set the bar color dynamically if needed
+                            barColors.push("#F57F28");
                         {{/each}}
 
                         new Chart("hourlyChartChartJS", {
@@ -256,8 +256,71 @@
                 </div>
 
                 <!-- right content -->
-                <div class="bg-[#DFF296] bg-cover bg-center bg-no-repeat w-full h-full flex rounded-[25px]">
-            </div>
+                <a href="/spot-prices" class="hover:-translate-y-1 hover:scale-100 transition ease-in-out duration-300">
+                    <div class="bg-[#F8EDE2] bg-cover bg-center bg-no-repeat w-full h-full flex rounded-[25px] grid grid-cols-1 grid-rows-3 p-4 gap-y-4">
+
+                        <div class="grid grid-cols-8 grid-rows-1 w-full h-full bg-[#19283F] rounded-3xl ">
+                            <div class="col-span-2 justify-self-center flex items-center">
+                                <img src="/icons/night-orange.png" class="self-center w-[40px] h-[40px] bg-white rounded-full p-1" alt="">
+                            </div>
+
+                            <div class="grid grid-rows-2 grid-cols-1 col-span-3">
+                                <h1 class="text-md font-semibold text-white flex items-end">
+                                    Illalla
+                                </h1>
+                                <p class="text-xl font-bold text-white flex items-top">
+                                    19:00
+                                </p>
+                            </div>
+
+                            <div class="col-span-3 flex justify-center">
+                                <h1 class="text-2xl font-bold text-[#F57F28] flex items-center self-center">
+                                    {{priceEvening}}
+                                </h1>
+                            </div>  
+                        </div>
+                        <div class="grid grid-cols-8 grid-rows-1 w-full h-full bg-[#CCE16A] rounded-3xl">
+                            <div class="col-span-2 justify-self-center flex items-center">
+                                <img src="/icons/up-orange.png" class="self-center w-[40px] h-[40px] bg-white rounded-full p-1" alt="">
+                            </div>
+
+                            <div class="grid grid-rows-2 grid-cols-1 col-span-3">
+                                <h1 class="text-sm font-semibold text-[#19283F] flex items-end">
+                                    Korkein hinta tänään
+                                </h1>
+                                <p class="text-xl font-bold text-[#19283F] flex items-top">
+                                    {{formatDate highestPriceTodayTimeslot}}
+                                </p>
+                            </div>
+
+                            <div class="col-span-3 flex justify-center">
+                                <h1 class="text-2xl font-bold text-[#F57F28] flex items-center self-center">
+                                    {{highestPriceToday}}
+                                </h1>
+                            </div>  
+                        </div>
+                        <div class="grid grid-cols-8 grid-rows-1 w-full h-full bg-white rounded-3xl">
+                            <div class="col-span-2 justify-self-center flex items-center">
+                                <img src="/icons/down-orange.png" class="self-center w-[40px] h-[40px] bg-white rounded-full p-1" alt="">
+                            </div>
+
+                            <div class="grid grid-rows-2 grid-cols-1 col-span-3">
+                                <h1 class="text-md font-semibold text-[#19283F] flex items-end">
+                                    Alin hinta tänään
+                                </h1>
+                                <p class="text-xl font-bold text-[#19283F] flex items-top">
+                                    {{formatDate lowestPriceTodayTimeslot}}
+                                </p>
+                            </div>
+
+                            <div class="col-span-3 flex justify-center">
+                                <h1 class="text-2xl font-bold text-[#F57F28] flex items-center self-center">
+                                    {{lowestPriceToday}}
+                                </h1>
+                            </div>  
+                        </div>
+                    </div>
+                </a>
             </div>
         </div>
 
@@ -267,7 +330,7 @@
             <!-- title -->
             <div class="w-full h-[10%] grid grid-cols-3 grid-rows-1">
                 <div class="col-span-2">
-                    <h1 class="text-2xl font-semibold">
+                    <h1 class="text-2xl font-semibold text-[#19283F]">
                         Sun
                     </h1>
                     <p>
@@ -298,8 +361,8 @@
 
                         // Get the sunrise and sunset times
                         // This is just placeholder data, you would replace this with the actual times
-                        var sunriseTime = new Date('2023-11-10T08:18:00');
-                        var sunsetTime = new Date('2023-11-10T16:10:00');
+                        var sunriseTime = new Date('2023-11-23T08:18:00');
+                        var sunsetTime = new Date('2023-11-23T16:10:00');
 
                         // Create the gauge chart
                         var ctx = document.getElementById('sunChartChartjs').getContext('2d');
@@ -372,7 +435,7 @@
                 <!-- weather forecast -->
                 <div class="grid grid-cols-2 grid-rows-4 mt-14">
                     <div class="col-span-2">
-                        <h1 class="text-3xl font-semibold">
+                        <h1 class="text-3xl font-semibold text-[#19283F]">
                             Weather Forecast
                         </h1>
                     </div>
@@ -445,6 +508,7 @@
         }
         document.querySelector('.my-nav').remove();
         
+        // ------------------------------
         // progress-bar
         const currentPrice = {{priceNow}};
         const maxPrice = 15;
@@ -452,10 +516,14 @@
 
         // Calculate the percentage of the current price relative to the max price
         const percentage = (currentPrice / maxPrice) * 100;
+        if (percentage <= 0) {
+            percentage = 1;
+        }
 
         // Update the width of the progress bar
         progress.style.width = `${percentage}%`;
 
+        // ------------------------------
         // clock
         function showTime() {
         // Create a date object containing curent timestamp
