@@ -56,7 +56,7 @@
             <div class="w-full flex justify-between">
                 
                 <!-- md menu -->
-                <div class="lg:hidden block ">
+                <div class="lg:hidden block">
                     <button class="menu-button">
                         <!-- hamburger icon -->
                         <img src="icons/menu-squared-orange.png" alt="menu" class="w-[50px] h-[50px]">
@@ -384,8 +384,8 @@
 
                         // Get the sunrise and sunset times
                         // This is just placeholder data, you would replace this with the actual times
-                        var sunriseTime = new Date('2023-11-24T08:18:00');
-                        var sunsetTime = new Date('2023-11-24T16:10:00');
+                        var sunriseTime = new Date('2023-11-27T08:18:00');
+                        var sunsetTime = new Date('2023-11-27T16:10:00');
 
                         // Create the gauge chart
                         var ctx = document.getElementById('sunChartChartjs').getContext('2d');
@@ -539,21 +539,31 @@
         const btn = document.querySelector(".menu-button");
         const menu = document.querySelector(".menu");
 
+        // on click and hover, change the image in menu button to orange icon
         btn.addEventListener("click", () => {
             menu.classList.toggle("hidden");
+            btn.removeChild(btn.childNodes[0]);
+            if (menu.classList.contains("hidden")) {
+                btn.innerHTML = '<img src="icons/menu-squared-orange.png" alt="menu" class="w-[50px] h-[50px]">';
+            } else {
+                btn.innerHTML = '<img src="icons/menu-squared-hover.png" alt="menu" class="w-[50px] h-[50px]">';
+            }
         });
 
         
         // ------------------------------
         // progress-bar
         const currentPrice = {{priceNow}};
-        const maxPrice = 15;
+        const maxPrice = 20;
         const progress = document.getElementById('progress');
 
         // Calculate the percentage of the current price relative to the max price
         let percentage = (currentPrice / maxPrice) * 100;
         if (percentage <= 1) {
             percentage = 1;
+        }
+        if (percentage > 100) {
+            percentage = 100;
         }
 
         // Update the width of the progress bar
@@ -580,5 +590,7 @@
     }
     showTime();
     }
+
+    // ------------------------------
     </script>
 </body>

@@ -145,7 +145,6 @@ class WeatherMicroservices {
         // Loop through result data and pick elements
         result.forEach(async (element) => {
           const values = [element.time, element.value, place];
-          console.log(values);
 
           // Function for running SQL operations asynchronously
           const runQuery = async () => {
