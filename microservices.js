@@ -119,12 +119,134 @@ class WeatherMicroservices {
     this.pool = pool;
     this.message = '';
   }
-  async scheduleTemplateObservation(whatStr, placeUrl, paramCode, placeObs) {
+  async fetchAndCalculateWindData(whatStr, uVectorUrl, vVectorUrl) {
+    // Fetch uVector and vVector data
+    const uVectorResponse = await fetch(uVectorUrl);
+    const vVectorResponse = await fetch(vVectorUrl);
+    const uVectorData = await uVectorResponse.json();
+    const vVectorData = await vVectorResponse.json();
+  
+    // Reset all values
+    let windAngle = 0; // Wind blows from opposite direction to vector
+    let windSpeed = 0; // Wind speed in vector units (m/s)
+    let geographicAngle = 0; // Angle of vector in a map
+  
+    // atan2 returns angle in radians. Arguments are in (y,x) order!
+    let xyAngleRad = Math.atan2(vVectorData, uVectorData); 
+    let xyAngleDeg = xyAngleRad * 360 /(2 * Math.PI); // convert radians to degrees
+    
+    // Convert x-y plane directions to geographic directions
+    // There is 90 degrees shift between x-y and map directions
+    if (xyAngleDeg > 90) {
+      geographicAngle = 360 - (xyAngleDeg -90);
+    } else {
+      geographicAngle = 90 - xyAngleDeg;
+    }
+    
+    // Wind blows from opposite direction
+    if (geographicAngle < 180) {
+      windAngle = geographicAngle + 180;
+    } else {
+      windAngle = geographicAngle -180;
+    }
+  
+    // calculate wind speed according to the Pythagoras theorem
+    windSpeed = Math.sqrt(uVectorData**2 + vVectorData**2);
+    
+    // Return all calculated parameters
+    return { windSpeed, windAngle };
+  }
+  async scheduleTemplateWindObservation(placeParam, placeObs) {
+    const job = new cron.CronJob(settings.scheduler.weatherTimepattern, async () => {
+      try {
+        const windSpeedStr = 'wind speed';
+        const windDirectionStr = 'wind direction';
+        const place = placeObs;
+
+        const windSpeedDBTable = windSpeedStr.replace(" ", "_") + '_observation';
+        const windDirectionDBTable = windDirectionStr.replace(" ", "_") + '_observation';
+
+        const WIND_VMS_ENDPOINT = `https://opendata.fmi.fi/wfs/fin?service=WFS&version=2.0.0&request=GetFeature&storedquery_id=ecmwf::forecast::surface::point::timevaluepair&place=${placeParam}&parameters=WindVMS`
+        const WIND_UMS_ENDPOINT = `https://opendata.fmi.fi/wfs/fin?service=WFS&version=2.0.0&request=GetFeature&storedquery_id=ecmwf::forecast::surface::point::timevaluepair&place=${placeParam}&parameters=WindUMS`
+        
+        const template = ['wfs:FeatureCollection/wfs:member/omso:PointTimeSeriesObservation/om:result/wml2:MeasurementTimeseries/wml2:point/wml2:MeasurementTVP', {
+          time: 'wml2:time',
+          value: 'wml2:value'
+        }];
+
+        const windSpeedSqlClause = `INSERT INTO public.${windSpeedDBTable} VALUES ($1, $2, $3) ON CONFLICT DO NOTHING RETURNING *`;
+        const windDirectionSqlClause = `INSERT INTO public.${windDirectionDBTable} VALUES ($1, $2, $3) ON CONFLICT DO NOTHING RETURNING *`;
+
+        // Log the start of the operation
+        this.message = `Started fetching ${windSpeedStr} and ${windDirectionStr} observation data`;
+        console.log(this.message);
+        log.log(this.message);
+
+        // Fetch uVector and vVector data
+        // Fetch uVector and vVector data
+        const uVectorResponse = await axios.get(WIND_VMS_ENDPOINT);
+        const vVectorResponse = await axios.get(WIND_UMS_ENDPOINT);
+
+        const xml = uVectorResponse.data;
+        const xml2 = vVectorResponse.data;
+
+        const result = await transform(xml, template);
+
+        let windSpeedData = windData.windSpeed;
+        let windDirectionData = windData.windAngle;
+
+
+      // Loop through result data and pick elements
+      for (const element of windSpeedData) {
+        let values = [element.time, element.value, place];
+
+        // Function for running SQL operations asynchronously
+        const runQuery = async () => {
+          let resultset = await this.pool.query(windSpeedSqlClause, values);
+          return resultset;
+        };
+        
+        runQuery().then((resultset) => {
+          if (resultset.rows[0] != undefined) {
+            this.message = 'Added a row to database';
+          } else {
+            this.message = 'Skipped an existing row';
+          }
+          console.log(this.message);
+        });
+      }
+
+      for (const element of windDirectionData) {
+        let values = [element.time, element.value, place];
+
+        // Function for running SQL operations asynchronously
+        const runQuery = async () => {
+          let resultset = await this.pool.query(windDirectionSqlClause, values);
+          return resultset;
+        };
+        
+        runQuery().then((resultset) => {
+          if (resultset.rows[0] != undefined) {
+            this.message = 'Added a row to database';
+          } else {
+            this.message = 'Skipped an existing row';
+          }
+          console.log(this.message);
+        });
+      }
+    } catch (error) {
+      console.error(`Error: ${error}`);
+    }
+  }, null, true, 'Europe/Helsinki');
+  }
+  
+
+  async scheduleTemplateObservation(whatStr, placeParam, paramCode, placeObs) {
     const job = new cron.CronJob(settings.scheduler.weatherTimepattern, async () => {
       try {
         const what = whatStr.toLowerCase();
         const DBTable = what.replace(" ", "_") + '_observation';
-        const WEATHER_ENDPOINT = `https://opendata.fmi.fi/wfs?request=getFeature&storedquery_id=fmi::observations::weather::timevaluepair&place=${placeUrl}&parameters=${paramCode}&`;
+        const WEATHER_ENDPOINT = `https://opendata.fmi.fi/wfs?request=getFeature&storedquery_id=fmi::observations::weather::timevaluepair&place=${placeParam}&parameters=${paramCode}&`;
         const template = ['wfs:FeatureCollection/wfs:member/omso:PointTimeSeriesObservation/om:result/wml2:MeasurementTimeseries/wml2:point/wml2:MeasurementTVP', {
           time: 'wml2:time',
           value: 'wml2:value'
@@ -167,12 +289,12 @@ class WeatherMicroservices {
       }
     }, null, true, 'Europe/Helsinki');
   }
-  async scheduleTemplateForecast(whatStr, placeUrl, paramCode, placeObs){
+  async scheduleTemplateForecast(whatStr, placeParam, paramCode, placeObs){
     const job = new cron.CronJob(settings.scheduler.weatherTimepattern, async () => {
       try {
         const what = whatStr.toLowerCase();
         const DBTable = what.replace(" ", "_") + '_forecast';
-        const WEATHER_ENDPOINT = `https://opendata.fmi.fi/wfs/fin?service=WFS&version=2.0.0&request=GetFeature&storedquery_id=ecmwf::forecast::surface::point::timevaluepair&place=${placeUrl}&parameters=${paramCode}`;
+        const WEATHER_ENDPOINT = `https://opendata.fmi.fi/wfs/fin?service=WFS&version=2.0.0&request=GetFeature&storedquery_id=ecmwf::forecast::surface::point::timevaluepair&place=${placeParam}&parameters=${paramCode}`;
         const template = ['wfs:FeatureCollection/wfs:member/omso:PointTimeSeriesObservation/om:result/wml2:MeasurementTimeseries/wml2:point/wml2:MeasurementTVP', {
           time: 'wml2:time',
           value: 'wml2:value'
@@ -227,13 +349,12 @@ const weatherMicroservices = new WeatherMicroservices(pool);
 
 priceMicroservices.scheduleLatestPriceDataFetch();
 
+
+weatherMicroservices.scheduleTemplateWindObservation('turku', 'Turku Artukainen');
+
 weatherMicroservices.scheduleTemplateObservation('Temperature', 'Turku', 't2m', 'Turku Artukainen');
-weatherMicroservices.scheduleTemplateObservation('Wind Speed', 'Turku', 'windSpeedMS', 'Turku Artukainen');
-weatherMicroservices.scheduleTemplateObservation('Wind Direction', 'Turku', 'windDirection', 'Turku Artukainen');
 
 weatherMicroservices.scheduleTemplateForecast('Temperature', 'Turku', 'temperature', 'Turku Artukainen');
-weatherMicroservices.scheduleTemplateForecast('Wind Speed', 'Turku', 'windSpeedMS', 'Turku Artukainen');
-weatherMicroservices.scheduleTemplateForecast('Wind Direction', 'Turku', 'windDirection', 'Turku Artukainen');
 
 // Export the Microservices class
 module.exports = {PriceMicroservices, WeatherMicroservices};
