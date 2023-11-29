@@ -77,7 +77,6 @@ class PriceMicroservices {
                 this.message = 'Skipped an existing row';
               }
               console.log(this.message);
-              log.log(this.message);
             });
           });
 
@@ -95,7 +94,6 @@ class PriceMicroservices {
         } else {
           this.message = 'Data was already fetched earlier today';
           console.log(this.message);
-          log.log(this.message);
         }
       } catch (error) {
         this.message = 'An error occurred (' + error.toString() + '), trying again in 5 minutes until 4 PM';
@@ -119,20 +117,14 @@ class WeatherMicroservices {
     this.pool = pool;
     this.message = '';
   }
-  async fetchAndCalculateWindData(whatStr, uVectorUrl, vVectorUrl) {
-    // Fetch uVector and vVector data
-    const uVectorResponse = await fetch(uVectorUrl);
-    const vVectorResponse = await fetch(vVectorUrl);
-    const uVectorData = await uVectorResponse.json();
-    const vVectorData = await vVectorResponse.json();
-  
+  async fetchAndCalculateWindData(uVectorData, vVectorData) {
     // Reset all values
     let windAngle = 0; // Wind blows from opposite direction to vector
     let windSpeed = 0; // Wind speed in vector units (m/s)
     let geographicAngle = 0; // Angle of vector in a map
   
     // atan2 returns angle in radians. Arguments are in (y,x) order!
-    let xyAngleRad = Math.atan2(vVectorData, uVectorData); 
+    let xyAngleRad = Math.atan2(vVectorData, uVectorData);
     let xyAngleDeg = xyAngleRad * 360 /(2 * Math.PI); // convert radians to degrees
     
     // Convert x-y plane directions to geographic directions
@@ -156,7 +148,7 @@ class WeatherMicroservices {
     // Return all calculated parameters
     return { windSpeed, windAngle };
   }
-  async scheduleTemplateWindObservation(placeParam, placeObs) {
+  scheduleTemplateWindObservation(placeParam, placeObs) {
     const job = new cron.CronJob(settings.scheduler.weatherTimepattern, async () => {
       try {
         const windSpeedStr = 'wind speed';
@@ -183,7 +175,6 @@ class WeatherMicroservices {
         log.log(this.message);
 
         // Fetch uVector and vVector data
-        // Fetch uVector and vVector data
         const uVectorResponse = await axios.get(WIND_VMS_ENDPOINT);
         const vVectorResponse = await axios.get(WIND_UMS_ENDPOINT);
 
@@ -191,14 +182,17 @@ class WeatherMicroservices {
         const xml2 = vVectorResponse.data;
 
         const result = await transform(xml, template);
-
-        let windSpeedData = windData.windSpeed;
-        let windDirectionData = windData.windAngle;
-
+        const result2 = await transform(xml2, template);
 
       // Loop through result data and pick elements
-      for (const element of windSpeedData) {
-        let values = [element.time, element.value, place];
+      for (let i = 0; i < result.length; i++) {
+        const element = result[i];
+        const element2 = result2[i];
+
+        // Fetch and calculate wind data
+        const windData = await this.fetchAndCalculateWindData(element.value, element2.value);
+
+        let values = [element.time, windData.windSpeed, place];
 
         // Function for running SQL operations asynchronously
         const runQuery = async () => {
@@ -216,8 +210,14 @@ class WeatherMicroservices {
         });
       }
 
-      for (const element of windDirectionData) {
-        let values = [element.time, element.value, place];
+      for (let i = 0; i < result.length; i++) {
+        const element = result[i];
+        const element2 = result2[i];
+
+        // Fetch and calculate wind data
+        const windData = await this.fetchAndCalculateWindData(element.value, element2.value);
+
+        let values = [element.time, windData.windAngle, place];
 
         // Function for running SQL operations asynchronously
         const runQuery = async () => {
@@ -239,9 +239,7 @@ class WeatherMicroservices {
     }
   }, null, true, 'Europe/Helsinki');
   }
-  
-
-  async scheduleTemplateObservation(whatStr, placeParam, paramCode, placeObs) {
+  scheduleTemplateObservation(whatStr, placeParam, paramCode, placeObs) {
     const job = new cron.CronJob(settings.scheduler.weatherTimepattern, async () => {
       try {
         const what = whatStr.toLowerCase();
@@ -289,7 +287,7 @@ class WeatherMicroservices {
       }
     }, null, true, 'Europe/Helsinki');
   }
-  async scheduleTemplateForecast(whatStr, placeParam, paramCode, placeObs){
+  scheduleTemplateForecast(whatStr, placeParam, paramCode, placeObs){
     const job = new cron.CronJob(settings.scheduler.weatherTimepattern, async () => {
       try {
         const what = whatStr.toLowerCase();

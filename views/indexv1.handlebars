@@ -1,0 +1,173 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+  #hero-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    z-index: 2;
+    pointer-events: none;
+  }
+  #hero-section {
+    z-index: 1;
+    position: relative;
+    
+  }
+  /* Hide the iframes on screens smaller than 1024 pixels */
+@media (max-width: 923px) {
+    #hero-section iframe {
+      visibility: hidden;
+      transform: translate3d(0,0,0);
+      will-change: transform;
+    }
+}
+  #loading {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background: white;
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+</style>
+</head>
+<body>
+    <!-- This is the loading screen -->
+    <div id="loading" >
+        <img class="w-[110px] h-[110px] object-cover" src="/images/loading.gif" alt="Loading..." />
+    </div>
+    <!-- END OF LOADING SCREEN -->
+
+
+    <!-- This is the hero section -->
+    <div id="hero-section" class=" w-full h-screen -mt-[14em] bg-[url('/images/background.svg')] bg-no-repeat bg-cover">
+
+        <iframe id="hero-background" class=" w-full h-screen object-cover right-10"  src='https://my.spline.design/windturbine-f0e43f85c0d471eaffeb486cc713e33d/' frameborder='0'></iframe>
+
+        <!-- Section content -->
+        <div class="relative container flex flex-col px-0 py-10 top-36 mt-36 mx-auto space-y-6 lg:py-16 lg:flex-row lg:items-center">
+
+            <div class="w-full lg:w-1/2">
+
+                <div class="flex flex-col justify-center items-center text-center">
+
+                    <h1 class="flex-none font-bold leading-none text-[#144E70] text-center text-[36.56px] text-center">
+                        Welcome to <span style="color: white">SmartHome</span><br />
+                        - Your Energy and <br /> Weather Companion
+                    </h1>
+                    
+                    <div class="mt-16 space-y-5 bg-[#2f2b61A6] backdrop-blur-[6px] shadow-xl rounded-[37px] w-full mx-2 sm:mx-none sm:w-[500px] text-center">
+                        <p class="mx-auto items-center -mx-2 font-normal text-white py-6 text-center px-10
+                        sm:px-20 text-lg md:text-xl  sm:max-w-none leading-relaxed">
+                        Get <span class="font-medium">real-time updates</span> on <span class="font-medium">energy prices and weather conditions</span> with our app.
+
+                        </br></br>
+                        Provides a general overview of the current energy prices and weather conditions.
+
+                        </br></br>
+                        For more detailed information, navigate to the dedicated pages for weather and energy prices
+                        </p>
+                        <button type="button" class="h-10 px-4 py-2 px-6 self-center bottom-5 text-white transition-colors duration-300 transform bg-blue-700 rounded-3xl hover:bg-blue-500 relative shadow-lg hover:shadow-xl">
+                            <a href="/general">
+                                Get Started
+                            </a>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+  <script>
+    window.addEventListener('DOMContentLoaded', (event) => {
+            const loadingScreen = document.getElementById('loading');
+
+            // Display the loading screen for 5 seconds
+            setTimeout(function() {
+                loadingScreen.style.display = 'none';
+            }, 3000); // 5000 milliseconds = 5 seconds
+        });
+
+    const heroBackground = document.getElementById("hero-background");
+
+    // Set the opacity of the iframe to 1 when the page is loaded
+    window.addEventListener("load", () => {
+      heroBackground.style.opacity = 1;
+    });
+
+    if (window.innerWidth >= 1024) {
+                document.querySelector(".my-second-box").classList.remove("hidden");
+    } else {
+        document.querySelector(".my-second-box").classList.add("hidden");
+    }
+    window.addEventListener("resize", () => {
+            if (window.innerWidth >= 1024) {
+                document.querySelector(".my-second-box").classList.remove("hidden");
+            } else {
+                document.querySelector(".my-second-box").classList.add("hidden");
+            }
+        });
+
+        if (window.innerWidth >= 1024) {
+            document.querySelector(".my-image-box").classList.remove("hidden");
+    } else {
+        document.querySelector(".my-image-box").classList.add("hidden");
+    }
+    window.addEventListener("resize", () => {
+            if (window.innerWidth >= 1024) {
+                document.querySelector(".my-image-box").classList.remove("hidden");
+            } else {
+                document.querySelector(".my-image-box").classList.add("hidden");
+            }
+    })
+  </script>
+  </div>
+</div>
+<!-- END OF HERO SECTION -->
+
+<!-- This is the second section -->
+<!-- <div id="second-section" class="w-[98.5vw] h-[100vh] -mt-52 bg-[white] bg-no-repeat bg-cover">
+
+    <!-- Section content -->
+    <!-- <div class="relative container flex flex-col px-0 py-10 top-36 mt-16 mx-auto space-y-6 lg:py-16 lg:flex-row lg:items-end">
+        
+        <div class="w-[500px] h-[700px] absolute -bottom-[20px]">
+            <img src="/images/phone-mockup3.png" alt="Phone mockup" class="w-full h-full object-contain">
+        </div>
+
+        <div class="w-full lg:w-1/2 lg:ml-[30rem] xl:ml-[40rem]">
+
+            <div class="flex flex-col justify-center items-center text-center">
+
+                <h1 class="flex-none font-bold leading-none text-[#144E70] text-center text-[36.56px] text-center">
+                    Track Energy Prices & Weather Easily
+                </h1>
+                
+                <div class="mt-16 space-y-5 bg-[#2f2b61A6] backdrop-blur-[6px] shadow-xl rounded-[37px] w-[400px] sm:w-[500px] text-center">
+                    <p class="mx-auto items-center -mx-2 font-normal text-white py-6 text-center
+                    sm:px-20 text-lg md:text-xl max-w-[250px] sm:max-w-none leading-relaxed">
+                    Our app provides real-time updates on energy stock prices and crucial weather data, enabling you to make informed decisions.
+                    </br></br>
+                    It's not just an app, it's your personal energy market advisor
+                    </p>
+                    <button type="button" class="h-10 px-4 py-2 self-center bottom-5 text-white transition-colors duration-300 transform bg-blue-700 rounded-lg hover:bg-blue-500 relative shadow-lg hover:shadow-xl">Get Started
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div> -->
+    <!-- END OF SECOND SECTION -->
+
+</body>
+</html>

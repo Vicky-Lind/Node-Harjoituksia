@@ -60,7 +60,26 @@ Handlebars.registerHelper('formatDate', function(dateString) {
 // --------------------
 
 app.get('/', (req, res) => {
-  res.render('index')
+  Promise.all([priceMicroservices.selectXFromY('price', 'current_prices'),
+  priceMicroservices.selectXFromY('*', 'hourly_page'),
+  priceMicroservices.selectXFromY('price, timeslot', 'lowest_price_today'),
+  priceMicroservices.selectXFromY('price, timeslot', 'highest_price_today'),])
+
+    .then(([priceResult, tableResult, priceLowest, priceHighest]) => {
+      let priceNow = priceResult.rows[0]['price'];
+      let tableData = tableResult.rows;
+
+      let priceLowestToday = priceLowest.rows[0]['price'];
+      let priceHighestToday = priceHighest.rows[0]['price'];
+
+      let data = {
+        'priceNow': priceNow,
+        'tableData': tableData,
+        'priceLowestToday': priceLowestToday,
+        'priceHighestToday': priceHighestToday
+      };
+      res.render('index', data);
+    })
 })
 
 app.get('/hourly', (req, res) => {
@@ -82,14 +101,16 @@ app.get('/general', (req, res) => {
   priceMicroservices.selectXFromY('price, timeslot', 'lowest_price_today'),
   priceMicroservices.selectXFromY('price, timeslot', 'highest_price_today'),
 
-  weatherMicroservices.selectXFromY('temperature, wind_speed', 'current_weather_forecast'),
+  weatherMicroservices.selectXFromY('temperature', 'current_weather_forecast'),
+  weatherMicroservices.selectXFromY('wind_direction, wind_speed', 'current_wind_observations')
   ]) 
     .then(([priceResult,
       tableResult,
       eveningPriceResult,
       lowestPriceTodayResult,
       highestPriceTodayResult,
-      weatherResult,
+      TemperatureResult,
+      WindResult
     ]) => {
       
       let priceNow = priceResult.rows[0]['price'];
@@ -104,8 +125,9 @@ app.get('/general', (req, res) => {
 
       let tableData = tableResult.rows;
 
-      let temperature = weatherResult.rows[0]['temperature'];
-      let windSpeed = weatherResult.rows[0]['wind_speed'];
+      let temperature = TemperatureResult.rows[0]['temperature'];
+      let windDirection = WindResult.rows[0]['wind_direction'];
+      let windSpeed = parseFloat(WindResult.rows[0]['wind_speed']).toFixed(2);
       
       let data = {
         'priceNow': priceNow,
@@ -120,7 +142,8 @@ app.get('/general', (req, res) => {
         'tableData': tableData,
 
         'temperature': temperature,
-        'windSpeed': windSpeed,
+        'windDirection': windDirection,
+        'windSpeed': windSpeed
       };
       res.render('generalv2', data);
     })
