@@ -38,7 +38,7 @@
             <div class="hidden min-[970px]:flex items-center space-x-5 text-[16.67px]">
                     <a href="/general" class="nav-link px-2 font-semibold text-white transition duration-300">General</a>
                     <a href="/spot-prices" class="nav-link px-2 text-white font-semibold transition duration-300">Spot Prices</a>
-                    <a href="/hourly" class="nav-link px-2 text-white font-semibold transition duration-300">Weather Forecast</a>
+                    <a href="/weather" class="nav-link px-2 text-white font-semibold transition duration-300">Weather Forecast</a>
                 </div>
             </div>
 
@@ -132,9 +132,9 @@
             }
         });
 
-        // if the current url is general, then remove the navbar
-        if (window.location.href.indexOf("general") > -1) {
-            document.querySelector(".my-nav").remove();
+        // if the current url is not "/" then remove the navbar
+        if (window.location.pathname !== "/") {
+            document.querySelector(".my-nav").classList.add("hidden");
         }
     </script>
     </nav>

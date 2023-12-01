@@ -82,21 +82,10 @@ app.get('/', (req, res) => {
     })
 })
 
-app.get('/hourly', (req, res) => {
-  priceMicroservices.selectXFromY('*', 'hourly_price').then((resultset) => {
-    let tableData = resultset.rows
-    let hourlyPageData = {
-      'tableData': tableData
-    }
-    res.render('hourly', hourlyPageData)
-  })
-})
-
-// Tuntihintasivun reitti ja dynaaminen data
-app.get('/general', (req, res) => {
-
+app.get('/spot-prices', (req, res) => {
   Promise.all([priceMicroservices.selectXFromY('price', 'current_prices'),
   priceMicroservices.selectXFromY('*', 'hourly_page'),
+  priceMicroservices.selectXFromY('average', 'average_price_today'),
   priceMicroservices.selectXFromY('price', 'evening_price'),
   priceMicroservices.selectXFromY('price, timeslot', 'lowest_price_today'),
   priceMicroservices.selectXFromY('price, timeslot', 'highest_price_today'),
@@ -106,6 +95,7 @@ app.get('/general', (req, res) => {
   ]) 
     .then(([priceResult,
       tableResult,
+      averagePriceTodayResult,
       eveningPriceResult,
       lowestPriceTodayResult,
       highestPriceTodayResult,
@@ -125,6 +115,8 @@ app.get('/general', (req, res) => {
 
       let tableData = tableResult.rows;
 
+      let averagePriceToday = averagePriceTodayResult.rows[0]['average'];
+
       let temperature = TemperatureResult.rows[0]['temperature'];
       let windDirection = WindResult.rows[0]['wind_direction'];
       let windSpeed = parseFloat(WindResult.rows[0]['wind_speed']).toFixed(2);
@@ -141,11 +133,85 @@ app.get('/general', (req, res) => {
 
         'tableData': tableData,
 
+        'averagePriceToday': averagePriceToday,
+
         'temperature': temperature,
         'windDirection': windDirection,
         'windSpeed': windSpeed
       };
-      res.render('generalv2', data);
+      res.render('spot_prices', data)
+    })
+})
+
+app.get('/hourly', (req, res) => {
+  priceMicroservices.selectXFromY('*', 'hourly_price').then((resultset) => {
+    let tableData = resultset.rows
+    let hourlyPageData = {
+      'tableData': tableData
+    }
+    res.render('hourly', hourlyPageData)
+  })
+})
+
+// Tuntihintasivun reitti ja dynaaminen data
+app.get('/general', (req, res) => {
+
+  Promise.all([priceMicroservices.selectXFromY('price', 'current_prices'),
+  priceMicroservices.selectXFromY('*', 'hourly_page'),
+  priceMicroservices.selectXFromY('average', 'average_price_today'),
+  priceMicroservices.selectXFromY('price', 'evening_price'),
+  priceMicroservices.selectXFromY('price, timeslot', 'lowest_price_today'),
+  priceMicroservices.selectXFromY('price, timeslot', 'highest_price_today'),
+
+  weatherMicroservices.selectXFromY('temperature', 'current_weather_forecast'),
+  weatherMicroservices.selectXFromY('wind_direction, wind_speed', 'current_wind_observations')
+  ]) 
+    .then(([priceResult,
+      tableResult,
+      averagePriceTodayResult,
+      eveningPriceResult,
+      lowestPriceTodayResult,
+      highestPriceTodayResult,
+      TemperatureResult,
+      WindResult
+    ]) => {
+      
+      let priceNow = priceResult.rows[0]['price'];
+
+      let priceEvening = eveningPriceResult.rows[0]['price'];
+
+      let lowestPriceToday = lowestPriceTodayResult.rows[0]['price'];
+      let lowestPriceTodayTimeslot = lowestPriceTodayResult.rows[0]['timeslot'];
+
+      let highestPriceToday = highestPriceTodayResult.rows[0]['price'];
+      let highestPriceTodayTimeslot = highestPriceTodayResult.rows[0]['timeslot'];
+
+      let tableData = tableResult.rows;
+      let averagePriceToday = averagePriceTodayResult.rows[0]['average'];
+
+      let temperature = TemperatureResult.rows[0]['temperature'];
+      let windDirection = WindResult.rows[0]['wind_direction'];
+      let windSpeed = parseFloat(WindResult.rows[0]['wind_speed']).toFixed(2);
+      
+      let data = {
+        'priceNow': priceNow,
+        'priceEvening': priceEvening,
+
+        'lowestPriceToday': lowestPriceToday,
+        'lowestPriceTodayTimeslot': lowestPriceTodayTimeslot,
+
+        'highestPriceToday': highestPriceToday,
+        'highestPriceTodayTimeslot': highestPriceTodayTimeslot,
+
+        'tableData': tableData,
+
+        'averagePriceToday': averagePriceToday,
+
+        'temperature': temperature,
+        'windDirection': windDirection,
+        'windSpeed': windSpeed
+      };
+      res.render('generalv3', data);
     })
 })
 
