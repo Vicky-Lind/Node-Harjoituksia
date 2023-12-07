@@ -3,103 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script> 
 </head>
 <body>
     <!-- main container -->
     <div class="bg-white flex w-full h-screen">
 
-        <!-- placeholder -->
-        <div class="w-[120px] h-full p-6 lg:block hidden"></div>
-        <!-- lg menu -->
-        <div class="w-[120px] h-full p-6 lg:block hidden fixed">
-            
-            <!-- logo -->
-            <div class="my-4 w-[60px] h-[60px] flex justify-center items-center m-2">
-                <a href="/" class="hover:drop-shadow-lg hover:-translate-y-1 hover:scale-100 transition ease-in-out duration-300 w-[60px] h-[60px] items-center justify-center flex">
-                    <img src="icons/house.png" alt="logo" class="w-[60px] h-[60px]">
-                </a>
-            </div>
-
-            <!-- menu items -->
-            <div class="grid grid-cols-1 grid-rows-3 gap-y-10 mt-12 place-items-center">
-                <a href="/general" id="general-button" class="rounded-2xl hover:shadow-lg hover:-translate-y-1 hover:scale-100 transition ease-in-out duration-300 w-[50px] h-[50px] bg-[#F57F28] drop-shadow-lg">
-                    <img src="icons/chart-active.png" alt="logo" class="w-[50px] h-[50px] p-2">
-                </a>
-                <a href="/spot-prices" id="spot-prices-button" class="rounded-2xl hover:shadow-lg hover:-translate-y-1 hover:scale-100 transition ease-in-out duration-300 w-[50px] h-[50px] ">
-                    <img src="icons/electricity.png" alt="logo" class="w-[50px] h-[50px] p-2">
-                </a>
-                <a href="/weather" id="weather-button" class="rounded-2xl hover:shadow-lg hover:-translate-y-1 hover:scale-100 transition ease-in-out duration-300 w-[50px] h-[50px]">
-                    <img src="icons/cloudy.png" alt="logo" class="w-[50px] h-[50px] p-2">
-                </a>
-            </div>
-
-            <!-- second menu items -->
-            <div class="grid grid-cols-1 grid-rows-2 gap-y-10 mt-72 place-items-center">
-                <a href="/settings" id="settings-button" class="rounded-2xl hover:shadow-lg hover:-translate-y-1 hover:scale-100 transition ease-in-out duration-300 p-2 w-[50px] h-[50px]">
-                    <img src="icons/settings.png" alt="logo" class="w-full h-full">
-                </a>
-                <a href="/theme" id="theme-button" class="rounded-2xl hover:shadow-lg hover:-translate-y-1 hover:scale-100 transition ease-in-out duration-300 w-[50px] h-[50px]">
-                    <img src="icons/theme.png" alt="logo" class="w-full h-full p-2">
-                </a>
-            </div>
-        </div>
-
         <!-- main content -->
-        <div class="w-full h-full px-1 sm:px-12 lg:py-8 md:py-4">
+        <div class="w-full h-full px-1 sm:px-12 lg:py-4 md:py-2">
 
             <!-- top content -->
-            <div class="w-full flex justify-between">
-                
-                <!-- md menu -->
-                <div class="lg:hidden block">
-                    <button class="menu-button">
-                        <!-- hamburger icon -->
-                        <img src="icons/menu-squared-orange.png" alt="menu" class="w-[50px] h-[50px]">
-                    </button>
-                </div>
-                <!-- md menu -->
-                <div class="bg-[#F7F7F7] fixed lg:hidden hidden menu z-50 w-[200px] h-[200px] text-center rounded-3xl shadow-md top-16 grid grid-cols-1 grid-rows-6">
-
-                    <a href="/" class="hover:bg-[#F57F28] hover:text-white text-[#19283F] text-lg font-semibold rounded-3xl">
-                        <h1>
-                            Etusivu
-                        </h1>
-                    </a>
-                    <a href="/general" class="hover:bg-[#F57F28] hover:text-white text-[#19283F] text-lg font-semibold rounded-3xl">
-                        <h1>
-                            General
-                        </h1>
-                    </a>
-                    <a href="/spot-prices" class="hover:bg-[#F57F28] hover:text-white text-[#19283F] text-lg font-semibold rounded-3xl">
-                        <h1>
-                            Spot Prices
-                        </h1>
-                    </a>
-                    <a href="/weather" class="hover:bg-[#F57F28] hover:text-white text-[#19283F] text-lg font-semibold rounded-3xl">
-                        <h1>
-                            Weather
-                        </h1>
-                    </a>
-                    <a href="/settings" class="hover:bg-[#F57F28] hover:text-white text-[#19283F] text-lg font-semibold rounded-3xl">
-                        <h1>
-                            Settings
-                        </h1>
-                    </a>
-                    <a href="/theme" class="hover:bg-[#F57F28] hover:text-white text-[#19283F] text-lg font-semibold rounded-3xl">
-                        <h1>
-                            Theme
-                        </h1>
-                    </a>
-                </div>
-
-                <h1 onload=showTime() id="clock" class="text-[#19283F] text-bold text-xl flex items-center justify-center mr-2 sm:mr-none">
+            <div class="w-full flex justify-end">
+            
+                <h1 id="clock" class="text-[#19283F] text-bold text-xl flex items-center justify-end mr-2 sm:mr-none">
                 </h1>
             </div>
 
             <!-- middle content -->
-            <div class="w-full h-[324] xl:h-[45%] grid xl:grid-cols-2 grid-cols-1 xl:grid-rows-1 grid-rows-2 xl:gap-x-7 xl:gap-y-none gap-y-6 mt-8 pb-6">
+            <div class="w-full h-[324] xl:h-[45%] grid xl:grid-cols-2 grid-cols-1 xl:grid-rows-1 grid-rows-2 xl:gap-x-7 xl:gap-y-none gap-y-6 mt-6 pb-6">
 
                 <!-- left content -->
                 <a href="/spot-prices" class="hover:-translate-y-1 hover:scale-100 transition ease-in-out duration-300 ">
@@ -365,20 +286,6 @@
     <script>
     // ------------------------------
     window.onload = function() {        
-        const btn = document.querySelector(".menu-button");
-        const menu = document.querySelector(".menu");
-
-        // on click and hover, change the image in menu button to orange icon
-        btn.addEventListener("click", () => {
-            menu.classList.toggle("hidden");
-            btn.removeChild(btn.childNodes[0]);
-            if (menu.classList.contains("hidden")) {
-                btn.innerHTML = '<img src="icons/menu-squared-orange.png" alt="menu" class="w-[50px] h-[50px]">';
-            } else {
-                btn.innerHTML = '<img src="icons/menu-squared-hover.png" alt="menu" class="w-[50px] h-[50px]">';
-            }
-        });
-
         
         // ------------------------------
         // progress-bar

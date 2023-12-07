@@ -47,13 +47,17 @@ app.set('views', './views')
 var Handlebars = require('handlebars');
 
 Handlebars.registerHelper('formatDate', function(dateString) {
-    var date = new Date(dateString);
-    var hours = date.getHours();
-    hours = hours < 10 ? '0'+hours : hours; // Add leading zero to hours
-    var minutes = date.getMinutes();
-    minutes = minutes < 10 ? '0'+minutes : minutes;
-    var strTime = hours + ':' + minutes;
-    return strTime;
+  var date = new Date(dateString);
+  var hours = date.getHours();
+  hours = hours < 10 ? '0'+hours : hours; // Add leading zero to hours
+  var minutes = date.getMinutes();
+  minutes = minutes < 10 ? '0'+minutes : minutes;
+  var strTime = hours + ':' + minutes;
+  return strTime;
+});
+
+Handlebars.registerHelper('json', function(context) {
+  return JSON.stringify(context);
 });
 
 // REITTIEN MÄÄRITYKSET
@@ -62,8 +66,8 @@ Handlebars.registerHelper('formatDate', function(dateString) {
 app.get('/', (req, res) => {
   Promise.all([priceMicroservices.selectXFromY('price', 'current_prices'),
   priceMicroservices.selectXFromY('*', 'hourly_page'),
-  priceMicroservices.selectXFromY('price, timeslot', 'lowest_price_today'),
-  priceMicroservices.selectXFromY('price, timeslot', 'highest_price_today'),])
+  priceMicroservices.selectXFromY('*', 'lowest_price_today'),
+  priceMicroservices.selectXFromY('*', 'highest_price_today'),])
 
     .then(([priceResult, tableResult, priceLowest, priceHighest]) => {
       let priceNow = priceResult.rows[0]['price'];
@@ -81,63 +85,91 @@ app.get('/', (req, res) => {
       res.render('index', data);
     })
 })
+/* prices today hourly, average price today hourly, this week daily, average price this week daily, this month daily, average price this month daily, this year monthly, average price this year monthly, and comparions for all of these to last year */
 
 app.get('/spot-prices', (req, res) => {
-  Promise.all([priceMicroservices.selectXFromY('price', 'current_prices'),
-  priceMicroservices.selectXFromY('*', 'hourly_page'),
-  priceMicroservices.selectXFromY('average', 'average_price_today'),
-  priceMicroservices.selectXFromY('price', 'evening_price'),
-  priceMicroservices.selectXFromY('price, timeslot', 'lowest_price_today'),
-  priceMicroservices.selectXFromY('price, timeslot', 'highest_price_today'),
+  Promise.all([priceMicroservices.selectXFromY('*', 'hourly_page'), // Price now AND hourly table data (from now forward),
+  priceMicroservices.selectXFromY('average', 'average_price_today'), // Average price today
+  priceMicroservices.selectXFromY('*', 'highest_price_today'), // Highest price today
+  priceMicroservices.selectXFromY('*', 'lowest_price_today'), // Lowest price today
 
-  weatherMicroservices.selectXFromY('temperature', 'current_weather_forecast'),
-  weatherMicroservices.selectXFromY('wind_direction, wind_speed', 'current_wind_observations')
+  priceMicroservices.selectXFromY('*', 'prices_today'), // Hourly prices for today table (full)
+
+  priceMicroservices.selectXFromY('*', 'prices_this_week_hourly'), // Prices today, in hourly form (full)
+  priceMicroservices.selectXFromY('*', 'prices_this_week_daily'), // Prices this week, in daily form (full)
+  priceMicroservices.selectXFromY('*', 'prices_this_week_average'), // Average this week
+
+  priceMicroservices.selectXFromY('*', 'prices_this_month_daily'), // Prices this month, in daily form (full)
+  priceMicroservices.selectXFromY('*', 'prices_this_month_average'), // Average this month
+
+  priceMicroservices.selectXFromY('*', 'prices_this_year_monthly'), // Prices this year, in monthly form (full)
+  priceMicroservices.selectXFromY('*', 'prices_this_year_average'), // Average this year
+
   ]) 
     .then(([priceResult,
-      tableResult,
       averagePriceTodayResult,
-      eveningPriceResult,
-      lowestPriceTodayResult,
       highestPriceTodayResult,
-      TemperatureResult,
-      WindResult
+      lowestPriceTodayResult,
+
+      pricesTodayResult,
+
+      pricesThisWeekHourlyResult,
+      pricesThisWeekDailyResult,
+      pricesThisWeekAverageResult,
+
+      pricesThisMonthDailyResult,
+      pricesThisMonthAverageResult,
+
+      pricesThisYearMonthlyResult,
+      pricesThisYearAverageResult
+
     ]) => {
       
       let priceNow = priceResult.rows[0]['price'];
+      let tableData = priceResult.rows;
 
-      let priceEvening = eveningPriceResult.rows[0]['price'];
-
-      let lowestPriceToday = lowestPriceTodayResult.rows[0]['price'];
-      let lowestPriceTodayTimeslot = lowestPriceTodayResult.rows[0]['timeslot'];
+      let averagePriceToday = averagePriceTodayResult.rows[0]['average'];
 
       let highestPriceToday = highestPriceTodayResult.rows[0]['price'];
       let highestPriceTodayTimeslot = highestPriceTodayResult.rows[0]['timeslot'];
 
-      let tableData = tableResult.rows;
+      let lowestPriceToday = lowestPriceTodayResult.rows[0]['price'];
+      let lowestPriceTodayTimeslot = lowestPriceTodayResult.rows[0]['timeslot'];
 
-      let averagePriceToday = averagePriceTodayResult.rows[0]['average'];
+      let pricesTodayTable = pricesTodayResult.rows;
 
-      let temperature = TemperatureResult.rows[0]['temperature'];
-      let windDirection = WindResult.rows[0]['wind_direction'];
-      let windSpeed = parseFloat(WindResult.rows[0]['wind_speed']).toFixed(2);
-      
+      let pricesThisWeekHourly = pricesThisWeekHourlyResult.rows;
+      let pricesThisWeekDaily = pricesThisWeekDailyResult.rows;
+      let pricesThisWeekAverage = pricesThisWeekAverageResult.rows
+
+      let pricesThisMonthDaily = pricesThisMonthDailyResult.rows;
+      let pricesThisMonthAverage = pricesThisMonthAverageResult.rows
+
+      let pricesThisYearMonthly = pricesThisYearMonthlyResult.rows;
+      let pricesThisYearAverage = pricesThisYearAverageResult.rows
+
       let data = {
         'priceNow': priceNow,
-        'priceEvening': priceEvening,
-
-        'lowestPriceToday': lowestPriceToday,
-        'lowestPriceTodayTimeslot': lowestPriceTodayTimeslot,
+        'averagePriceToday': averagePriceToday,
 
         'highestPriceToday': highestPriceToday,
         'highestPriceTodayTimeslot': highestPriceTodayTimeslot,
 
+        'lowestPriceToday': lowestPriceToday,
+        'lowestPriceTodayTimeslot': lowestPriceTodayTimeslot,
+        
         'tableData': tableData,
+        'pricesTodayTable': pricesTodayTable,
 
-        'averagePriceToday': averagePriceToday,
+        'pricesThisWeekHourly': pricesThisWeekHourly,
+        'pricesThisWeekDaily': pricesThisWeekDaily,
+        'pricesThisWeekAverage': pricesThisWeekAverage,
 
-        'temperature': temperature,
-        'windDirection': windDirection,
-        'windSpeed': windSpeed
+        'pricesThisMonthDaily': pricesThisMonthDaily,
+        'pricesThisMonthAverage': pricesThisMonthAverage,
+
+        'pricesThisYearMonthly': pricesThisYearMonthly,
+        'pricesThisYearAverage': pricesThisYearAverage
       };
       res.render('spot_prices', data)
     })
@@ -159,12 +191,12 @@ app.get('/general', (req, res) => {
   Promise.all([priceMicroservices.selectXFromY('price', 'current_prices'),
   priceMicroservices.selectXFromY('*', 'hourly_page'),
   priceMicroservices.selectXFromY('average', 'average_price_today'),
-  priceMicroservices.selectXFromY('price', 'evening_price'),
-  priceMicroservices.selectXFromY('price, timeslot', 'lowest_price_today'),
-  priceMicroservices.selectXFromY('price, timeslot', 'highest_price_today'),
+  priceMicroservices.selectXFromY('price', 'evening_price_today'),
+  priceMicroservices.selectXFromY('*', 'lowest_price_today'),
+  priceMicroservices.selectXFromY('*', 'highest_price_today'),
 
   weatherMicroservices.selectXFromY('temperature', 'current_weather_forecast'),
-  weatherMicroservices.selectXFromY('wind_direction, wind_speed', 'current_wind_observations')
+  weatherMicroservices.selectXFromY('wind_direction, wind_speed', 'current_weather_forecast')
   ]) 
     .then(([priceResult,
       tableResult,

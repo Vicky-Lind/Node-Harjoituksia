@@ -75,7 +75,7 @@
             </div>
 
             <!-- right side -->
-            <div class="bg-white pb-4 sm:pb-none sm:px-6 md:px-16 2xl:px-28">
+            <div class="bg-white pb-10 sm:pb-none sm:px-6 md:px-16 2xl:px-28">
 
                 <!-- box -->
                 <div class="bg-[#F8EDE2] w-full h-[500px] lg:-mt-28 rounded-t-3xl sm:rounded-3xl grid grid-rows-5 grid-cols-2 px-8 sm:px-16 xl:px-24 py-2 sm:py-6 sm:shadow-2xl">
@@ -125,7 +125,7 @@
 
                             // Iterate over the tableData list and extract the hour and price values
                             {{#each tableData}}
-                                xValues.push({{hour}} + ":00");
+                                xValues.push("{{hour}}:00");
                                 yValues.push({{price}});
                             {{/each}}
 

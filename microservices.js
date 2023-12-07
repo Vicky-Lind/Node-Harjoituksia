@@ -148,15 +148,15 @@ class WeatherMicroservices {
     // Return all calculated parameters
     return { windSpeed, windAngle };
   }
-  scheduleTemplateWindObservation(placeParam, placeObs) {
+  scheduleTemplateWindForecast(placeParam, placeObs) {
     const job = new cron.CronJob(settings.scheduler.weatherTimepattern, async () => {
       try {
         const windSpeedStr = 'wind speed';
         const windDirectionStr = 'wind direction';
         const place = placeObs;
 
-        const windSpeedDBTable = windSpeedStr.replace(" ", "_") + '_observation';
-        const windDirectionDBTable = windDirectionStr.replace(" ", "_") + '_observation';
+        const windSpeedDBTable = windSpeedStr.replace(" ", "_") + '_forecast';
+        const windDirectionDBTable = windDirectionStr.replace(" ", "_") + '_forecast';
 
         const WIND_VMS_ENDPOINT = `https://opendata.fmi.fi/wfs/fin?service=WFS&version=2.0.0&request=GetFeature&storedquery_id=ecmwf::forecast::surface::point::timevaluepair&place=${placeParam}&parameters=WindVMS`
         const WIND_UMS_ENDPOINT = `https://opendata.fmi.fi/wfs/fin?service=WFS&version=2.0.0&request=GetFeature&storedquery_id=ecmwf::forecast::surface::point::timevaluepair&place=${placeParam}&parameters=WindUMS`
@@ -335,6 +335,19 @@ class WeatherMicroservices {
       }
     }, null, true, 'Europe/Helsinki');
   }
+
+  async fetchFinGridData() {
+    await fetch('https://beta-data.fingrid.fi/api/datasets/254/data?startTime=2023-12-04T09:37:00&endTime=2023-12-04T09:37:00&format=json&locale=en&sortBy=startTime&x-api-key=66bf4276bd8f4daea3803c4bb5fd962d')
+    .then(response => {
+        console.log(response.status);
+        return response.text();
+    })
+    .then(text => {
+        console.log(text);
+    })
+    .catch(err => console.error(err));
+}
+
   async selectXFromY(selectItem, fromItem) {
     let resultset = await pool.query(`SELECT ${selectItem} FROM public.${fromItem}`);
     return resultset;
@@ -347,12 +360,12 @@ const weatherMicroservices = new WeatherMicroservices(pool);
 
 priceMicroservices.scheduleLatestPriceDataFetch();
 
-
-weatherMicroservices.scheduleTemplateWindObservation('turku', 'Turku Artukainen');
+weatherMicroservices.scheduleTemplateWindForecast('turku', 'Turku Artukainen');
 
 weatherMicroservices.scheduleTemplateObservation('Temperature', 'Turku', 't2m', 'Turku Artukainen');
 
 weatherMicroservices.scheduleTemplateForecast('Temperature', 'Turku', 'temperature', 'Turku Artukainen');
 
+// weatherMicroservices.fetchFinGridData();
 // Export the Microservices class
 module.exports = {PriceMicroservices, WeatherMicroservices};

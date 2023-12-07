@@ -24,7 +24,7 @@
 </head>
 <body>
     <!-- Navbar -->
-    <nav class="my-nav sticky top-6 z-50 main-menu mx-2 sm:mx-20 mt-6 bg-[rgba(20,78,112,0.3)] rounded-t-3xl rounded-b-3xl backdrop-blur-lg shadow-md">
+    {{!-- <nav class="my-nav sticky top-6 z-50 main-menu mx-2 sm:mx-20 mt-6 bg-[rgba(20,78,112,0.3)] rounded-t-3xl rounded-b-3xl backdrop-blur-lg shadow-md">
         <div class="flex items-center justify-between mx-auto px-7 py-2">
 
         <!-- Logo -->
@@ -74,70 +74,60 @@
             </button>
             </div>
         </div>
-    </nav>
-    <!-- END OF NAV -->
+    </nav> --}}
+    <nav class="bg-gray-800 p-4 lg:flex lg:items-center lg:justify-between sticky top-0 z-50">
+        <div class="flex items-center justify-between">
+          <div class="text-white flex ml-4">
+            <img src="/icons/house.png" alt="logo" class="h-8 w-8">
+            <a href="/" class="ml-1 text-2xl font-semibold">
+              SmartHome
+            </a>
+          </div>
 
-    <!-- The hamburger menu -->
-    <div class="bg-[#144E70] ml-2 sm:ml-[80px] fixed hidden mobile-menu z-50 w-max text-center rounded-b-3xl shadow-md">
-        <ul class="">
-            <li><a href="/" class="block text-[16.67px] px-2 py-2 text-white font-semibold hover:bg-green-500 transition duration-300">Home</a></li>
-            <li><a href="/spot-prices" class="block text-[16.67px] px-2 pb-2 text-white font-semibold  hover:bg-green-500 transition duration-300">Spot Prices</a></li>
-            <li><a href="/weather-forecast" class="block text-[16.67px] px-2 pb-2 text-white font-semibold  hover:bg-green-500 transition duration-300">Weather Forecast</a></li>
-            <li><a href="/settings" class="block text-[16.67px] px-2 pb-2 text-white font-semibold  hover:bg-green-500 transition duration-300">settings</a></li>
-            <li><a href="/theme" class="block text-[16.67px] px-2 pb-2 text-white font-semibold  hover:bg-green-500 transition duration-300">theme</a></li>
-        </ul>
-    </div>
-    <script>
-        window.addEventListener('DOMContentLoaded', (event) => {
-            // Get the navbar
-            const navbar = document.querySelector('.my-nav');
-
-            // Get the hamburger menu
-            const hamburgerMenu = document.querySelector('.mobile-menu');
-
-            // Function to update the width of the hamburger menu
-            const updateMenuWidth = () => {
-                hamburgerMenu.style.width = `${navbar.offsetWidth}px`;
-            };
-
-            // Update the width of the hamburger menu when the page loads
-            updateMenuWidth();
-
-            // Update the width of the hamburger menu when the window is resized
-            window.addEventListener('resize', updateMenuWidth);
-        });
-
-        const main_menu = document.querySelector(".main-menu");
-        const btn = document.querySelector("button.mobile-menu-button");
-        const menu = document.querySelector(".mobile-menu");
-
-        btn.addEventListener("click", () => {
-            menu.classList.toggle("hidden");
-        });
-        // if btn is not shown then close the menu
-        window.addEventListener("resize", () => {
-            if (window.innerWidth > 970) {
-                menu.classList.add("hidden");
-                main_menu.classList.add("rounded-t-3xl");
-                main_menu.classList.add("rounded-b-3xl");
+          <div class="lg:hidden">
+            <button id="menuButton" class="hover:bg-gray-600 text-white px-2 py-1 rounded">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+              </svg>
+              
+            </button>
+          </div>
+        </div>
+      
+        <div id="menu" class="hidden lg:flex mt-2 px-1 lg:mt-0 lg:px-6 lg:space-x-10 lg:space-x-20 justify-center content-center items-center grid grid-cols-2 lg:grid-cols-none justify-items-center items-center bg-gray-700 lg:bg-transparent rounded-xl">
+          <a href="/general" class="m-0 p-0 text-gray-300 hover:text-white">
+            General
+          </a>
+          <a href="/spot-prices" class="m-0 p-0 text-gray-300 hover:text-white">
+            Spot Prices
+          </a>
+          <a href="/weather" class="m-0 p-0 text-gray-300 hover:text-white">
+            Weather
+          </a>
+          <a href="/theme" class="m-0 p-0">
+            <img src="/icons/theme-active.png" alt="" class="w-[25px] h-[25px]">
+          </a>
+          <a href="/settings" class="m-0 p-0">
+            <img src="/icons/settings-active.png" alt="" class="w-[25px] h-[25px]">
+          </a>
+        </div>
+      </nav>
+      <script>
+          var menuButton = document.querySelector('#menuButton');
+          var menu = document.querySelector('#menu');
+        
+          menuButton.addEventListener('click', function() {
+            menu.classList.toggle('hidden');
+            menu.classList.toggle('block');
+          });
+        
+          window.addEventListener('resize', function() {
+            if (window.innerWidth >= 1324) {
+              menu.classList.remove('block');
+              menu.classList.add('hidden');
             }
-        });
-        // if the mobile-menu is shown, make the main menu bottom border radius to 0
-        btn.addEventListener("click", () => {
-            if (menu.classList.contains("hidden")) {
-                main_menu.classList.add("rounded-t-3xl");
-                main_menu.classList.add("rounded-b-3xl");
-            } else {
-                main_menu.classList.remove("rounded-b-3xl");
-            }
-        });
-
-        // if the current url is not "/" then remove the navbar
-        if (window.location.pathname !== "/") {
-            document.querySelector(".my-nav").classList.add("hidden");
-        }
-    </script>
-    </nav>
+          });
+      </script>
     {{{body}}}
     {{!-- <footer class="my-footer bg-gray-600 w-[100vw]">
   <div class="mx-auto w-full max-w-screen-xl p-4 py-6 lg:py-8">

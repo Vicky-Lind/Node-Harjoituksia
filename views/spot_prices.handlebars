@@ -3,103 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script> 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script> 
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 </head>
 <body>
     <!-- main container -->
     <div class="bg-white flex w-full h-screen">
 
-        <!-- placeholder -->
-        <div class="w-[120px] h-full p-6 lg:block hidden"></div>
-        <!-- lg menu -->
-        <div class="w-[120px] h-full p-6 lg:block hidden fixed">
-            
-            <!-- logo -->
-            <div class="my-4 w-[60px] h-[60px] flex justify-center items-center m-2">
-                <a href="/" class="hover:drop-shadow-lg hover:-translate-y-1 hover:scale-100 transition ease-in-out duration-300 w-[60px] h-[60px] items-center justify-center flex">
-                    <img src="icons/house.png" alt="logo" class="w-[60px] h-[60px]">
-                </a>
-            </div>
-
-            <!-- menu items -->
-            <div class="grid grid-cols-1 grid-rows-3 gap-y-10 mt-12 place-items-center">
-                <a href="/general" id="general-button" class="rounded-2xl hover:shadow-lg hover:-translate-y-1 hover:scale-100 transition ease-in-out duration-300 w-[50px] h-[50px]">
-                    <img src="icons/chart.png" alt="logo" class="w-[50px] h-[50px] p-2">
-                </a>
-                <a href="/spot-prices" id="spot-prices-button" class="rounded-2xl hover:drop-shadow-lg transition duration-300 w-[50px] h-[50px] bg-[#F57F28] drop-shadow-lg">
-                    <img src="icons/electricity-active.png" alt="logo" class="w-[50px] h-[50px] p-2">
-                </a>
-                <a href="/weather" id="weather-button" class="rounded-2xl hover:shadow-lg hover:-translate-y-1 hover:scale-100 transition ease-in-out duration-300 w-[50px] h-[50px]">
-                    <img src="icons/cloudy.png" alt="logo" class="w-[50px] h-[50px] p-2">
-                </a>
-            </div>
-
-            <!-- second menu items -->
-            <div class="grid grid-cols-1 grid-rows-2 gap-y-10 mt-72 place-items-center">
-                <a href="/settings" id="settings-button" class="rounded-2xl hover:shadow-lg hover:-translate-y-1 hover:scale-100 transition ease-in-out duration-300 p-2 w-[50px] h-[50px]">
-                    <img src="icons/settings.png" alt="logo" class="w-full h-full">
-                </a>
-                <a href="/theme" id="theme-button" class="rounded-2xl hover:shadow-lg hover:-translate-y-1 hover:scale-100 transition ease-in-out duration-300 w-[50px] h-[50px]">
-                    <img src="icons/theme.png" alt="logo" class="w-full h-full p-2">
-                </a>
-            </div>
-        </div>
-
         <!-- main content -->
-        <div class="bg-[#EAF0FD] w-full h-full px-1 sm:px-12 lg:py-8 md:py-4">
+        <div class="bg-[#EAF0FD] w-full h-full px-1 lg:px-12 2xl:px-36 lg:py-4 md:py-2">
 
             <!-- top content -->
-            <div class="w-full flex justify-between">
-                
-                <!-- md menu -->
-                <div class="lg:hidden block">
-                    <button class="menu-button">
-                        <!-- hamburger icon -->
-                        <img src="icons/menu-squared-orange.png" alt="menu" class="w-[50px] h-[50px]">
-                    </button>
-                </div>
-                <!-- md menu -->
-                <div class="bg-[#F7F7F7] fixed lg:hidden hidden menu z-50 w-[200px] h-[200px] text-center rounded-3xl shadow-md top-16 grid grid-cols-1 grid-rows-6">
-
-                    <a href="/" class="hover:bg-[#F57F28] hover:text-white text-[#19283F] text-lg font-semibold rounded-3xl">
-                        <h1>
-                            Etusivu
-                        </h1>
-                    </a>
-                    <a href="/general" class="hover:bg-[#F57F28] hover:text-white text-[#19283F] text-lg font-semibold rounded-3xl">
-                        <h1>
-                            General
-                        </h1>
-                    </a>
-                    <a href="/spot-prices" class="hover:bg-[#F57F28] hover:text-white text-[#19283F] text-lg font-semibold rounded-3xl">
-                        <h1>
-                            Spot Prices
-                        </h1>
-                    </a>
-                    <a href="/weather" class="hover:bg-[#F57F28] hover:text-white text-[#19283F] text-lg font-semibold rounded-3xl">
-                        <h1>
-                            Weather
-                        </h1>
-                    </a>
-                    <a href="/settings" class="hover:bg-[#F57F28] hover:text-white text-[#19283F] text-lg font-semibold rounded-3xl">
-                        <h1>
-                            Settings
-                        </h1>
-                    </a>
-                    <a href="/theme" class="hover:bg-[#F57F28] hover:text-white text-[#19283F] text-lg font-semibold rounded-3xl">
-                        <h1>
-                            Theme
-                        </h1>
-                    </a>
-                </div>
-
-                <h1 onload=showTime() id="clock" class="text-[#19283F] text-bold text-xl flex items-center justify-center mr-2 sm:mr-none">
+            <div class="w-full flex justify-end">
+                <h1 id="clock" class="text-[#19283F] text-bold text-xl flex items-center justify-end mr-2 sm:mr-none">
                 </h1>
             </div>
 
             <!-- middle content -->
-            <div class="grid grid-cols-2 grid-rows-1 gap-x-6 mt-8 pb-6">
+            <div class="grid grid-cols-2 grid-rows-1 gap-x-6 mt-6 pb-6">
 
                 <!-- left content -->
                 <div class="flex flex-col justify-between">
@@ -108,7 +29,7 @@
                     <div class="grid grid-rows-2 grid-cols-2 gap-x-6 gap-y-6">
 
                         <!-- price now -->
-                        <div class="bg-white grid grid-rows-3 grid-cols-1 shadow-md rounded-3xl p-4">
+                        <div class="hover:-translate-y-1 hover:scale-100 transition ease-in-out duration-300 bg-white grid grid-rows-3 grid-cols-1 shadow-md rounded-3xl p-4">
 
                             <!-- title -->
                             <div class="">
@@ -145,12 +66,12 @@
                         </div>
 
                         <!-- average price today -->
-                        <div class="bg-white grid grid-rows-3 grid-cols-1 shadow-md rounded-3xl p-4">
+                        <div class="hover:-translate-y-1 hover:scale-100 transition ease-in-out duration-300 bg-white grid grid-rows-3 grid-cols-1 shadow-md rounded-3xl p-4">
 
                             <!-- title -->
                             <div class="">
                                 <h1 class="font-medium text-[17px]">
-                                    Price now
+                                    Average today
                                 </h1>
                             </div>
 
@@ -159,7 +80,7 @@
 
                                 <div class="mr-4">
                                     <h1 class="font-semibold text-[20px]">
-                                        {{priceNow}} <span class="text-[16px] font-medium">snt/kWh</span>
+                                        {{averagePriceToday}} <span class="text-[16px] font-medium">snt/kWh</span>
                                     </h1>
                                 </div>
 
@@ -182,12 +103,12 @@
                         </div>
 
                         <!-- lowest today -->
-                        <div class="bg-white grid grid-rows-3 grid-cols-1 shadow-md rounded-3xl p-4">
+                        <div class="hover:-translate-y-1 hover:scale-100 transition ease-in-out duration-300 bg-white grid grid-rows-3 grid-cols-1 shadow-md rounded-3xl p-4">
 
                             <!-- title -->
                             <div class="">
                                 <h1 class="font-medium text-[17px]">
-                                    Price now
+                                    Lowest today, {{formatDate lowestPriceTodayTimeslot}}
                                 </h1>
                             </div>
 
@@ -196,7 +117,7 @@
 
                                 <div class="mr-4">
                                     <h1 class="font-semibold text-[20px]">
-                                        {{priceNow}} <span class="text-[16px] font-medium">snt/kWh</span>
+                                        {{lowestPriceToday}} <span class="text-[16px] font-medium">snt/kWh</span>
                                     </h1>
                                 </div>
 
@@ -219,12 +140,12 @@
                         </div>
 
                         <!-- highest today -->
-                        <div class="bg-white grid grid-rows-3 grid-cols-1 shadow-md rounded-3xl p-4">
+                        <div class="hover:-translate-y-1 hover:scale-100 transition ease-in-out duration-300 bg-white grid grid-rows-3 grid-cols-1 shadow-md rounded-3xl p-4">
 
                             <!-- title -->
                             <div class="">
                                 <h1 class="font-medium text-[17px]">
-                                    Price now
+                                    Highest today, {{formatDate highestPriceTodayTimeslot}}
                                 </h1>
                             </div>
 
@@ -233,7 +154,7 @@
 
                                 <div class="mr-4">
                                     <h1 class="font-semibold text-[20px]">
-                                        {{priceNow}} <span class="text-[16px] font-medium">snt/kWh</span>
+                                        {{highestPriceToday}} <span class="text-[16px] font-medium">snt/kWh</span>
                                     </h1>
                                 </div>
 
@@ -272,30 +193,31 @@
 
                 </div>
 
-                <!-- right content / Trends -->
-                <div class="mx-12">
-                    <div class="bg-[#98BDFF] rounded-3xl shadow-md flex flex-col p-8">
+                <!-- right content / ? -->
+                <div class="ml-12">
+                    <div class="hover:-translate-y-1 hover:scale-100 transition ease-in-out duration-300 bg-[#98BDFF] rounded-3xl shadow-md flex flex-col p-8">
                         
                         <!-- title -->
                         <div>
                             <h1 class="font-medium text-[22px]">
-                                Trends
+                                What data goes here?
                             </h1>
                         </div>
 
                         <!-- description -->
                         <div class="row-start-2">
                             <h1 class="mt-3">
-                                The trends show how the average spot electricity price has developed over the last week, month, and year compared to the corresponding period before that.
+                                This is the description.
                             </h1>
+                        </div>
 
                         <!-- Last week -->
-                        <div class="bg-white grid grid-rows-2 grid-cols-1 shadow-md rounded-3xl p-4">
+                        <div class="bg-white grid grid-rows-2 grid-cols-1 shadow-md rounded-3xl p-4 my-2">
 
                             <!-- title -->
                             <div class="">
                                 <h1 class="font-medium text-[17px]">
-                                    Price now
+                                    last week comparison?
                                 </h1>
                             </div>
 
@@ -320,12 +242,12 @@
                         </div>
 
                         <!-- Last month -->
-                        <div class="bg-white grid grid-rows-2 grid-cols-1 shadow-md rounded-3xl p-4">
+                        <div class="bg-white grid grid-rows-2 grid-cols-1 shadow-md rounded-3xl p-4 my-2">
 
                             <!-- title -->
                             <div class="">
                                 <h1 class="font-medium text-[17px]">
-                                    Price now
+                                    Last month comparison?
                                 </h1>
                             </div>
 
@@ -350,12 +272,12 @@
                         </div>
 
                         <!-- Last year -->
-                        <div class="bg-white grid grid-rows-2 grid-cols-1 shadow-md rounded-3xl p-4">
+                        <div class="bg-white grid grid-rows-2 grid-cols-1 shadow-md rounded-3xl p-4 my-2">
 
                             <!-- title -->
                             <div class="">
                                 <h1 class="font-medium text-[17px]">
-                                    Price now
+                                    Last year comparison?
                                 </h1>
                             </div>
 
@@ -385,46 +307,235 @@
             </div>
 
             <!-- bottom content -->
-            <div></div>
+            <!-- Things that should go here: choose chart or table, download as, choose start date, choose compare to previous year, "choose day, week, year", some info box? -->
+            <div class="w-full h-full">
+                <div class="bg-white w-full h-full py-12 px-12 rounded-3xl flex flex-col">
 
+                    <!-- Title -->
+                    <h1 class="font-medium text-[22px]">
+                        Sähkön hinta nyt sekä valitulla ajanjaksolla
+                    </h1>
+
+                    <!-- Selections -->
+                    <div class="flex w-full pt-6 items-end">
+
+                         <!-- Choose startdate -->
+                        <div class="mr-6">
+                            <label class="text-lg font-semibold">Valitse aloituspäviä</label>
+                            <br>
+                            <input id="datepicker" class="rounded-3xl shadow-md px-3 py-2 w-56 cursor-pointer border border-1" type="text" placeholder="">
+                        </div>
+
+                        <!-- Choose time period -->
+                        <div class="mr-6">
+                            <label class="text-lg font-semibold">Näytettävä ajanjakso</label>
+                            <br>
+                            <div class="relative inline-flex w-56">
+                                <select class="rounded-3xl shadow-md px-3 py-2 w-full cursor-pointer border border-1" id="timePeriod">
+                                    <option value="day">Today (hourly)</option>
+                                    <option value="week">Week</option>
+                                    <option value="month">Month</option>
+                                    <option value="year">Year</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Checkbox to compare to last year -->
+                        <div class="">
+                            <label class="text-lg font-normal flex items-center">
+                                <input type="checkbox" class="form-checkbox rounded-3xl cursor-pointer h-5 w-5" id="compareLastYear">
+                                <span class="ml-2">Compare to last year</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Table or Chart selection -->
+                    <div class="pt-3 w-full flex justify-center items-center">
+                        <div class="inline-flex rounded-3xl shadow-md border border-2 border-[#4B49AC]" role="group">
+                            <button type="button" class="rounded-l-3xl px-4">
+                                Chart
+                            </button>
+                            <button type="button" class="bg-[#4B49AC] rounded-r-3xl px-4 text-white">
+                                Table
+                            </button>
+                        </div>
+                    </div>
+                    <!-- Chart -->
+                    <div class="w-full h-full pt-6">
+                        <canvas id="spot-price-page-chart" width="400" height="400"></canvas>
+                    </div>
+                    
+                </div>
+
+            </div>
         </div>
         
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script>
-    // ------------------------------
-    window.onload = function() {        
-        const btn = document.querySelector(".menu-button");
-        const menu = document.querySelector(".menu");
+        function formatDate(dateString) {
+            // Create a new Date object
+            const date = new Date(dateString);
 
-        // on click and hover, change the image in menu button to orange icon
-        btn.addEventListener("click", () => {
-            menu.classList.toggle("hidden");
-            btn.removeChild(btn.childNodes[0]);
-            if (menu.classList.contains("hidden")) {
-                btn.innerHTML = '<img src="icons/menu-squared-orange.png" alt="menu" class="w-[50px] h-[50px]">';
-            } else {
-                btn.innerHTML = '<img src="icons/menu-squared-hover.png" alt="menu" class="w-[50px] h-[50px]">';
+            // Format the date
+            const hours = date.getHours() + ":00";
+            const day = date.getDate();
+            const month = date.getMonth() + 1; // Months are zero-based
+            const year = date.getFullYear();
+
+            // Return the formatted date
+            return `${hours}`;
+        }
+        // Define the chart variable outside the function
+let chart;
+
+        const xValues = [];
+        const yValues = [];
+        const barColors = [];
+        const averagePriceTodayData = [];
+
+        // Get the average price for today
+        let averagePriceToday = {{averagePriceToday}};
+
+        // Iterate over the tableData list and extract the hour and price values
+        {{#each pricesTodayTable}}
+            xValues.push("{{formatDate timeslot}}");
+            yValues.push({{price}});
+            barColors.push("rgba(245, 127, 40, 0.9)");
+            averagePriceTodayData.push(averagePriceToday);
+        {{/each}}
+
+        chart = new Chart(document.getElementById('spot-price-page-chart'), {
+            type: 'bar',
+            data: {
+                labels: xValues,
+                datasets: [{
+                    type: 'line',
+                    label: "Average Today",
+                    borderColor: "#BC5E00",
+                    borderWidth: 2,
+                    data: averagePriceTodayData,
+                    fill: false,
+                    pointRadius: 0,
+                    borderDash: [5, 5],
+                }, {
+                    label: "Hourly",
+                    backgroundColor: barColors,
+                    data: yValues,
+                    borderRadius: 5,
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: true
+                    }
+                },
+                scales: {
+                    x: {
+                        grid: {
+                            display: false
+                        }
+                    },
+                    y: {
+                        grid: {
+                            display: true
+                        }
+                    }
+                }
             }
         });
-        // ------------------------------
+        // Get the select element
+const timePeriodSelect = document.getElementById('timePeriod');
+
+// Function to update the chart
+// Function to update the chart
+let pricesTodayTable = {{{json pricesTodayTable}}};
+let pricesThisWeekDaily = {{{json pricesThisWeekDaily}}};
+let pricesThisMonthDaily = {{{json pricesThisMonthDaily}}};
+let pricesThisYearMonthly = {{{json pricesThisYearMonthly}}};
+
+
+function updateChart() {
+    // Get the selected time period
+    const timePeriod = timePeriodSelect.value;
+
+    // Clear the current chart data
+    xValues.length = 0;
+    yValues.length = 0;
+    barColors.length = 0;
+    averagePriceTodayData.length = 0;
+
+    // Determine which data to use based on the selected time period
+    let data;
+    switch (timePeriod) {
+        case 'day':
+            data = pricesTodayTable;
+            break;
+        case 'week':
+            data = pricesThisWeekDaily;
+            break;
+        case 'month':
+            data = pricesThisMonthDaily;
+            break;
+        case 'year':
+            data = pricesThisYearMonthly;
+            break;
+    }
+
+    // Update the chart data
+    data.forEach(item => {
+        xValues.push(formatDate(item.timeslot));
+        yValues.push(item.price);
+        barColors.push("rgba(245, 127, 40, 0.9)");
+        averagePriceTodayData.push(averagePriceToday);
+    });
+
+    // Update the chart
+    chart.update();
+}
+
+// Listen for changes on the select element
+timePeriodSelect.addEventListener('change', updateChart);
+
+// Update the chart initially
+updateChart();
+
+        //----------------------------------------------
+
+        // datepicker
+        let dateDP = new Date();
+        flatpickr("#datepicker", {
+            defaultDate: [dateDP],
+            dateFormat: "d.m.Y",
+            altInput: true,
+            altFormat: "F j, Y",
+        });
+
+        //----------------------------------------------
+        window.onload = function() {     
+        
         // clock
         function showTime() {
-        // Create a date object containing curent timestamp
-        var date = new Date();
-        // Separate hours, minutes and seconds
-        var h = date.getHours();
-        var m = date.getMinutes();
-        var s = date.getSeconds();
-        // Add leading zeros
-        h = (h < 10) ? "0" + h : h;
-        m = (m < 10) ? "0" + m : m;
-        s = (s < 10) ? "0" + s : s;
-        // Build a string for time and put it into h2 named clock
-        var time = h + "." + m + "." + s;
-        document.getElementById("clock").innerHTML = time
-        // After 1000 ms (1 s) call showTima again
-        setTimeout(showTime, 1000);
-    }
-    showTime();
-    }
+            // Create a date object containing current timestamp
+            var date = new Date();
+            // Separate hours, minutes and seconds
+            var h = date.getHours();
+            var m = date.getMinutes();
+            var s = date.getSeconds();
+            // Add leading zeros
+            h = (h < 10) ? "0" + h : h;
+            m = (m < 10) ? "0" + m : m;
+            s = (s < 10) ? "0" + s : s;
+            // Build a string for time and put it into h1 named clock
+            var time = h + "." + m + "." + s;
+            document.getElementById("clock").innerHTML = time;
+            // After 1000 ms (1 s) call showTime again
+            setTimeout(showTime, 1000);
+        }
+        showTime();
+        }
+
     </script>
 </body>
