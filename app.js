@@ -97,13 +97,13 @@ app.get('/spot-prices', (req, res) => {
 
   priceMicroservices.selectXFromY('*', 'prices_this_week_hourly'), // Prices today, in hourly form (full)
   priceMicroservices.selectXFromY('*', 'prices_this_week_daily'), // Prices this week, in daily form (full)
-  priceMicroservices.selectXFromY('*', 'prices_this_week_average'), // Average this week
+  priceMicroservices.selectXFromY('average_price', 'prices_this_week_average'), // Average this week
 
   priceMicroservices.selectXFromY('*', 'prices_this_month_daily'), // Prices this month, in daily form (full)
-  priceMicroservices.selectXFromY('*', 'prices_this_month_average'), // Average this month
+  priceMicroservices.selectXFromY('average_price', 'prices_this_month_average'), // Average this month
 
   priceMicroservices.selectXFromY('*', 'prices_this_year_monthly'), // Prices this year, in monthly form (full)
-  priceMicroservices.selectXFromY('*', 'prices_this_year_average'), // Average this year
+  priceMicroservices.selectXFromY('average_price', 'prices_this_year_average'), // Average this year
 
   ]) 
     .then(([priceResult,
@@ -140,13 +140,13 @@ app.get('/spot-prices', (req, res) => {
 
       let pricesThisWeekHourly = pricesThisWeekHourlyResult.rows;
       let pricesThisWeekDaily = pricesThisWeekDailyResult.rows;
-      let pricesThisWeekAverage = pricesThisWeekAverageResult.rows
+      let pricesThisWeekAverage = pricesThisWeekAverageResult.rows[0]['average_price'];
 
       let pricesThisMonthDaily = pricesThisMonthDailyResult.rows;
-      let pricesThisMonthAverage = pricesThisMonthAverageResult.rows
+      let pricesThisMonthAverage = pricesThisMonthAverageResult.rows[0]['average_price'];
 
       let pricesThisYearMonthly = pricesThisYearMonthlyResult.rows;
-      let pricesThisYearAverage = pricesThisYearAverageResult.rows
+      let pricesThisYearAverage = pricesThisYearAverageResult.rows[0]['average_price'];
 
       let data = {
         'priceNow': priceNow,
