@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script> 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js" integrity="sha512-r22gChDnGvBylk90+2e/ycr3RVrDi8DIOkIGNhJlKfuyQM4tIRAI062MaV8sfjQKYVGjOBaZBOA87z+IhZE9DA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 </head>
 <body>
@@ -194,7 +195,7 @@
                 </div>
 
                 <!-- right content / ? -->
-                <div class="lg:ml-12">
+                <div class="lg:ml-12 pt-6 lg:pt-0">
                     <div class="hover:-translate-y-1 hover:scale-100 transition ease-in-out duration-300 bg-[#98BDFF] rounded-3xl shadow-md flex flex-col p-8">
                         
                         <!-- title -->
@@ -338,14 +339,6 @@
                                 </select>
                             </div>
                         </div>
-
-                        <!-- Checkbox to compare to last year -->
-                        <div class="">
-                            <label class="text-lg font-normal flex items-center">
-                                <input type="checkbox" class="form-checkbox rounded-md cursor-pointer h-5 w-5" id="compareLastYear">
-                                <span class="ml-2">Compare to last year</span>
-                            </label>
-                        </div>
                     </div>
                     <!-- Table or Chart selection -->
                     <div class="pt-6 w-full flex justify-center items-center">
@@ -373,12 +366,25 @@
                         <div id="table-container" class="hidden">
                         </div>
                     </div>
+                    <!-- Download as -->
+                    <div id="downloadAs" class="flex flex-col justify-center items-center">
+                        <label class="text-lg font-semibold">Lataa tiedot</label>
+                        <div class="inline-flex rounded-3xl shadow-md p-1 bg-[#4B49AC]" role="group">
+                            <button id="downloadCSV" type="button" class="bg-[#4B49AC] hover:bg-[#6D6BE2] rounded-l-3xl px-4  text-white">
+                                CSV
+                            </button>
+                            <button id="downloadExcel" type="button" class="bg-white hover:bg-[#C4C3EA] rounded-r-3xl px-4 text-black">
+                                Excel
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
         
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script>
+
         //______________________________________________
         // Chart
         function formatDayTimeslot(dateString) {
@@ -394,7 +400,6 @@
             // Return the formatted date
             return `${hours}`;
         }
-        
         function formatDateTimeslot(dateString) {
             // Create a new Date object
             const date = new Date(dateString);
@@ -408,7 +413,6 @@
             // Return the formatted date
             return `${day}.${month}.${year}, kl.${hours}`;
         }
-        
         function formatDateDay(dateString) {
             // Create a new Date object
             const date = new Date(dateString);
@@ -581,10 +585,15 @@
             });
             chart.update(); // Update the chart
         }
+
         // Listen for changes on the select element
         timePeriodSelect.addEventListener('change', updateChart);
         // Update the chart initially
         updateChart();
+
+        //______________________________________________
+        // Download as button, hide when table is active
+
         //______________________________________________
 
         // datepicker
@@ -629,6 +638,8 @@
 
         const chartButton = document.getElementById('chartButton');
         const chartContainer = document.getElementById('chart-container');
+
+        const downloadAs = document.getElementById('downloadAs');
         
         function getDataForTimePeriod() {
             const timePeriod = timePeriodSelect.value;
@@ -658,6 +669,7 @@
                 tableButton.classList.remove('bg-white', 'text-black', 'hover:bg-[#C4C3EA]');
                 tableButton.classList.add('bg-[#4B49AC]', 'text-white', 'hover:bg-[#6D6BE2]');
                 tableContainer.classList.remove('hidden');
+                downloadAs.classList.add('hidden');
                 tableContainer.innerHTML = '';
                 let data = getDataForTimePeriod();
                 let table = createTable(data);
@@ -683,6 +695,7 @@
                 // if the chart is hidden, remove the table and show the chart
                 tableContainer.classList.add('hidden');
                 chartContainer.classList.remove('hidden');
+                downloadAs.classList.remove('hidden');
 
                 // remove the table from the table container
                 tableContainer.removeChild(tableContainer.firstChild);
@@ -732,11 +745,60 @@
                 let bottomContainer = document.getElementById('bottom-container');
 
                 // Get the height of the tableContainer
-                let tableHeight = tableContainer.offsetHeight;
+                let tableHeight = tableContainer.offsetHeight + 20;
 
                 // Set the height of the bottomContainer to the height of the tableContainer
                 bottomContainer.className = `h-[${tableHeight}]`;
             }
         });
+    
+        //______________________________________________
+        // Download as Excel
+        function formatDataForExcel(data) {
+    // Initialize formatted data with headers
+    let formattedData = [['Timeperiod', 'Price']];
+
+    // Iterate over the data and add it to the formatted data
+    data.labels.forEach((label, index) => {
+        data.datasets.forEach(dataset => {
+            formattedData.push([label, dataset.data[index]]);
+        });
+    });
+
+    return formattedData;
+}
+        function downloadData(format) {
+    let data = chart.data;
+    let formattedData = '';
+
+    if (format === 'csv') {
+        // Define headers
+        let headers = ['Label'].concat(data.labels);
+        // Convert data to CSV
+        formattedData = headers.join(',') + '\n' + data.datasets.map(dataset => [dataset.label].concat(dataset.data).join(',')).join('\n');
+        // Create a Blob from the data
+        let blob = new Blob([formattedData], {type: 'text/csv'});
+        // Create a URL for the Blob
+        let url = URL.createObjectURL(blob);
+        // Create a temporary anchor element
+        let a = document.createElement('a');
+        a.href = url;
+        a.download = 'data.' + format;
+        // Simulate a click on the anchor element
+        a.click();
+    } else if (format === 'excel') {
+    // Format data for Excel
+    let formattedData = formatDataForExcel(data);
+    // Convert data to Excel
+    let workbook = XLSX.utils.book_new();
+    let worksheet = XLSX.utils.aoa_to_sheet(formattedData);
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
+    XLSX.writeFile(workbook, 'data.xlsx');
+}
+}
+
+// Add event listeners to the buttons
+document.getElementById('downloadCSV').addEventListener('click', () => downloadData('csv'));
+document.getElementById('downloadExcel').addEventListener('click', () => downloadData('excel'));
     </script>
 </body>

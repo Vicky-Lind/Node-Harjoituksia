@@ -94,6 +94,7 @@ app.get('/spot-prices', (req, res) => {
   priceMicroservices.selectXFromY('*', 'lowest_price_today'), // Lowest price today
 
   priceMicroservices.selectXFromY('*', 'prices_today'), // Hourly prices for today table (full)
+  priceMicroservices.selectXFromY('*', 'compare_prices_today'), // Compare prices for today (full) from last year
 
   priceMicroservices.selectXFromY('*', 'prices_this_week_hourly'), // Prices today, in hourly form (full)
   priceMicroservices.selectXFromY('*', 'prices_this_week_daily'), // Prices this week, in daily form (full)
@@ -112,6 +113,7 @@ app.get('/spot-prices', (req, res) => {
       lowestPriceTodayResult,
 
       pricesTodayResult,
+      comparePricesTodayResult,
 
       pricesThisWeekHourlyResult,
       pricesThisWeekDailyResult,
@@ -137,6 +139,7 @@ app.get('/spot-prices', (req, res) => {
       let lowestPriceTodayTimeslot = lowestPriceTodayResult.rows[0]['timeslot'];
 
       let pricesTodayTable = pricesTodayResult.rows;
+      let comparePricesTodayTable = comparePricesTodayResult.rows;
 
       let pricesThisWeekHourly = pricesThisWeekHourlyResult.rows;
       let pricesThisWeekDaily = pricesThisWeekDailyResult.rows;
@@ -160,6 +163,7 @@ app.get('/spot-prices', (req, res) => {
         
         'tableData': tableData,
         'pricesTodayTable': pricesTodayTable,
+        'comparePricesTodayTable': comparePricesTodayTable,
 
         'pricesThisWeekHourly': pricesThisWeekHourly,
         'pricesThisWeekDaily': pricesThisWeekDaily,
