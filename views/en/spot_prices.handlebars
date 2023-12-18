@@ -1,0 +1,797 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script> 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js" integrity="sha512-r22gChDnGvBylk90+2e/ycr3RVrDi8DIOkIGNhJlKfuyQM4tIRAI062MaV8sfjQKYVGjOBaZBOA87z+IhZE9DA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+</head>
+<body>
+    <!-- main container -->
+    <div class="bg-white flex w-full h-[200%]">
+
+        <!-- main content -->
+        <div class="bg-[#EAF0FD] w-full h-[200%] px-1 lg:px-4 2xl:px-36 lg:py-4 md:py-2">
+
+            <!-- top content -->
+            <div class="w-full flex justify-end">
+                <h1 id="clock" class="text-[#19283F] text-bold text-xl flex items-center justify-end mr-2 sm:mr-none">
+                </h1>
+            </div>
+
+            <!-- middle content -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 grid-rows-2 lg:grid-rows-1 xl:gap-x-6 gap-y-4 sm:gap-y-0 sm:mt-6 sm:pb-6">
+
+                <!-- left content -->
+                <div class="flex flex-col justify-between">
+
+                    <!-- boxes -->
+                    <div class="grid grid-rows-4 sm:grid-rows-2 grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-6">
+
+                        <!-- price now -->
+                        <div class="hover:-translate-y-1 hover:scale-100 transition ease-in-out duration-300 bg-white grid grid-rows-3 grid-cols-1 shadow-md rounded-3xl p-4">
+
+                            <!-- title -->
+                            <div class="">
+                                <h1 class="font-medium text-[17px]">
+                                    Price now
+                                </h1>
+                            </div>
+
+                            <!-- price -->
+                            <div class="flex row-start-2">
+
+                                <div class="mr-4">
+                                    <h1 class="font-semibold text-[20px]">
+                                        {{priceNow}} <span class="text-[16px] font-medium">snt/kWh</span>
+                                    </h1>
+                                </div>
+
+                                <div class="">
+                                    <div class="bg-[#C3FCBB] rounded-3xl px-2 shadow-sm shadow-[#2F7824]">
+                                        <h1 class="text-[#2F7824]">
+                                            +14%
+                                        </h1>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- description -->
+                            <div class="col-span-2 row-start-3 flex items-end">
+                                <h1 class="text-[14px] text-gray-700">
+                                    Compared to last week
+                                </h1>
+                            </div>
+
+                        </div>
+
+                        <!-- average price today -->
+                        <div class="hover:-translate-y-1 hover:scale-100 transition ease-in-out duration-300 bg-white grid grid-rows-3 grid-cols-1 shadow-md rounded-3xl p-4">
+
+                            <!-- title -->
+                            <div class="">
+                                <h1 class="font-medium text-[17px]">
+                                    Average today
+                                </h1>
+                            </div>
+
+                            <!-- price -->
+                            <div class="flex row-start-2">
+
+                                <div class="mr-4">
+                                    <h1 class="font-semibold text-[20px]">
+                                        {{averagePriceToday}} <span class="text-[16px] font-medium">snt/kWh</span>
+                                    </h1>
+                                </div>
+
+                                <div class="">
+                                    <div class="bg-[#C3FCBB] rounded-3xl px-2 shadow-sm shadow-[#2F7824]">
+                                        <h1 class="text-[#2F7824]">
+                                            +14%
+                                        </h1>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- description -->
+                            <div class="col-span-2 row-start-3 flex items-end">
+                                <h1 class="text-[14px] text-gray-700">
+                                    Compared to last week
+                                </h1>
+                            </div>
+
+                        </div>
+
+                        <!-- lowest today -->
+                        <div class="hover:-translate-y-1 hover:scale-100 transition ease-in-out duration-300 bg-white grid grid-rows-3 grid-cols-1 shadow-md rounded-3xl p-4">
+
+                            <!-- title -->
+                            <div class="">
+                                <h1 class="font-medium text-[17px]">
+                                    Lowest today, {{formatDate lowestPriceTodayTimeslot}}
+                                </h1>
+                            </div>
+
+                            <!-- price -->
+                            <div class="flex row-start-2">
+
+                                <div class="mr-4">
+                                    <h1 class="font-semibold text-[20px]">
+                                        {{lowestPriceToday}} <span class="text-[16px] font-medium">snt/kWh</span>
+                                    </h1>
+                                </div>
+
+                                <div class="">
+                                    <div class="bg-[#C3FCBB] rounded-3xl px-2 shadow-sm shadow-[#2F7824]">
+                                        <h1 class="text-[#2F7824]">
+                                            +14%
+                                        </h1>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- description -->
+                            <div class="col-span-2 row-start-3 flex items-end">
+                                <h1 class="text-[14px] text-gray-700">
+                                    Compared to last week
+                                </h1>
+                            </div>
+
+                        </div>
+
+                        <!-- highest today -->
+                        <div class="hover:-translate-y-1 hover:scale-100 transition ease-in-out duration-300 bg-white grid grid-rows-3 grid-cols-1 shadow-md rounded-3xl p-4">
+
+                            <!-- title -->
+                            <div class="">
+                                <h1 class="font-medium text-[17px]">
+                                    Highest today, {{formatDate highestPriceTodayTimeslot}}
+                                </h1>
+                            </div>
+
+                            <!-- price -->
+                            <div class="flex row-start-2">
+
+                                <div class="mr-4">
+                                    <h1 class="font-semibold text-[20px]">
+                                        {{highestPriceToday}} <span class="text-[16px] font-medium">snt/kWh</span>
+                                    </h1>
+                                </div>
+
+                                <div class="">
+                                    <div class="bg-[#C3FCBB] rounded-3xl px-2 shadow-sm shadow-[#2F7824]">
+                                        <h1 class="text-[#2F7824]">
+                                            +14%
+                                        </h1>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- description -->
+                            <div class="col-span-2 row-start-3 flex items-end">
+                                <h1 class="text-[14px] text-gray-700">
+                                    Compared to last week
+                                </h1>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <!-- text -->
+                    <div class="mt-6">
+                        <!-- title -->
+                        <h1 class="font-medium text-[22px]">
+                            Price development
+                        </h1>
+
+                        <!-- description -->
+                        <h1 class="mt-3">
+                            In October 2023, the electricity price in SE1 - Luleå was 65% lower compared to the same period last year. This significant decrease was due to a combination of factors including increased renewable energy production, favorable weather conditions, and lower demand. As a result, consumers in Luleå enjoyed substantial savings on their electricity bills during this period.
+                        </h1>
+                    </div>
+
+                </div>
+
+                <!-- right content / ? -->
+                <div class="lg:ml-12 pt-6 lg:pt-0">
+                    <div class="hover:-translate-y-1 hover:scale-100 transition ease-in-out duration-300 bg-[#98BDFF] rounded-3xl shadow-md flex flex-col p-8">
+                        
+                        <!-- title -->
+                        <div>
+                            <h1 class="font-medium text-[22px]">
+                                What data goes here?
+                            </h1>
+                        </div>
+
+                        <!-- description -->
+                        <div class="row-start-2">
+                            <h1 class="mt-3">
+                                This is the description.
+                            </h1>
+                        </div>
+
+                        <!-- Last week -->
+                        <div class="bg-white grid grid-rows-2 grid-cols-1 shadow-md rounded-3xl p-4 my-2">
+
+                            <!-- title -->
+                            <div class="">
+                                <h1 class="font-medium text-[17px]">
+                                    last week comparison?
+                                </h1>
+                            </div>
+
+                            <!-- price -->
+                            <div class="flex row-start-2">
+
+                                <div class="mr-4">
+                                    <h1 class="font-semibold text-[20px]">
+                                        {{priceNow}} <span class="text-[16px] font-medium">snt/kWh</span>
+                                    </h1>
+                                </div>
+
+                                <div class="">
+                                    <div class="bg-[#C3FCBB] rounded-3xl px-2 shadow-sm shadow-[#2F7824]">
+                                        <h1 class="text-[#2F7824]">
+                                            +14%
+                                        </h1>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <!-- Last month -->
+                        <div class="bg-white grid grid-rows-2 grid-cols-1 shadow-md rounded-3xl p-4 my-2">
+
+                            <!-- title -->
+                            <div class="">
+                                <h1 class="font-medium text-[17px]">
+                                    Last month comparison?
+                                </h1>
+                            </div>
+
+                            <!-- price -->
+                            <div class="flex row-start-2">
+
+                                <div class="mr-4">
+                                    <h1 class="font-semibold text-[20px]">
+                                        {{priceNow}} <span class="text-[16px] font-medium">snt/kWh</span>
+                                    </h1>
+                                </div>
+
+                                <div class="">
+                                    <div class="bg-[#C3FCBB] rounded-3xl px-2 shadow-sm shadow-[#2F7824]">
+                                        <h1 class="text-[#2F7824]">
+                                            +14%
+                                        </h1>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <!-- Last year -->
+                        <div class="bg-white grid grid-rows-2 grid-cols-1 shadow-md rounded-3xl p-4 my-2">
+
+                            <!-- title -->
+                            <div class="">
+                                <h1 class="font-medium text-[17px]">
+                                    Last year comparison?
+                                </h1>
+                            </div>
+
+                            <!-- price -->
+                            <div class="flex row-start-2">
+
+                                <div class="mr-4">
+                                    <h1 class="font-semibold text-[20px]">
+                                        {{priceNow}} <span class="text-[16px] font-medium">snt/kWh</span>
+                                    </h1>
+                                </div>
+
+                                <div class="">
+                                    <div class="bg-[#C3FCBB] rounded-3xl px-2 shadow-sm shadow-[#2F7824]">
+                                        <h1 class="text-[#2F7824]">
+                                            +14%
+                                        </h1>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+                
+            </div>
+
+            <!-- bottom content -->
+            <!-- Things that should go here: choose chart or table, download as, choose start date, choose compare to previous year, "choose day, week, year", some info box? -->
+            <div id="bottom-container" class="w-full h-[1050px]">
+                <div class="bg-white w-full h-full sm:py-12 sm:px-12 rounded-3xl flex flex-col">
+                    <!-- Title -->
+                    <h1 class="font-medium text-[22px]">
+                        Electricity price now and at chosen timeperiod
+                    </h1>
+                    <!-- Selections -->
+                    <div class="md:flex-row flex-col flex w-full pt-6 items-start md:items-end">
+
+                        <!-- Choose time period -->
+                        <div class="mr-6">
+                            <label class="text-lg font-semibold">Shown Timeperiod</label>
+                            <br>
+                            <div class="relative inline-flex w-56">
+                                <select class="rounded-md shadow-md px-3 py-2 w-full cursor-pointer border border-1" id="timePeriod">
+                                    <option value="day">Today</option>
+                                    <option value="week (hourly)">This week (hourly)</option>
+                                    <option value="week (daily)">This week (daily)</option>
+                                    <option value="month">This month</option>
+                                    <option value="year">This year</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Table or Chart selection -->
+                    <div class="pt-6 w-full flex justify-center items-center">
+                        <div class="inline-flex rounded-3xl shadow-md p-1 bg-[#4B49AC]" role="group">
+
+                            <!-- Chart -->
+                            <button type="button" id="chartButton" class="bg-[#4B49AC] hover:bg-[#6D6BE2] rounded-l-3xl px-4  text-white">
+                                Chart
+                            </button>
+
+                            <!-- Table -->
+                            <button type="button" id="tableButton" class="bg-white hover:bg-[#C4C3EA] rounded-r-3xl px-4 text-black">
+                                Table
+                            </button>
+                        </div>
+                    </div>
+                    <!-- Chart and Table -->
+                    <div class="flex flex-col sm:justify-center sm:items-center mb-6">
+                        <!-- Chart -->
+                        <div id="chart-container" class="w-full h-[500px] sm:h-[600px] pt-6">
+                            <canvas id="spot-price-page-chart"></canvas>
+                        </div>
+
+                        <!-- Table -->
+                        <div id="table-container" class="hidden">
+                        </div>
+                    </div>
+                    <!-- Download as -->
+                    <div id="downloadAs" class="flex flex-col justify-center items-center">
+                        <label class="text-lg font-semibold">Download as</label>
+                        <div class="inline-flex rounded-3xl shadow-md p-1 bg-[#4B49AC]" role="group">
+                            <button id="downloadCSV" type="button" class="bg-[#4B49AC] hover:bg-[#6D6BE2] rounded-l-3xl px-4  text-white">
+                                CSV
+                            </button>
+                            <button id="downloadExcel" type="button" class="bg-white hover:bg-[#C4C3EA] rounded-r-3xl px-4 text-black">
+                                Excel
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script>
+
+        //______________________________________________
+        // Chart
+        function formatDayTimeslot(dateString) {
+            // Create a new Date object
+            const date = new Date(dateString);
+
+            // Format the date
+            const hours = date.getHours() + ":00";
+            const day = date.getDate();
+            const month = date.getMonth() + 1; // Months are zero-based
+            const year = date.getFullYear();
+
+            // Return the formatted date
+            return `${hours}`;
+        }
+        function formatDateTimeslot(dateString) {
+            // Create a new Date object
+            const date = new Date(dateString);
+
+            // Format the date
+            const hours = date.getHours() + ":00";
+            const day = date.getDate();
+            const month = date.getMonth() + 1; // Months are zero-based
+            const year = date.getFullYear();
+
+            // Return the formatted date
+            return `${day}.${month}.${year}, kl.${hours}`;
+        }
+        function formatDateDay(dateString) {
+            // Create a new Date object
+            const date = new Date(dateString);
+
+            // Format the date
+            const day = date.getDate().toString().padStart(2, '0');
+            const month = date.getMonth() + 1; // Months are zero-based
+            const year = date.getFullYear();
+
+            // Return the formatted date
+            return `${day}.${month}.${year}`;
+        }
+        function formatDateMonth(dateString) {
+            // Create a new Date object
+            const date = new Date(dateString);
+
+            // Format the date
+            const day = date.getDate();
+            const month = date.getMonth() + 1; // Months are zero-based
+            const year = date.getFullYear();
+
+            // Return the formatted date
+            return `${month}.${year}`;
+        }
+
+        // Define the chart variables outside the function
+        let chart;
+        const xValues = [];
+        const yValues = [];
+        const barColors = [];
+        const averagePriceData = [];
+        const dataLabels = [];
+
+        // Initialize average chart data
+        let averagePriceToday = {{averagePriceToday}};
+        let pricesThisWeekAverage = {{pricesThisWeekAverage}}
+        let pricesThisMonthAverage = {{pricesThisMonthAverage}}
+        let pricesThisYearAverage = {{pricesThisYearAverage}}
+
+        // Initialize chart data
+        let pricesTodayTable = {{{json pricesTodayTable}}};
+        let pricesThisWeekHourly = {{{json pricesThisWeekHourly}}};
+        let pricesThisWeekDaily = {{{json pricesThisWeekDaily}}};
+        let pricesThisMonthDaily = {{{json pricesThisMonthDaily}}};
+        let pricesThisYearMonthly = {{{json pricesThisYearMonthly}}};
+
+        // Iterate over the tableData list and extract the hour and price values
+        {{#each pricesTodayTable}}
+            xValues.push("{{formatDate timeslot}}");
+            yValues.push({{price}});
+            barColors.push("rgba(245, 127, 40, 0.9)");
+            averagePriceData.push(averagePriceToday);
+            dataLabels.push("Average of today", "Hourly")
+        {{/each}}
+
+        // Create the initial chart
+        chart = new Chart(document.getElementById('spot-price-page-chart'), {
+            type: 'bar',
+            data: {
+                labels: xValues,
+                datasets: [{
+                    type: 'line',
+                    label: dataLabels[0],
+                    borderColor: "#BC5E00",
+                    borderWidth: 2,
+                    data: averagePriceData,
+                    fill: false,
+                    pointRadius: 0,
+                    borderDash: [5, 5],
+                }, {
+                    label: dataLabels[1],
+                    backgroundColor: barColors,
+                    data: yValues,
+                    borderRadius: 5,
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: true
+                    }
+                },
+                scales: {
+                    x: {
+                        grid: {
+                            display: false
+                        }
+                    },
+                    y: {
+                        grid: {
+                            display: true
+                        }
+                    }
+                }
+            }
+        });
+        //----------------------------------------------    
+    
+        // Get the selected time period
+        const timePeriodSelect = document.getElementById('timePeriod');
+        
+        function updateChart() { // Update the chart with the selected time period
+            const timePeriod = timePeriodSelect.value;
+
+            // Clear the current chart data
+            xValues.length = 0;
+            yValues.length = 0;
+            barColors.length = 0;
+            averagePriceData.length = 0;
+            dataLabels.length = 0;
+
+            let averagePrice;
+            let data;
+            switch (timePeriod) {
+                case 'day':
+                    data = pricesTodayTable;
+                    averagePrice = averagePriceToday;
+                    break;
+                case 'week (hourly)':
+                    data = pricesThisWeekHourly;
+                    averagePrice = pricesThisWeekAverage;
+                    break;
+                case 'week (daily)':
+                    data = pricesThisWeekDaily;
+                    averagePrice = pricesThisWeekAverage;
+                    break;
+                case 'month':
+                    data = pricesThisMonthDaily;
+                    averagePrice = pricesThisMonthAverage;
+                    break;
+                case 'year':
+                    data = pricesThisYearMonthly;
+                    averagePrice = pricesThisYearAverage;
+                    break;
+            }
+            // Update the chart data
+            data.forEach(item => {
+                if (data == pricesTodayTable) {
+                    xValues.push(formatDayTimeslot(item.timeslot));
+                    yValues.push(item.price);
+                    dataLabels.push("Average of today", "Hourly")
+                }
+                if (data == pricesThisWeekHourly) {
+                    xValues.push(formatDayTimeslot(item.timeslot));
+                    yValues.push(item.price);
+                    dataLabels.push("Average of this week", "Hourly")
+                }
+                if (data == pricesThisWeekDaily) {
+                    xValues.push(formatDateDay(item.day));
+                    yValues.push(item.average_price);
+                    dataLabels.push("Average of this week", "Daily average")
+
+                }
+                if (data == pricesThisMonthDaily) {
+                    xValues.push(formatDateDay(item.day));
+                    yValues.push(item.average_price);
+                    dataLabels.push("Average of this month", "Daily average")
+                }
+                if (data == pricesThisYearMonthly) {
+                    xValues.push(formatDateMonth(item.month));
+                    yValues.push(item.average_price);
+                    dataLabels.push("Average of this year", "Monthly average")
+                }
+                barColors.push("rgba(245, 127, 40, 0.9)");
+                averagePriceData.push(averagePrice);
+                chart.data.datasets[0].label = dataLabels[0];
+                chart.data.datasets[1].label = dataLabels[1];
+            });
+            chart.update(); // Update the chart
+        }
+
+        // Listen for changes on the select element
+        timePeriodSelect.addEventListener('change', updateChart);
+        // Update the chart initially
+        updateChart();
+
+        //______________________________________________
+        // Download as button, hide when table is active
+
+        //______________________________________________
+
+        // datepicker
+        let dateDP = new Date();
+        flatpickr("#datepicker", {
+            defaultDate: [dateDP],
+            dateFormat: "d.m.Y",
+            altInput: true,
+            altFormat: "F j, Y",
+        });
+
+        //______________________________________________
+        // clock
+        window.onload = function() {     
+        
+        // clock
+        function showTime() {
+            // Create a date object containing current timestamp
+            var date = new Date();
+            // Separate hours, minutes and seconds
+            var h = date.getHours();
+            var m = date.getMinutes();
+            var s = date.getSeconds();
+            // Add leading zeros
+            h = (h < 10) ? "0" + h : h;
+            m = (m < 10) ? "0" + m : m;
+            s = (s < 10) ? "0" + s : s;
+            // Build a string for time and put it into h1 named clock
+            var time = h + "." + m + "." + s;
+            document.getElementById("clock").innerHTML = time;
+            // After 1000 ms (1 s) call showTime again
+            setTimeout(showTime, 1000);
+        }
+        showTime();
+        }
+
+        //______________________________________________
+        // If user clicks the Table button, remove the chart and add the table. Table is initially hidden
+        // if user clicks the Chart button, remove the table and add the chart
+        const tableButton = document.getElementById('tableButton');
+        const tableContainer = document.getElementById('table-container');
+
+        const chartButton = document.getElementById('chartButton');
+        const chartContainer = document.getElementById('chart-container');
+
+        const downloadAs = document.getElementById('downloadAs');
+        
+        function getDataForTimePeriod() {
+            const timePeriod = timePeriodSelect.value;
+            switch (timePeriod) {
+                case 'day':
+                    return pricesTodayTable;
+                case 'week (hourly)':
+                    return pricesThisWeekHourly;
+                case 'week (daily)':
+                    return pricesThisWeekDaily;
+                case 'month':
+                    return pricesThisMonthDaily;
+                case 'year':
+                    return pricesThisYearMonthly;
+            }
+        }
+
+        timePeriodSelect.addEventListener('change', () => {
+            tableContainer.innerHTML = '';
+            let data = getDataForTimePeriod();
+            let table = createTable(data);
+            tableContainer.appendChild(table);
+        });
+
+        tableButton.addEventListener('click', () => {
+            if (tableContainer.classList.contains('hidden')) {
+                tableButton.classList.remove('bg-white', 'text-black', 'hover:bg-[#C4C3EA]');
+                tableButton.classList.add('bg-[#4B49AC]', 'text-white', 'hover:bg-[#6D6BE2]');
+                tableContainer.classList.remove('hidden');
+                downloadAs.classList.add('hidden');
+                tableContainer.innerHTML = '';
+                let data = getDataForTimePeriod();
+                let table = createTable(data);
+                tableContainer.appendChild(table);
+                chartContainer.classList.add('hidden');
+                chartButton.classList.remove('bg-[#4B49AC]', 'text-white', 'hover:bg-[#6D6BE2]');
+                chartButton.classList.add('bg-white', 'text-black', 'hover:bg-[#C4C3EA]');
+            }
+        });
+        // Update the table initially
+        tableContainer.innerHTML = '';
+        let initialTable = createTable(pricesTodayTable);
+        tableContainer.appendChild(initialTable);
+
+        chartButton.addEventListener('click', () => {
+            if (chartContainer.classList.contains('hidden')) {
+                chartButton.classList.remove('bg-white', 'text-black', 'hover:bg-[#C4C3EA]');
+                chartButton.classList.add('bg-[#4B49AC]', 'text-white', 'hover:bg-[#6D6BE2]');
+
+                tableButton.classList.remove('bg-[#4B49AC]', 'text-white', 'hover:bg-[#6D6BE2]');
+                tableButton.classList.add('bg-white', 'text-black', 'hover:bg-[#C4C3EA]');
+
+                // if the chart is hidden, remove the table and show the chart
+                tableContainer.classList.add('hidden');
+                chartContainer.classList.remove('hidden');
+                downloadAs.classList.remove('hidden');
+
+                // remove the table from the table container
+                tableContainer.removeChild(tableContainer.firstChild);
+            }
+        });
+        
+        function createTable(data) {
+            let table = document.createElement('table');
+            table.className = 'w-full sm:w-[700px] h-[500px] bg-red-200 sm:h-[600px] text-center text-black text-lg font-semibold shadow-md mt-6';
+
+            let tableHeader = document.createElement('thead');
+            tableHeader.className = 'bg-[#4B49AC] text-white px-4 py-2 my-2 border-[1px] border-[#4B49AC]';
+
+            let tableHeaderRow = document.createElement('tr');
+            tableHeaderRow.innerHTML = '<th>Ajanjakso</th><th>Price snt/kWh</th>';
+            tableHeader.appendChild(tableHeaderRow);
+
+            let tableBody = document.createElement('tbody');
+            data.forEach(item => {
+                let row = document.createElement('tr');
+                row.className = 'bg-white border-[1px] border-[#4B49AC]';
+                if (data === pricesTodayTable) {
+                    row.innerHTML = `<td>${formatDayTimeslot(item.timeslot)}</td><td>${item.price}</td>`;
+                } else if (data === pricesThisWeekHourly) {
+                    row.innerHTML = `<td>${formatDateTimeslot(item.timeslot)}</td><td>${item.price}</td>`;
+                } else if (data === pricesThisWeekDaily) {
+                    row.innerHTML = `<td>${formatDateDay(item.day)}</td><td>${item.average_price}</td>`;
+                } else if (data === pricesThisMonthDaily) {
+                    row.innerHTML = `<td>${formatDateDay(item.day)}</td><td>${item.average_price}</td>`;
+                } else if (data === pricesThisYearMonthly) {
+                    row.innerHTML = `<td>${formatDateMonth(item.month)}</td><td>${item.average_price}</td>`;
+                }
+                tableBody.appendChild(row);
+            });
+            table.appendChild(tableHeader);
+            table.appendChild(tableBody);
+
+            return table;
+        }
+        //______________________________________________
+
+        // if timeperiod == week(hourly), then get the height of the table and set that height
+        // to the bottom container
+        timePeriodSelect.addEventListener('change', () => {
+            let timePeriod = timePeriodSelect.value;
+            if (timePeriod === 'week (hourly)') {
+                let bottomContainer = document.getElementById('bottom-container');
+
+                // Get the height of the tableContainer
+                let tableHeight = tableContainer.offsetHeight + 20;
+
+                // Set the height of the bottomContainer to the height of the tableContainer
+                bottomContainer.className = `h-[${tableHeight}]`;
+            }
+        });
+    
+        //______________________________________________
+        // Download as Excel
+        function formatDataForExcel(data) {
+    // Initialize formatted data with headers
+    let formattedData = [['Timeperiod', 'Price']];
+
+    // Iterate over the data and add it to the formatted data
+    data.labels.forEach((label, index) => {
+        data.datasets.forEach(dataset => {
+            formattedData.push([label, dataset.data[index]]);
+        });
+    });
+
+    return formattedData;
+}
+        function downloadData(format) {
+    let data = chart.data;
+    let formattedData = '';
+
+    if (format === 'csv') {
+        // Define headers
+        let headers = ['Label'].concat(data.labels);
+        // Convert data to CSV
+        formattedData = headers.join(',') + '\n' + data.datasets.map(dataset => [dataset.label].concat(dataset.data).join(',')).join('\n');
+        // Create a Blob from the data
+        let blob = new Blob([formattedData], {type: 'text/csv'});
+        // Create a URL for the Blob
+        let url = URL.createObjectURL(blob);
+        // Create a temporary anchor element
+        let a = document.createElement('a');
+        a.href = url;
+        a.download = 'data.' + format;
+        // Simulate a click on the anchor element
+        a.click();
+    } else if (format === 'excel') {
+    // Format data for Excel
+    let formattedData = formatDataForExcel(data);
+    // Convert data to Excel
+    let workbook = XLSX.utils.book_new();
+    let worksheet = XLSX.utils.aoa_to_sheet(formattedData);
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
+    XLSX.writeFile(workbook, 'data.xlsx');
+}
+}
+
+// Add event listeners to the buttons
+document.getElementById('downloadCSV').addEventListener('click', () => downloadData('csv'));
+document.getElementById('downloadExcel').addEventListener('click', () => downloadData('excel'));
+    </script>
+</body>

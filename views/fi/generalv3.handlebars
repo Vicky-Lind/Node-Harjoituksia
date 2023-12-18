@@ -1,0 +1,330 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script> 
+</head>
+<body>
+    <!-- main container -->
+    <div class="bg-white flex w-full h-screen">
+
+        <!-- main content -->
+        <div class="w-full h-full px-1 sm:px-12 lg:py-4 md:py-2">
+
+            <!-- top content -->
+            <div class="w-full flex justify-end">
+            
+                <h1 id="clock" class="text-[#19283F] text-bold text-xl flex items-center justify-end mr-2 sm:mr-none">
+                </h1>
+            </div>
+
+            <!-- middle content -->
+            <div class="w-full h-[324] xl:h-[45%] grid xl:grid-cols-2 grid-cols-1 xl:grid-rows-1 grid-rows-2 xl:gap-x-7 xl:gap-y-none gap-y-6 mt-6 pb-6">
+
+                <!-- left content -->
+                <a href="/fi/spot-prices" class="hover:-translate-y-1 hover:scale-100 transition ease-in-out duration-300 ">
+                    <div class="bg-[#98BDFF] bg-cover bg-center bg-no-repeat w-full h-full grid grid-cols-1 grid-rows-3 gap-y-4 rounded-3xl sm:p-8 p-3 shadow-md">
+
+                        <!-- title -->
+                        <div class="grid grid-cols-2 grid-rows-1">
+                            <div class="col-span-1 flex">
+                                <img src="/icons/electricity-orange.png" alt="logo" class="w-[40px] h-[40px] bg-white rounded-full p-1">
+                                <div class="ml-4">
+                                    <h1 class="text-xl font-bold text-[#19283F]">
+                                        Hinta nyt
+                                        <span class="font-semibold text-lg text-[#19283F]">
+                                            <br>
+                                            (snt/kWh)
+                                        </span>
+                                    </h1>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- price now -->
+                        <div class="bg-[#19283F] p-2 rounded-3xl flex items-center justify-center h-full w-[45%]">
+                            <div class="flex items-center justify-center">
+                                <h1 class="text-5xl text-right text-white font-semibold">
+                                    {{priceNow}}
+                                </h1>
+                                <img src="/icons/increase.png" class="w-[35px] h-[35px]">
+                            </div>
+                        </div>
+
+                        <!-- some kind of progress bar to show if price is high or low -->
+                        <div class="bg-white rounded-3xl flex p-3 grid grid-cols-1 grid-rows-2">
+
+                            <div class="w-full flex justify-between">
+                                <h1 class="text-[#19283F] text-bold text-md">
+                                    Matala
+                                </h1>
+                                <h1 class="text-[#19283F] text-bold text-md text-center">
+                                    Kohtuullinen
+                                </h1>
+                                <h1 class="text-[#19283F] text-bold text-md">
+                                    Korkea
+                                </h1>
+                            </div>
+
+                            <!-- progress bar -->
+                            <div>
+                                <div class="w-full bg-[#D9DDE6] rounded-full overflow-hidden">
+
+                                    <div id="progress" class="h-[20px] w-0 transition-[width] duration-500" style="background: repeating-linear-gradient(-45deg, #F57F28, #F57F28 10px, #fbaa6f 10px, #fbaa6f 20px);">
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- right content -->
+                <a href="/fi/weather" class="hover:-translate-y-1 hover:scale-100 transition ease-in-out duration-300 ">
+                    <div class="bg-[#4B49AC] bg-cover bg-top bg-no-repeat w-full h-full flex grid grid-cols-1 grid-rows-3 gap-y-4 rounded-3xl sm:p-8 p-3 shadow-md">
+
+                        
+                        <!-- title -->
+                        <div class="grid grid-cols-2 grid-rows-1">
+                            <div class="col-span-1 flex">
+                                <img src="/icons/cloudy-orange.png" alt="logo" class="w-[40px] h-[40px] bg-white rounded-full p-1">
+                                <div class="ml-4">
+                                    <h1 class="text-xl font-semibold text-white">
+                                        Nykyinen sää
+                                        <span class="font-normal text-lg text-white">
+                                            <br>
+                                            (°C)
+                                        </span>
+                                    </h1>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- temperature now -->
+                        <div class="bg-white p-2 rounded-3xl flex items-center justify-center h-full w-[45%]">
+                            <div class="flex items-center justify-center">
+                                <h1 class="text-5xl text-right text-[#19283F] font-semibold">
+                                    {{temperature}}°C
+                                </h1>
+                            </div>
+                        </div>
+
+                        <!-- quick view boxes -->
+                        <div class="flex grid grid-cols-3 grid-rows-1 sm:gap-x-4 gap-x-2 w-full h-full">
+
+                            <div class="bg-[#19283F] rounded-3xl w-full h-full flex justify-top items-center flex-col text-white">
+                                <h1 class="text-sm p-1">
+                                    Tuulen nopeus
+                                </h1>
+                                <h1 class="sm:text-2xl text-xl text-bold">
+                                    {{windSpeed}}m/s
+                                </h1>
+                            </div>
+                            <div class="bg-[#F4E9CD] rounded-3xl w-full h-full flex justify-top items-center flex-col text-black">
+                                <h1 class="text-sm p-1">
+                                    Sade
+                                </h1>
+                                <h1 class="sm:text-2xl text-xl text-bold">
+                                    2.2 mm
+                                </h1>
+                            </div>
+                            <div class="bg-white rounded-3xl w-full h-full flex justify-top items-center flex-col text-black">
+                                <h1 class="text-sm p-1">
+                                    Pilvisyys
+                                </h1>
+                                <h1 class="sm:text-2xl text-lg text-bold">
+                                    Pilvistä (8/8)
+                                </h1>
+                            </div>
+                            
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+            <!-- bottom content -->
+            <div class="w-full h-[324] xl:h-[45%] grid xl:grid-cols-3 grid-cols-1 xl:grid-rows-1 grid-rows-2 xl:gap-x-7 xl:gap-y-none gap-y-6 xl:pt-6 xl:pb-none pb-6">
+                
+                <!-- left chart -->
+                <div class="col-span-2 bg-white w-full h-full rounded-3xl">
+                    <h1 class="text-2xl font-semibold">
+                        Tuntihinnat <span class="font-normal text-xl">(snt/kWh)</span>
+                    </h1>
+                     <canvas class="max-h-[90%]" id="hourlyChartChartJS"></canvas>
+                   <script>
+                        const xValues = [];
+                        const yValues = [];
+                        const barColors = [];
+                        const averagePriceTodayData = [];
+
+                        // Get the average price for today
+                        let averagePriceToday = {{averagePriceToday}};
+
+                        // Iterate over the tableData list and extract the hour and price values
+                        {{#each tableData}}
+                            xValues.push({{hour}} + ":00");
+                            yValues.push({{price}});
+                            barColors.push("rgba(245, 127, 40, 0.9)");
+                            averagePriceTodayData.push(averagePriceToday);
+                        {{/each}}
+
+                        new Chart(document.getElementById('hourlyChartChartJS'), {
+                            type: 'bar',
+                            data: {
+                                labels: xValues,
+                                datasets: [{
+                                    type: 'line',
+                                    label: "Average Today",
+                                    borderColor: "#BC5E00",
+                                    borderWidth: 2,
+                                    data: averagePriceTodayData,
+                                    fill: false,
+                                    pointRadius: 0,
+                                    borderDash: [5, 5],
+                                }, {
+                                    label: "Hourly",
+                                    backgroundColor: barColors,
+                                    data: yValues,
+                                    borderRadius: 5,
+                                }]
+                            },
+                            options: {
+                                responsive: true,
+                                maintainAspectRatio: false,
+                                plugins: {
+                                    legend: {
+                                        display: true
+                                    }
+                                },
+                                scales: {
+                                    x: {
+                                        grid: {
+                                            display: false
+                                        }
+                                    },
+                                    y: {
+                                        grid: {
+                                            display: true
+                                        }
+                                    }
+                                }
+                            }
+                        });
+                    </script>
+                </div>
+
+                <!-- right content -->
+                <a href="/fi/spot-prices" class="hover:-translate-y-1 hover:scale-100 transition ease-in-out duration-300">
+                    <div class="bg-[#F27A7D] bg-cover bg-center bg-no-repeat w-full h-full flex rounded-3xl grid grid-cols-1 grid-rows-3 p-4 gap-y-4 shadow-md">
+
+                        <div class="grid grid-cols-8 grid-rows-1 w-full h-full bg-[#19283F] rounded-3xl ">
+                            <div class="col-span-2 justify-self-center flex items-center">
+                                <img src="/icons/night-orange.png" class="self-center w-[40px] h-[40px] bg-white rounded-full p-1" alt="">
+                            </div>
+
+                            <div class="grid grid-rows-2 grid-cols-1 col-span-3">
+                                <h1 class="text-md font-semibold text-white flex items-end">
+                                    Illalla
+                                </h1>
+                                <p class="text-xl font-bold text-white flex items-top">
+                                    19:00
+                                </p>
+                            </div>
+
+                            <div class="col-span-3 flex justify-center">
+                                <h1 class="text-2xl font-bold text-[#F57F28] flex items-center self-center">
+                                    {{priceEvening}}
+                                </h1>
+                            </div>  
+                        </div>
+                        <div class="grid grid-cols-8 grid-rows-1 w-full h-full bg-[#F4E9CD] rounded-3xl">
+                            <div class="col-span-2 justify-self-center flex items-center">
+                                <img src="/icons/up-orange.png" class="self-center w-[40px] h-[40px] bg-white rounded-full p-1" alt="">
+                            </div>
+
+                            <div class="grid grid-rows-2 grid-cols-1 col-span-3">
+                                <h1 class="text-sm font-semibold text-[#19283F] flex items-end">
+                                    Korkein hinta tänään
+                                </h1>
+                                <p class="text-xl font-bold text-[#19283F] flex items-top">
+                                    {{formatDate highestPriceTodayTimeslot}}
+                                </p>
+                            </div>
+
+                            <div class="col-span-3 flex justify-center">
+                                <h1 class="text-2xl font-bold text-[#F57F28] flex items-center self-center">
+                                    {{highestPriceToday}}
+                                </h1>
+                            </div>  
+                        </div>
+                        <div class="grid grid-cols-8 grid-rows-1 w-full h-full bg-white rounded-3xl">
+                            <div class="col-span-2 justify-self-center flex items-center">
+                                <img src="/icons/down-orange.png" class="self-center w-[40px] h-[40px] bg-white rounded-full p-1" alt="">
+                            </div>
+
+                            <div class="grid grid-rows-2 grid-cols-1 col-span-3">
+                                <h1 class="text-md font-semibold text-[#19283F] flex items-end">
+                                    Alin hinta tänään
+                                </h1>
+                                <p class="text-xl font-bold text-[#19283F] flex items-top">
+                                    {{formatDate lowestPriceTodayTimeslot}}
+                                </p>
+                            </div>
+
+                            <div class="col-span-3 flex justify-center">
+                                <h1 class="text-2xl font-bold text-[#F57F28] flex items-center self-center">
+                                    {{lowestPriceToday}}
+                                </h1>
+                            </div>  
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+        
+    <script>
+    // ------------------------------
+    window.onload = function() {        
+        
+        // ------------------------------
+        // progress-bar
+        const currentPrice = {{priceNow}};
+        const maxPrice = 20;
+        const progress = document.getElementById('progress');
+
+        // Calculate the percentage of the current price relative to the max price
+        let percentage = (currentPrice / maxPrice) * 100;
+        if (percentage <= 1) {
+            percentage = 1;
+        }
+        if (percentage > 100) {
+            percentage = 100;
+        }
+
+        // Update the width of the progress bar
+        progress.style.width = `${percentage}%`;
+
+        // ------------------------------
+        // clock
+        function showTime() {
+        // Create a date object containing curent timestamp
+        var date = new Date();
+        // Separate hours, minutes and seconds
+        var h = date.getHours();
+        var m = date.getMinutes();
+        var s = date.getSeconds();
+        // Add leading zeros
+        h = (h < 10) ? "0" + h : h;
+        m = (m < 10) ? "0" + m : m;
+        s = (s < 10) ? "0" + s : s;
+        // Build a string for time and put it into h2 named clock
+        var time = h + "." + m + "." + s;
+        document.getElementById("clock").innerHTML = time
+        // After 1000 ms (1 s) call showTima again
+        setTimeout(showTime, 1000);
+    }
+    showTime();
+    }
+    </script>
+</body>

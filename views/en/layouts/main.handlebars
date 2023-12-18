@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sähkovahti</title>
+    <title>Electricityguard</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
   .my-button.items-center svg path {
@@ -23,68 +23,16 @@
 </style>
 </head>
 <body>
-    <!-- Navbar -->
-    {{!-- <nav class="my-nav sticky top-6 z-50 main-menu mx-2 sm:mx-20 mt-6 bg-[rgba(20,78,112,0.3)] rounded-t-3xl rounded-b-3xl backdrop-blur-lg shadow-md">
-        <div class="flex items-center justify-between mx-auto px-7 py-2">
-
-        <!-- Logo -->
-        <a href="/" class="flex items-center my-hover">
-            <span class="nav-link text-[24px] font-semibold text-white transition duration-300 inline-block">SmartHome</span>
-        </a>
-        
-
-        <!-- Pages -->
-        <div class="flex space-x-7">
-            <div class="hidden min-[970px]:flex items-center space-x-5 text-[16.67px]">
-                    <a href="/general" class="nav-link px-2 font-semibold text-white transition duration-300">General</a>
-                    <a href="/spot-prices" class="nav-link px-2 text-white font-semibold transition duration-300">Spot Prices</a>
-                    <a href="/weather" class="nav-link px-2 text-white font-semibold transition duration-300">Weather Forecast</a>
-                </div>
-            </div>
-
-            <!-- End part with the buttons -->
-            <div class="hidden min-[970px]:flex items-center space-x-3 text-[16.67px]">
-                <button type="button" class="items-center my-button">
-                    <a href="/settings">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" class="w-9 h-9">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12a7.5 7.5 0 0015 0m-15 0a7.5 7.5 0 1115 0m-15 0H3m16.5 0H21m-1.5 0H12m-8.457 3.077l1.41-.513m14.095-5.13l1.41-.513M5.106 17.785l1.15-.964m11.49-9.642l1.149-.964M7.501 19.795l.75-1.3m7.5-12.99l.75-1.3m-6.063 16.658l.26-1.477m2.605-14.772l.26-1.477m0 17.726l-.26-1.477M10.698 4.614l-.26-1.477M16.5 19.794l-.75-1.299M7.5 4.205L12 12m6.894 5.785l-1.149-.964M6.256 7.178l-1.15-.964m15.352 8.864l-1.41-.513M4.954 9.435l-1.41-.514M12.002 12l-3.75 6.495" />
-                        </svg>
-                    </a>
-                </button>
-                <button type="button" class="items-center my-button">
-                    <a href="/theme">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" class="w-8 h-8">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z" />
-                        </svg>                  
-                    </a>
-                </button>
-            </div>
-            <div class="min-[970px]:hidden flex items-center ml-5">
-                <button class="outline-none mobile-menu-button">
-                <svg class=" w-6 h-6 text-white hover:text-[#144E70]"
-                    x-show="!showMenu"
-                    fill="none"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor">
-                    <path d="M4 6h16M4 12h16M4 18h16"></path>
-                </svg>
-            </button>
-            </div>
-        </div>
-    </nav> --}}
-    <nav class="bg-gray-800 p-4 lg:flex lg:items-center lg:justify-between sticky top-0 z-50">
+    <nav class="bg-gray-800 p-4 xl:flex xl:items-center xl:justify-between sticky top-0 z-50">
         <div class="flex items-center justify-between">
           <div class="text-white flex ml-4">
-            <img src="/icons/house.png" alt="logo" class="h-8 w-8">
-            <a href="/" class="ml-1 text-2xl font-semibold">
+            <img src="/icons/house-white.png" alt="logo" class="h-8 w-8">
+            <a href="/en/" class="ml-1 text-2xl font-semibold">
               SmartHome
             </a>
           </div>
 
-          <div class="lg:hidden">
+          <div class="xl:hidden">
             <button id="menuButton" class="hover:bg-gray-600 text-white px-2 py-1 rounded">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
@@ -94,22 +42,47 @@
           </div>
         </div>
       
-        <div id="menu" class="hidden lg:flex mt-2 px-1 lg:mt-0 lg:px-6 lg:space-x-10 lg:space-x-20 justify-center content-center items-center grid grid-cols-2 lg:grid-cols-none justify-items-center items-center bg-gray-700 lg:bg-transparent rounded-xl">
-          <a href="/general" class="m-0 p-0 text-gray-300 hover:text-white">
+        <div id="menu" class="hidden xl:flex mt-2 px-1 xl:mt-0 xl:px-6 xl:space-x-10 xl:space-x-20 justify-center content-center items-center grid grid-cols-2 xl:grid-cols-none justify-items-center items-center bg-gray-700 xl:bg-transparent rounded-xl">
+          <a href="/en/general" class="m-0 p-0 text-gray-300 hover:text-white">
             General
           </a>
-          <a href="/spot-prices" class="m-0 p-0 text-gray-300 hover:text-white">
+          <a href="/en/spot-prices" class="m-0 p-0 text-gray-300 hover:text-white">
             Spot Prices
           </a>
-          <a href="/weather" class="m-0 p-0 text-gray-300 hover:text-white">
+          <a href="/en/weather" class="m-0 p-0 text-gray-300 hover:text-white">
             Weather
           </a>
-          <a href="/theme" class="m-0 p-0">
+
+
+          <a href="/en/theme" class="m-0 p-0">
             <img src="/icons/theme-active.png" alt="" class="w-[25px] h-[25px]">
           </a>
-          <a href="/settings" class="m-0 p-0">
+          <a href="/en/settings" class="m-0 p-0">
             <img src="/icons/settings-active.png" alt="" class="w-[25px] h-[25px]">
           </a>
+          <!-- Choose language -->
+          <div class="relative inline-flex w-32">
+            <button class="bg-gray-800 rounded-md shadow-md px-3 py-2 w-full cursor-pointer text-gray-300 hover:text-white border-[1.7px] border-gray-300 hover:border-white">
+              English
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="inline-block w-4 h-4 ml-2">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
+            <div class="absolute left-0 mt-12 w-32 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
+              <a href="/en/" class="flex px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900">
+                <img src="/icons/flags/world.png" alt="" class="w-4 h-4 mr-2">
+                English
+              </a>
+              <a href="/fi/" class="flex px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900">
+                <img src="/icons/flags/finland.png" alt="" class="w-4 h-4 mr-2">
+                Suomi
+              </a>
+              <a href="/sv/" class="flex px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900">
+                <img src="/icons/flags/sweden.png" alt="" class="w-4 h-4 mr-2">
+                Svenska
+              </a>
+            </div>
+          </div>
         </div>
       </nav>
       <script>
@@ -127,10 +100,38 @@
               menu.classList.add('hidden');
             }
           });
+
+          // Select the button and the dropdown
+          var button = document.querySelector('.relative.inline-flex.w-32 button');
+          var dropdown = document.querySelector('.relative.inline-flex.w-32 div');
+
+          // Add a click event listener to the button
+          button.addEventListener('click', function() {
+            // Toggle the visibility of the dropdown
+            dropdown.style.display = dropdown.style.display === 'none' ? 'block' : 'none';
+          });
+
+          // Initially hide the dropdown
+          dropdown.style.display = 'none';
+
+          // Based on what page the user is on (url), when language is selected, change 
+          // to that same page but in the selected language
+
+// Get the current page without the language
+var urlArray = window.location.pathname.split('/');
+var currentPage = urlArray.slice(2).join('/');
+
+// Modify the href of each language button to include the current page
+var languageButtons = dropdown.querySelectorAll('a');
+languageButtons.forEach(function(element) {
+  var languageSelected = element.href.split('/')[3];
+  element.href = '/' + languageSelected + '/' + currentPage;
+});
+
       </script>
     {{{body}}}
     {{!-- <footer class="my-footer bg-gray-600 w-[100vw]">
-  <div class="mx-auto w-full max-w-screen-xl p-4 py-6 lg:py-8">
+  <div class="mx-auto w-full max-w-screen-xl p-4 py-6 xl:py-8">
       <div class="md:flex md:justify-between">
         <div class="mb-6 md:mb-0">
             <a href="https://flowbite.com/" class="flex items-center">
@@ -163,7 +164,7 @@
             </div>
         </div>
     </div>
-    <hr class="my-6 border-gray-200 sm:mx-auto dark:border-gray-700 lg:my-8" />
+    <hr class="my-6 border-gray-200 sm:mx-auto dark:border-gray-700 xl:my-8" />
     <div class="sm:flex sm:items-center sm:justify-between">
         <span class="text-sm text-gray-500 sm:text-center dark:text-gray-400">© 2023 <a href="http://127.0.0.1:5500/test.html" class="hover:underline">SmartHome™</a>. All Rights Reserved.
         </span>

@@ -63,7 +63,8 @@ Handlebars.registerHelper('json', function(context) {
 // REITTIEN MÄÄRITYKSET
 // --------------------
 
-app.get('/', (req, res) => {
+app.get('/:lang/', (req, res) => {
+  const lang = req.params.lang;
   Promise.all([priceMicroservices.selectXFromY('price', 'current_prices'),
   priceMicroservices.selectXFromY('*', 'hourly_page'),
   priceMicroservices.selectXFromY('*', 'lowest_price_today'),
@@ -80,14 +81,15 @@ app.get('/', (req, res) => {
         'priceNow': priceNow,
         'tableData': tableData,
         'priceLowestToday': priceLowestToday,
-        'priceHighestToday': priceHighestToday
+        'priceHighestToday': priceHighestToday,
+        'layout': `../${lang}/layouts/main`
       };
-      res.render('index', data);
-    })
-})
+  res.render(`${lang}/index`, data);
+  });
+});
 /* prices today hourly, average price today hourly, this week daily, average price this week daily, this month daily, average price this month daily, this year monthly, average price this year monthly, and comparions for all of these to last year */
-
-app.get('/spot-prices', (req, res) => {
+app.get('/:lang/spot-prices', (req, res) => {
+  const lang = req.params.lang;
   Promise.all([priceMicroservices.selectXFromY('*', 'hourly_page'), // Price now AND hourly table data (from now forward),
   priceMicroservices.selectXFromY('average', 'average_price_today'), // Average price today
   priceMicroservices.selectXFromY('*', 'highest_price_today'), // Highest price today
@@ -173,25 +175,15 @@ app.get('/spot-prices', (req, res) => {
         'pricesThisMonthAverage': pricesThisMonthAverage,
 
         'pricesThisYearMonthly': pricesThisYearMonthly,
-        'pricesThisYearAverage': pricesThisYearAverage
+        'pricesThisYearAverage': pricesThisYearAverage,
+        'layout': `../${lang}/layouts/main`
       };
-      res.render('spot_prices', data)
+      res.render(`${lang}/spot_prices`, data);
     })
 })
-
-app.get('/hourly', (req, res) => {
-  priceMicroservices.selectXFromY('*', 'hourly_price').then((resultset) => {
-    let tableData = resultset.rows
-    let hourlyPageData = {
-      'tableData': tableData
-    }
-    res.render('hourly', hourlyPageData)
-  })
-})
-
 // Tuntihintasivun reitti ja dynaaminen data
-app.get('/general', (req, res) => {
-
+app.get('/:lang/general', (req, res) => {
+  const lang = req.params.lang;
   Promise.all([priceMicroservices.selectXFromY('price', 'current_prices'),
   priceMicroservices.selectXFromY('*', 'hourly_page'),
   priceMicroservices.selectXFromY('average', 'average_price_today'),
@@ -245,11 +237,46 @@ app.get('/general', (req, res) => {
 
         'temperature': temperature,
         'windDirection': windDirection,
-        'windSpeed': windSpeed
+        'windSpeed': windSpeed,
+        'layout': `../${lang}/layouts/main`
       };
-      res.render('generalv3', data);
+      res.render(`${lang}/generalv3`, data);
     })
 })
+
+app.get('/', (req, res) => {
+  Promise.all([priceMicroservices.selectXFromY('price', 'current_prices'),
+  priceMicroservices.selectXFromY('*', 'hourly_page'),
+  priceMicroservices.selectXFromY('*', 'lowest_price_today'),
+  priceMicroservices.selectXFromY('*', 'highest_price_today'),])
+
+    .then(([priceResult, tableResult, priceLowest, priceHighest]) => {
+      let priceNow = priceResult.rows[0]['price'];
+      let tableData = tableResult.rows;
+
+      let priceLowestToday = priceLowest.rows[0]['price'];
+      let priceHighestToday = priceHighest.rows[0]['price'];
+
+      let data = {
+        'priceNow': priceNow,
+        'tableData': tableData,
+        'priceLowestToday': priceLowestToday,
+        'priceHighestToday': priceHighestToday
+      };
+      res.render('index', data);
+    })
+})
+
+app.get('/hourly', (req, res) => {
+  priceMicroservices.selectXFromY('*', 'hourly_price').then((resultset) => {
+    let tableData = resultset.rows
+    let hourlyPageData = {
+      'tableData': tableData
+    }
+    res.render('hourly', hourlyPageData)
+  })
+})
+
 
 app.get('/original', (req, res) => {
 

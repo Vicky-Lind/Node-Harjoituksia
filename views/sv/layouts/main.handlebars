@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elvakt</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+  .my-button.items-center svg path {
+    stroke: white;
+    transition: stroke 0.2s ease-in-out;
+  }
+
+  .my-button.items-center:hover svg path {
+    stroke: #144E70;
+  }
+  .nav-link:hover {
+  color: #144E70 !important;
+}
+.my-footer {
+
+}
+</style>
+</head>
+<body>
+    <nav class="bg-gray-800 p-4 lg:flex lg:items-center lg:justify-between sticky top-0 z-50">
+        <div class="flex items-center justify-between">
+          <div class="text-white flex ml-4">
+            <img src="/icons/house-white.png" alt="logo" class="h-8 w-8">
+            <a href="/sv/" class="ml-1 text-2xl font-semibold">
+              SmartHome
+            </a>
+          </div>
+
+          <div class="lg:hidden">
+            <button id="menuButton" class="hover:bg-gray-600 text-white px-2 py-1 rounded">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+              </svg>
+              
+            </button>
+          </div>
+        </div>
+      
+        <div id="menu" class="hidden lg:flex mt-2 px-1 lg:mt-0 lg:px-6 lg:space-x-10 lg:space-x-20 justify-center content-center items-center grid grid-cols-2 lg:grid-cols-none justify-items-center items-center bg-gray-700 lg:bg-transparent rounded-xl">
+          <a href="/sv/general" class="m-0 p-0 text-gray-300 hover:text-white">
+            Översikt
+          </a>
+          <a href="/sv/spot-prices" class="m-0 p-0 text-gray-300 hover:text-white">
+            Spot Pris
+          </a>
+          <a href="/sv/weather" class="m-0 p-0 text-gray-300 hover:text-white">
+            Väder
+          </a>
+          <a href="/sv/theme" class="m-0 p-0">
+            <img src="/icons/theme-active.png" alt="" class="w-[25px] h-[25px]">
+          </a>
+          <a href="/sv/settings" class="m-0 p-0">
+            <img src="/icons/settings-active.png" alt="" class="w-[25px] h-[25px]">
+          </a>
+          <!-- Choose language -->
+          <div class="relative inline-flex w-32">
+            <button class="bg-gray-800 rounded-md shadow-md px-3 py-2 w-full cursor-pointer text-gray-300 hover:text-white border-[1.7px] border-gray-300 hover:border-white">
+              English
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="inline-block w-4 h-4 ml-2">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
+            <div class="absolute left-0 mt-12 w-32 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
+              <a href="/en/" class="flex px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900">
+                <img src="/icons/flags/world.png" alt="" class="w-4 h-4 mr-2">
+                English
+              </a>
+              <a href="/fi/" class="flex px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900">
+                <img src="/icons/flags/finland.png" alt="" class="w-4 h-4 mr-2">
+                Suomi
+              </a>
+              <a href="/sv/" class="flex px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900">
+                <img src="/icons/flags/sweden.png" alt="" class="w-4 h-4 mr-2">
+                Svenska
+              </a>
+            </div>
+          </div>
+        </div>
+      </nav>
+      <script>
+          var menuButton = document.querySelector('#menuButton');
+          var menu = document.querySelector('#menu');
+        
+          menuButton.addEventListener('click', function() {
+            menu.classList.toggle('hidden');
+            menu.classList.toggle('block');
+          });
+        
+          window.addEventListener('resize', function() {
+            if (window.innerWidth >= 1324) {
+              menu.classList.remove('block');
+              menu.classList.add('hidden');
+            }
+          });
+
+          // Select the button and the dropdown
+          var button = document.querySelector('.relative.inline-flex.w-32 button');
+          var dropdown = document.querySelector('.relative.inline-flex.w-32 div');
+
+          // Add a click event listener to the button
+          button.addEventListener('click', function() {
+            // Toggle the visibility of the dropdown
+            dropdown.style.display = dropdown.style.display === 'none' ? 'block' : 'none';
+          });
+
+          // Initially hide the dropdown
+          dropdown.style.display = 'none';
+
+          // Based on what page the user is on (url), when language is selected, change 
+          // to that same page but in the selected language
+
+// Get the current page without the language
+var urlArray = window.location.pathname.split('/');
+var currentPage = urlArray.slice(2).join('/');
+
+// Modify the href of each language button to include the current page
+var languageButtons = dropdown.querySelectorAll('a');
+languageButtons.forEach(function(element) {
+  var languageSelected = element.href.split('/')[3];
+  element.href = '/' + languageSelected + '/' + currentPage;
+});
+      </script>
+    {{{body}}}
+</body>
+</html>

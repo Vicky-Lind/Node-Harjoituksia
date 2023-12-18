@@ -23,7 +23,7 @@
             <div class="w-full h-[324] xl:h-[45%] grid xl:grid-cols-2 grid-cols-1 xl:grid-rows-1 grid-rows-2 xl:gap-x-7 xl:gap-y-none gap-y-6 mt-6 pb-6">
 
                 <!-- left content -->
-                <a href="/spot-prices" class="hover:-translate-y-1 hover:scale-100 transition ease-in-out duration-300 ">
+                <a href="/en/spot-prices" class="hover:-translate-y-1 hover:scale-100 transition ease-in-out duration-300 ">
                     <div class="bg-[#98BDFF] bg-cover bg-center bg-no-repeat w-full h-full grid grid-cols-1 grid-rows-3 gap-y-4 rounded-3xl sm:p-8 p-3 shadow-md">
 
                         <!-- title -->
@@ -32,7 +32,7 @@
                                 <img src="/icons/electricity-orange.png" alt="logo" class="w-[40px] h-[40px] bg-white rounded-full p-1">
                                 <div class="ml-4">
                                     <h1 class="text-xl font-bold text-[#19283F]">
-                                        Hinta nyt
+                                        Price now
                                         <span class="font-semibold text-lg text-[#19283F]">
                                             <br>
                                             (snt/kWh)
@@ -57,13 +57,13 @@
 
                             <div class="w-full flex justify-between">
                                 <h1 class="text-[#19283F] text-bold text-md">
-                                    Matala
+                                    Low
                                 </h1>
                                 <h1 class="text-[#19283F] text-bold text-md text-center">
-                                    Kohtuullinen
+                                    Medium
                                 </h1>
                                 <h1 class="text-[#19283F] text-bold text-md">
-                                    Korkea
+                                    High
                                 </h1>
                             </div>
 
@@ -81,7 +81,7 @@
                 </a>
 
                 <!-- right content -->
-                <a href="/weather" class="hover:-translate-y-1 hover:scale-100 transition ease-in-out duration-300 ">
+                <a href="/en/weather" class="hover:-translate-y-1 hover:scale-100 transition ease-in-out duration-300 ">
                     <div class="bg-[#4B49AC] bg-cover bg-top bg-no-repeat w-full h-full flex grid grid-cols-1 grid-rows-3 gap-y-4 rounded-3xl sm:p-8 p-3 shadow-md">
 
                         
@@ -91,7 +91,7 @@
                                 <img src="/icons/cloudy-orange.png" alt="logo" class="w-[40px] h-[40px] bg-white rounded-full p-1">
                                 <div class="ml-4">
                                     <h1 class="text-xl font-semibold text-white">
-                                        Nykyinen sää
+                                        Current weather
                                         <span class="font-normal text-lg text-white">
                                             <br>
                                             (°C)
@@ -115,7 +115,7 @@
 
                             <div class="bg-[#19283F] rounded-3xl w-full h-full flex justify-top items-center flex-col text-white">
                                 <h1 class="text-sm p-1">
-                                    Tuulen nopeus
+                                    Wind Speed
                                 </h1>
                                 <h1 class="sm:text-2xl text-xl text-bold">
                                     {{windSpeed}}m/s
@@ -123,7 +123,7 @@
                             </div>
                             <div class="bg-[#F4E9CD] rounded-3xl w-full h-full flex justify-top items-center flex-col text-black">
                                 <h1 class="text-sm p-1">
-                                    Sade
+                                    Rain
                                 </h1>
                                 <h1 class="sm:text-2xl text-xl text-bold">
                                     2.2 mm
@@ -131,10 +131,10 @@
                             </div>
                             <div class="bg-white rounded-3xl w-full h-full flex justify-top items-center flex-col text-black">
                                 <h1 class="text-sm p-1">
-                                    Pilvisyys
+                                    Cloud coverage
                                 </h1>
                                 <h1 class="sm:text-2xl text-lg text-bold">
-                                    Pilvistä (8/8)
+                                    Cloudy (8/8)
                                 </h1>
                             </div>
                             
@@ -149,7 +149,7 @@
                 <!-- left chart -->
                 <div class="col-span-2 bg-white w-full h-full rounded-3xl">
                     <h1 class="text-2xl font-semibold">
-                        Tuntihinnat <span class="font-normal text-xl">(snt/kWh)</span>
+                        Hourly Prices <span class="font-normal text-xl">(snt/kWh)</span>
                     </h1>
                      <canvas class="max-h-[90%]" id="hourlyChartChartJS"></canvas>
                    <script>
@@ -215,7 +215,7 @@
                 </div>
 
                 <!-- right content -->
-                <a href="/spot-prices" class="hover:-translate-y-1 hover:scale-100 transition ease-in-out duration-300">
+                <a href="/en/spot-prices" class="hover:-translate-y-1 hover:scale-100 transition ease-in-out duration-300">
                     <div class="bg-[#F27A7D] bg-cover bg-center bg-no-repeat w-full h-full flex rounded-3xl grid grid-cols-1 grid-rows-3 p-4 gap-y-4 shadow-md">
 
                         <div class="grid grid-cols-8 grid-rows-1 w-full h-full bg-[#19283F] rounded-3xl ">
@@ -225,7 +225,7 @@
 
                             <div class="grid grid-rows-2 grid-cols-1 col-span-3">
                                 <h1 class="text-md font-semibold text-white flex items-end">
-                                    Illalla
+                                    Evening
                                 </h1>
                                 <p class="text-xl font-bold text-white flex items-top">
                                     19:00
@@ -245,7 +245,7 @@
 
                             <div class="grid grid-rows-2 grid-cols-1 col-span-3">
                                 <h1 class="text-sm font-semibold text-[#19283F] flex items-end">
-                                    Korkein hinta tänään
+                                    Highest today
                                 </h1>
                                 <p class="text-xl font-bold text-[#19283F] flex items-top">
                                     {{formatDate highestPriceTodayTimeslot}}
@@ -265,7 +265,7 @@
 
                             <div class="grid grid-rows-2 grid-cols-1 col-span-3">
                                 <h1 class="text-md font-semibold text-[#19283F] flex items-end">
-                                    Alin hinta tänään
+                                    Lowest today
                                 </h1>
                                 <p class="text-xl font-bold text-[#19283F] flex items-top">
                                     {{formatDate lowestPriceTodayTimeslot}}
