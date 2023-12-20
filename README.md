@@ -3,7 +3,7 @@ Web-palvelinten toimintaan liittyviä esimerkkejä toteutettuna Node.js kirjasto
 
 ## TODOs
 - UI 👨‍💻
-    1. 🟩Redo navbar menu (on dropdown)
+    1. ✅Redo navbar menu (on dropdown)
         - Make it look nicer..
     2. 🟩Fix the homepage on smaller screens
         - Make it look nicer

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sähkovahti</title>
+    <title>Electricityguard</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
   .my-button.items-center svg path {
@@ -23,108 +23,158 @@
 </style>
 </head>
 <body>
-    <nav class="bg-gray-800 p-4 lg:flex lg:items-center lg:justify-between sticky top-0 z-50">
-        <div class="flex items-center justify-between">
-          <div class="text-white flex ml-4">
-            <img src="/icons/house-white.png" alt="logo" class="h-8 w-8">
-            <a href="/fi/" class="ml-1 text-2xl font-semibold">
-              SmartHome
-            </a>
-          </div>
+  <nav class="bg-gray-800 py-4 px-4 flex items-center justify-between sticky top-0 z-50">
+    <div class="text-white flex ml-4">
+        <img src="/icons/house-white.png" alt="logo" class="h-8 w-8">
+        <a href="/en/" class="ml-1 text-2xl font-semibold">
+            SmartHome
+        </a>
+    </div>
 
-          <div class="lg:hidden">
-            <button id="menuButton" class="hover:bg-gray-600 text-white px-2 py-1 rounded">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
-              </svg>
-              
-            </button>
-          </div>
-        </div>
+    <div id="menu" class="hidden md:flex mt-2 md:mt-0 md:space-x-11 xl:space-x-20 items-center">
+      <a href="/en/general" class="text-gray-300 hover:text-white">
+        General
+      </a>
+      <a href="/en/spot-prices" class="text-gray-300 hover:text-white">
+        Spot Prices
+      </a>
+      <a href="/en/weather" class="m-0 p-0 text-gray-300 hover:text-white">
+        Weather
+      </a>
       
-        <div id="menu" class="hidden lg:flex mt-2 px-1 lg:mt-0 lg:px-6 lg:space-x-10 lg:space-x-20 justify-center content-center items-center grid grid-cols-2 lg:grid-cols-none justify-items-center items-center bg-gray-700 lg:bg-transparent rounded-xl">
-          <a href="/fi/general" class="m-0 p-0 text-gray-300 hover:text-white">
-            Yleisnäkymä
+      <!-- lang, theme, settings -->
+      <div class="flex rounded-3xl py-2 px-4 text-gray-300 bg-gray-700">
+        <!-- Choose language -->
+      <div class="relative inline-flex">
+        <button id="desktop-button" class="rounded-3xl cursor-pointer flex mr-2">
+          <img class="w-[25px] h-[25px]" src="/icons/flags/world.png" alt="">
+        </button>
+        <div id="desktop-dropdown" class="hidden absolute -left-10 mt-10 w-32 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
+          <a href="/en/" class="flex px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900">
+            <img src="/icons/flags/world.png" alt="" class="w-4 h-4 mr-2">
+            English
           </a>
-          <a href="/fi/spot-prices" class="m-0 p-0 text-gray-300 hover:text-white">
-            Spot Hinta
+          <a href="/fi/" class="flex px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900">
+            <img src="/icons/flags/finland.png" alt="" class="w-4 h-4 mr-2">
+            Suomi
           </a>
-          <a href="/fi/weather" class="m-0 p-0 text-gray-300 hover:text-white">
-            Sää
+          <a href="/sv/" class="flex px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900">
+            <img src="/icons/flags/sweden.png" alt="" class="w-4 h-4 mr-2">
+            Svenska
           </a>
-          <a href="/fi/theme" class="m-0 p-0">
-            <img src="/icons/theme-active.png" alt="" class="w-[25px] h-[25px]">
-          </a>
-          <a href="/fi/settings" class="m-0 p-0">
-            <img src="/icons/settings-active.png" alt="" class="w-[25px] h-[25px]">
-          </a>
-          <div class="relative inline-flex w-32">
-            <button class="bg-gray-800 rounded-md shadow-md px-3 py-2 w-full cursor-pointer text-gray-300 hover:text-white border-[1.7px] border-gray-300 hover:border-white">
-              English
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="inline-block w-4 h-4 ml-2">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-              </svg>
-            </button>
-            <div class="absolute left-0 mt-12 w-32 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
-              <a href="/en/" class="flex px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900">
-                <img src="/icons/flags/world.png" alt="" class="w-4 h-4 mr-2">
-                English
-              </a>
-              <a href="/fi/" class="flex px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900">
-                <img src="/icons/flags/finland.png" alt="" class="w-4 h-4 mr-2">
-                Suomi
-              </a>
-              <a href="/sv/" class="flex px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900">
-                <img src="/icons/flags/sweden.png" alt="" class="w-4 h-4 mr-2">
-                Svenska
-              </a>
-            </div>
+        </div>
+      </div>
+        <a href="/en/theme" class="mr-2">
+        <img src="/icons/theme-active.png" alt="" class="w-[23px] h-[23px]">
+      </a>
+      <a href="/en/settings" class="">
+        <img src="/icons/settings-active.png" alt="" class="w-[23px] h-[23px]">
+      </a>
+      </div>
+    </div>
+          
+    <label class="relative z-40 cursor-pointer md:hidden py-5" for="mobile-menu">
+      <input class="peer hidden" type="checkbox" id="mobile-menu" />
+        <div class="relative z-50 block h-[1px] w-7 bg-white bg-transparent content-[''] before:absolute before:top-[-0.35rem] before:z-50 before:block before:h-full before:w-full before:bg-white before:transition-all before:duration-200 before:ease-out before:content-[''] after:absolute after:right-0 after:bottom-[-0.35rem] after:block after:h-full after:w-full after:bg-white after:transition-all after:duration-200 after:ease-out after:content-[''] peer-checked:bg-transparent before:peer-checked:top-0 before:peer-checked:w-full before:peer-checked:rotate-45 before:peer-checked:transform before:peer-checked:bg-black after:peer-checked:bg-black after:peer-checked:bottom-0 after:peer-checked:w-full after:peer-checked:-rotate-45 after:peer-checked:transform">
+  </div>
+        <div class="fixed inset-0 z-40 hidden h-full w-full bg-black/50 backdrop-blur-sm peer-checked:block">
+            &nbsp;
+        </div>
+        <div class="fixed top-0 right-0 z-40 h-full w-full translate-x-full overflow-y-auto overscroll-y-none transition duration-500 peer-checked:translate-x-0">
+          <div class="float-right min-h-full w-[80%] bg-white px-6 pt-12 shadow-2xl">
+              <menu class="pl-6">
+                  <li><a href="/en/general" class="m-0 text-[#4B49AC] hover:text-black text-lg font-bold">General</a></li>
+                  <li><a href="/en/spot-prices" class="m-0 text-[#4B49AC] hover:text-black text-lg font-bold">Spot Prices</a></li>
+                  <li class="pb-6"><a href="/en/weather" class="text-[#4B49AC] hover:text-black text-lg font-bold">Weather</a></li>
+                  
+                  <!-- lang, theme, settings -->
+                  <div class="inline-flex rounded-3xl py-2 px-6 text-gray-300 bg-gray-700">
+                    <!-- Choose language -->
+                    <div class="relative inline-flex">
+                      <button id="mobile-button" class="rounded-3xl cursor-pointer flex mr-2">
+                        <img class="w-[30px] h-[30px]" src="/icons/flags/world.png" alt="">
+                      </button>
+                      <div id="mobile-dropdown" class="hidden absolute -left-10 mt-10 w-32 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
+                        <a href="/en/" class="flex px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900">
+                          <img src="/icons/flags/world.png" alt="" class="w-4 h-4 mr-2">
+                          English
+                        </a>
+                        <a href="/fi/" class="flex px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900">
+                          <img src="/icons/flags/finland.png" alt="" class="w-4 h-4 mr-2">
+                          Suomi
+                        </a>
+                        <a href="/sv/" class="flex px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900">
+                          <img src="/icons/flags/sweden.png" alt="" class="w-4 h-4 mr-2">
+                          Svenska
+                        </a>
+                      </div>
+                    </div>
+                    <!-- theme -->
+                    <a href="/en/theme" class="ml-2">
+                    <img src="/icons/theme-active.png" alt="" class="w-[28px] h-[28px]">
+                    </a>
+                    <!-- settings -->
+                    <a href="/en/settings" class="ml-2">
+                      <img src="/icons/settings-active.png" alt="" class="w-[28px] h-[28px]">
+                    </a>
+                  </div>
+              </menu>
           </div>
         </div>
-      </nav>
-      <script>
-          var menuButton = document.querySelector('#menuButton');
-          var menu = document.querySelector('#menu');
-        
-          menuButton.addEventListener('click', function() {
-            menu.classList.toggle('hidden');
-            menu.classList.toggle('block');
-          });
-        
-          window.addEventListener('resize', function() {
-            if (window.innerWidth >= 1324) {
-              menu.classList.remove('block');
-              menu.classList.add('hidden');
-            }
-          });
+    </label>
+  </nav>
+  <script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+    // Select the button and the dropdown for desktop
+    var button = document.querySelector('#desktop-button');
+    var dropdown = document.querySelector('#desktop-dropdown');
 
-          // Select the button and the dropdown
-          var button = document.querySelector('.relative.inline-flex.w-32 button');
-          var dropdown = document.querySelector('.relative.inline-flex.w-32 div');
+    // Select the button and the dropdown for mobile
+    var mobileButton = document.querySelector('#mobile-button');
+    var mobileDropdown = document.querySelector('#mobile-dropdown');
 
-          // Add a click event listener to the button
-          button.addEventListener('click', function() {
-            // Toggle the visibility of the dropdown
-            dropdown.style.display = dropdown.style.display === 'none' ? 'block' : 'none';
-          });
+    // Select the settings and theme icons
+    var settingsIcon = document.querySelector('#menu a[href="/en/settings"]');
+    var themeIcon = document.querySelector('#menu a[href="/en/theme"]');
 
-          // Initially hide the dropdown
-          dropdown.style.display = 'none';
+    // Add a click event listener to the desktop button
+    button.addEventListener('click', function() {
+        // Toggle the visibility of the dropdown
+        dropdown.style.display = dropdown.style.display === 'none' ? 'block' : 'none';
+    });
 
-          // Based on what page the user is on (url), when language is selected, change 
-          // to that same page but in the selected language
+    // Add a click event listener to the mobile button
+    mobileButton.addEventListener('click', function() {
+        // Toggle the visibility of the dropdown
+        mobileDropdown.style.display = mobileDropdown.style.display === 'none' ? 'block' : 'none';
+    });
 
-// Get the current page without the language
-var urlArray = window.location.pathname.split('/');
-var currentPage = urlArray.slice(2).join('/');
+        // Initially hide the dropdowns
+        dropdown.style.display = 'none';
+        mobileDropdown.style.display = 'none';
 
-// Modify the href of each language button to include the current page
-var languageButtons = dropdown.querySelectorAll('a');
-languageButtons.forEach(function(element) {
-  var languageSelected = element.href.split('/')[3];
-  element.href = '/' + languageSelected + '/' + currentPage;
-});
-      </script>
-    {{{body}}}
+        // Based on what page the user is on (url), when language is selected, change 
+        // to that same page but in the selected language
+
+        // Get the current page without the language
+        var urlArray = window.location.pathname.split('/');
+        var currentPage = urlArray.slice(2).join('/');
+
+        // Modify the href of each language button to include the current page
+        var languageButtons = dropdown.querySelectorAll('a');
+        languageButtons.forEach(function(element) {
+            var languageSelected = element.href.split('/')[3];
+            element.href = '/' + languageSelected + '/' + currentPage;
+        });
+
+        // Do the same for the mobile menu
+        var mobileLanguageButtons = mobileDropdown.querySelectorAll('a');
+        mobileLanguageButtons.forEach(function(element) {
+            var languageSelected = element.href.split('/')[3];
+            element.href = '/' + languageSelected + '/' + currentPage;
+        });
+    });
+  </script>
+  {{{body}}}
 </body>
 </html>
