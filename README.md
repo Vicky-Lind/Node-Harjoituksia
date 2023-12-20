@@ -5,8 +5,9 @@ Web-palvelinten toimintaan liittyviä esimerkkejä toteutettuna Node.js kirjasto
 - UI 👨‍💻
     1. ✅Redo navbar menu (on dropdown)
         - Make it look nicer..
-    2. 🟩Fix the homepage on smaller screens
+    2. ✅Fix the homepage on smaller screens
         - Make it look nicer
+        NOTE: This happened because height for that div was set to "full", hence why it stretched.
     3. 🟩Finish the General Page!!
 
 - MIXED 🔀
