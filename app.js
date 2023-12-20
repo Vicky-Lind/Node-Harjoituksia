@@ -240,7 +240,7 @@ app.get('/:lang/general', (req, res) => {
         'windSpeed': windSpeed,
         'layout': `../${lang}/layouts/main`
       };
-      res.render(`${lang}/generalv3`, data);
+      res.render(`${lang}/generalv4`, data);
     })
 })
 

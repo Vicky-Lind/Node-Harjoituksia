@@ -10,26 +10,26 @@
     <div class="-mt-[76px] w-full h-screen bg-white flex flex-col lg:overflow-hidden overflow-visible">
 
         <!-- This is the hero -->
-        <div class="bg-[url(/images/windturbine-bg9.png)] bg-cover bg-no-repeat w-full h-[100%] sm:h-[110%] flex flex-col lg:flex-row justify-between pt-[140px] sm:pt-[160px] pb-8 sm:pb-4 sm:pg-none">
+        <div class="bg-[url(/images/windturbine-bg9.png)] bg-top-center xl:bg-cover bg-no-repeat w-full h-[100%] sm:h-[110%] flex flex-col lg:flex-row justify-between pt-[140px] sm:pt-[160px] pb-8 sm:pb-4 sm:pg-none">
 
             <div class="flex flex-col px-none lg:px-16 xl:px-28 2xl:px-48">
                 <!-- Title -->
                 <div>
-                    <h1 class="flex-none font-semibold sm:font-bold leading-none text-white sm:text-[#144E70] text-center text-[22px] align-text-bottom sm:text-[32px] lg:text-[36.56px] text-center">
-                            Tervetuloa SmartHome-sivustolle <br />
-                            - Energia- ja Säätiedot
+                    <h1 class="flex-none font-bold leading-none text-[#144E70] text-center text-[22px] sm:text-[32px] lg:text-[36.56px] text-center align-text-bottom">
+                            Welcome to SmartHome <br />
+                            - Your Energy and <br /> Weather Companion
                         </h1>
                 </div>
 
                 <!-- Subtitle -->
                 <div class="row-start-2 flex justify-center items-center pt-8 sm:pt-12">
                     <div class="bg-[#2f2b61A6] backdrop-blur-[6px] rounded-3xl px-3 sm:px-4 py-2 flex flex-col">
-                        <p class="font-normal sm:font-semibold text-white text-center text-sm sm:text-lg md:text-xl leading-relaxed">
-                            Saat reaaliaikaisia ​​päivityksiä energian hinnoista <br /> ja sääolosuhteista sovelluksemme avulla.
+                        <p class="font-normal sm:font-semibold text-white text-center text-sm sm:text-lg md:text-lg leading-relaxed">
+                            Get real-time updates on energy prices  <br /> and weather conditions with our app.
                         </p>
-                        <button type="button" class="h-4 sm:h-8 mt-2 self-center text-white text-xs sm:text-[16px] transition-colors duration-300 transform bg-blue-600 rounded-3xl hover:bg-blue-500 relative shadow-lg hover:shadow-xl">
-                            <a href="/fi/general" class="px-4 py-2">
-                                Aloita
+                        <button type="button" class="mt-2 self-center text-white text-xs sm:text-[16px] transition-colors duration-300 transform bg-blue-600 rounded-3xl hover:bg-blue-500 relative shadow-lg hover:shadow-xl px-4 py-2">
+                            <a href="/en/general" class="">
+                                Get Started
                             </a>
                         </button>
                     </div>
@@ -41,7 +41,7 @@
         </div>
 
         <!-- This is the main content -->
-        <div class="bg-white w-full h-full grid grid-cols-1 lg:grid-cols-2 grid-rows-2 lg:grid-rows-1">
+        <div class="bg-white w-full h-[600px] grid grid-cols-1 lg:grid-cols-2 grid-rows-2 lg:grid-rows-1">
 
             <div class="bg-white grid grid-cols-1 grid-rows-4 px-none lg:px-16 xl:px-28 2xl:px-48 justify-items-start">
 
@@ -49,7 +49,7 @@
                 <div class="mt-8 ml-2 sm:ml-12 lg:ml-0">
                     
                     <h1 class="font-bold leading-none text-[#144E70] text-[18px] align-text-bottom sm:text-[20px] lg:text-[28px] text-center lg:text-left">
-                        Mitä sovelluksemme tekee?
+                        What does our app do?
                     </h1>
                 </div>
 
@@ -58,8 +58,8 @@
                     <img src="/icons/check.png" alt=""
                     class="self-center w-[40px] h-[40px] bg-white rounded-full p-1">
 
-                    <h1 class="col-span-5 lg:col-span-6">
-                        Tarjoaa yleiskatsauksen tämänhetkisistä energian hinnoista ja sääolosuhteista.
+                    <h1 class="col-span-5 lg:col-span-6 text-gray-900">
+                        Provides a general overview of the current energy prices and weather conditions.
                     </h1>
                 </div>
 
@@ -68,8 +68,8 @@
                     <img src="/icons/cloud-lightning.png" alt=""
                     class="self-center w-[40px] h-[40px] bg-white rounded-full p-1">
                     
-                    <h1 class="col-span-5 lg:col-span-6">
-                        Tarkempia tietoja varten on omat sivut sää- ja energiahinnoista.
+                    <h1 class="col-span-5 lg:col-span-6 text-gray-900">
+                        For more detailed information, there are dedicated pages for weather and energy prices.
                     </h1>
                 </div>
             </div>
@@ -83,14 +83,14 @@
                     <!-- Title -->
                     <div class="row-start-1 col-span-2 flex items-center justify-start">
                         <h1 class="font-bold text-[#643404] text-[18px] align-text-bottom sm:text-[16px] lg:text-[24px] text-left">
-                            Kaikki hinnat snt/kWh
+                            All prices snt/kWh
                         </h1>
                     </div>
 
                     <!-- Price now -->
                     <div class="row-start-2">
                         <h1 class="font-semibold text-[#984C00] text-[16px] align-text-bottom sm:text-[18px] lg:text-[20px] text-left">
-                            Hinta nyt
+                            Price now
                         </h1>
                         <h1 class="font-bold text-[#643404] text-[18px] align-text-bottom sm:text-[20px] lg:text-[28px] text-left">
                             {{priceNow}}
@@ -100,7 +100,7 @@
                     <!-- Lowest price -->
                     <div class="row-start-3 mt-4">
                         <h1 class="font-semibold text-[#984C00] text-[16px] align-text-bottom sm:text-[18px] lg:text-[20px] text-left">
-                            Päivän alin
+                            Lowest today
                         </h1>
                         <h1 class="font-bold text-[#643404] text-[18px] align-text-bottom sm:text-[18px] lg:text-[26px] text-left">
                             {{priceLowestToday}}
@@ -110,7 +110,7 @@
                     <!-- Highest price -->
                     <div class="row-start-3 col-start-2 mt-4">
                         <h1 class="font-semibold text-[#984C00] text-[16px] align-text-bottom sm:text-[18px] lg:text-[20px] text-left">
-                            Päivän korkein
+                            Highest today
                         </h1>
                         <h1 class="font-bold text-[#643404] text-[18px] align-text-bottom sm:text-[18px] lg:text-[26px] text-left">
                             {{priceHighestToday}}
