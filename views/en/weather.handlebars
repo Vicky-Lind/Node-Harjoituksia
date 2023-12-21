@@ -1,0 +1,90 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script> 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js" integrity="sha512-r22gChDnGvBylk90+2e/ycr3RVrDi8DIOkIGNhJlKfuyQM4tIRAI062MaV8sfjQKYVGjOBaZBOA87z+IhZE9DA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+</head>
+<body>
+    <!-- main container -->
+    <div class="bg-[#EAF0FD] flex w-full h-screen">
+
+        <!-- main content -->
+        <div class="w-full h-full px-1 sm:px-12 xl:px-14 2xl:px-36 lg:py-4 md:py-2">
+
+            <!-- top content -->
+            <div class="w-full flex justify-end">
+                <h1 id="clock" class="text-[#19283F] text-bold text-xl flex items-center justify-end mr-2 sm:mr-none">
+                </h1>
+            </div>
+
+            <!-- middle content -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 grid-rows-2 lg:grid-rows-1 xl:gap-x-6 gap-y-4 sm:gap-y-0 sm:mt-6 sm:pb-6">
+
+                <!-- left content -->
+                <div class="flex flex-col justify-between bg-[#FFB362] rounded-3xl py-4 pl-8">
+                    <!-- Title -->
+                    <div>
+                        <h1 class="text-2xl font-bold text-gray-700">Sää Tänään</h1>
+                    </div>
+
+                    <!-- Weather -->
+                    <div class="flex flex-col justify-between">
+                        <!-- Weather icon -->
+                        <div class="flex justify-center">
+                            <img src="https://www.weatherbit.io/static/img/icons/r01d.png" alt="weather icon" class="w-24 h-24">
+                        </div>
+
+                        <!-- Weather description -->
+                        <div class="flex justify-center">
+                            <h1 class="text-2xl font-bold text-gray-700">Sade</h1>
+                        </div>
+
+                        <!-- Temperature -->
+                        <div class="flex justify-center">
+                            <h1 class="text-2xl font-bold text-gray-700">+10°C</h1>
+                        </div>
+
+                </div>
+
+                <!-- right content -->
+                <div class="lg:ml-12 pt-6 lg:pt-0">
+                </div>
+                
+            </div>
+
+            <!-- bottom content -->
+            <div id="bottom-container" class="w-full h-[1050px]">
+            </div>
+        </div>
+        
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script>
+        //______________________________________________
+        // clock
+        window.onload = function() {     
+        
+        // clock
+        function showTime() {
+            // Create a date object containing current timestamp
+            var date = new Date();
+            // Separate hours, minutes and seconds
+            var h = date.getHours();
+            var m = date.getMinutes();
+            var s = date.getSeconds();
+            // Add leading zeros
+            h = (h < 10) ? "0" + h : h;
+            m = (m < 10) ? "0" + m : m;
+            s = (s < 10) ? "0" + s : s;
+            // Build a string for time and put it into h1 named clock
+            var time = h + "." + m + "." + s;
+            document.getElementById("clock").innerHTML = time;
+            // After 1000 ms (1 s) call showTime again
+            setTimeout(showTime, 1000);
+        }
+        showTime();
+        }
+    </script>
+</body>
