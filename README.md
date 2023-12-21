@@ -10,7 +10,7 @@ Web-palvelinten toimintaan liittyviä esimerkkejä toteutettuna Node.js kirjasto
         
         NOTE: This happened because height for that div was set to "full", hence why it stretched.
     3. ✅Finish the General Page!!
-    4. 🟩Fix General page on mobile
+    4. ✅Fix General page on mobile
 
 - MIXED 🔀
     1. 🟩Correctly translate
