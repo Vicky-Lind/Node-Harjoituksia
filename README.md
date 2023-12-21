@@ -9,7 +9,8 @@ Web-palvelinten toimintaan liittyviä esimerkkejä toteutettuna Node.js kirjasto
         - Make it look nicer
         
         NOTE: This happened because height for that div was set to "full", hence why it stretched.
-    3. 🟩Finish the General Page!!
+    3. ✅Finish the General Page!!
+    4. 🟩Fix General page on mobile
 
 - MIXED 🔀
     1. 🟩Correctly translate
@@ -21,6 +22,7 @@ Web-palvelinten toimintaan liittyviä esimerkkejä toteutettuna Node.js kirjasto
         - Finish the other boxes
     4. 🟩Create Settings Page
     5. 🟩Create dark/light theme
+    6. 🟩Update the Weather Data in General page
 
 
   
