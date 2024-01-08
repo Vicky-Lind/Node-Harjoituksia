@@ -13,17 +13,19 @@ Web-palvelinten toimintaan liittyviä esimerkkejä toteutettuna Node.js kirjasto
     4. ✅Fix General page on mobile
 
 - MIXED 🔀
-    1. 🟩Correctly translate
-        - Translate all texts
-        - Translate all buttons, links chart/table elements & icons..etc.
-    2. 🟩Create the Weather Page
-    3. 🟩Finish the Spot Price page
+    1. ✅Finish the Spot Price page
         - Figure out what goes in the blue div in Spot Price page
         - Finish the other boxes
+    2. 🟩Correctly translate
+        - Translate all texts
+        - Translate all buttons, links chart/table elements & icons..etc.
+    3. 🟩Create the Weather Page
     4. 🟩Create Settings Page
     5. 🟩Create dark/light theme
     6. 🟩Update the Weather Data in General page
-
+    7. 🟩Add "Kipuraja" for user to set
+    8. 🟩Create & train AI price prediction
+    9. 🟩
 
   
 ## Ideas to add

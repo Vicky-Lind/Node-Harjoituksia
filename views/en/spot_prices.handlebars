@@ -30,160 +30,95 @@
                     <div class="grid grid-rows-4 sm:grid-rows-2 grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-6">
 
                         <!-- price now -->
-                        <div class="hover:-translate-y-1 hover:scale-100 transition ease-in-out duration-300 bg-white grid grid-rows-3 grid-cols-1 shadow-md rounded-3xl p-4">
+                        <div class="hover:-translate-y-1 hover:scale-100 transition ease-in-out duration-300 bg-white grid grid-rows-1 grid-cols-1 shadow-md rounded-3xl p-6">
 
                             <!-- title -->
                             <div class="">
                                 <h1 class="font-medium text-[17px]">
-                                    Price now
+                                    Price Now
                                 </h1>
                             </div>
 
                             <!-- price -->
-                            <div class="flex row-start-2">
-
-                                <div class="mr-4">
-                                    <h1 class="font-semibold text-[20px]">
-                                        {{priceNow}} <span class="text-[16px] font-medium">snt/kWh</span>
-                                    </h1>
-                                </div>
+                            <div class="flex">
 
                                 <div class="">
-                                    <div class="bg-[#C3FCBB] rounded-3xl px-2 shadow-sm shadow-[#2F7824]">
-                                        <h1 class="text-[#2F7824]">
-                                            +14%
-                                        </h1>
-                                    </div>
+                                    <h1 class="font-semibold text-[26px]">
+                                        {{priceNow}} <span class="text-[20px] font-medium">snt/kWh</span>
+                                    </h1>
                                 </div>
                             </div>
-
-                            <!-- description -->
-                            <div class="col-span-2 row-start-3 flex items-end">
-                                <h1 class="text-[14px] text-gray-700">
-                                    Compared to last week
-                                </h1>
-                            </div>
-
                         </div>
 
                         <!-- average price today -->
-                        <div class="hover:-translate-y-1 hover:scale-100 transition ease-in-out duration-300 bg-white grid grid-rows-3 grid-cols-1 shadow-md rounded-3xl p-4">
+                        <div class="hover:-translate-y-1 hover:scale-100 transition ease-in-out duration-300 bg-white grid grid-rows-1 grid-cols-1 shadow-md rounded-3xl p-6">
 
                             <!-- title -->
                             <div class="">
                                 <h1 class="font-medium text-[17px]">
-                                    Average today
+                                    Average Today
                                 </h1>
                             </div>
 
                             <!-- price -->
-                            <div class="flex row-start-2">
-
-                                <div class="mr-4">
-                                    <h1 class="font-semibold text-[20px]">
-                                        {{averagePriceToday}} <span class="text-[16px] font-medium">snt/kWh</span>
-                                    </h1>
-                                </div>
+                            <div class="">
 
                                 <div class="">
-                                    <div class="bg-[#C3FCBB] rounded-3xl px-2 shadow-sm shadow-[#2F7824]">
-                                        <h1 class="text-[#2F7824]">
-                                            +14%
-                                        </h1>
-                                    </div>
+                                    <h1 class="font-semibold text-[26px]">
+                                        {{averagePriceToday}} <span class="text-[20px] font-medium">snt/kWh</span>
+                                    </h1>
                                 </div>
                             </div>
-
-                            <!-- description -->
-                            <div class="col-span-2 row-start-3 flex items-end">
-                                <h1 class="text-[14px] text-gray-700">
-                                    Compared to last week
-                                </h1>
-                            </div>
-
                         </div>
 
                         <!-- lowest today -->
-                        <div class="hover:-translate-y-1 hover:scale-100 transition ease-in-out duration-300 bg-white grid grid-rows-3 grid-cols-1 shadow-md rounded-3xl p-4">
+                        <div class="hover:-translate-y-1 hover:scale-100 transition ease-in-out duration-300 bg-white grid grid-rows-1 grid-cols-1 shadow-md rounded-3xl p-6">
 
                             <!-- title -->
                             <div class="">
                                 <h1 class="font-medium text-[17px]">
-                                    Lowest today, {{formatDate lowestPriceTodayTimeslot}}
+                                    Lowest Today, {{formatDate lowestPriceTodayTimeslot}}
                                 </h1>
                             </div>
 
                             <!-- price -->
-                            <div class="flex row-start-2">
-
-                                <div class="mr-4">
-                                    <h1 class="font-semibold text-[20px]">
-                                        {{lowestPriceToday}} <span class="text-[16px] font-medium">snt/kWh</span>
-                                    </h1>
-                                </div>
+                            <div class="">
 
                                 <div class="">
-                                    <div class="bg-[#C3FCBB] rounded-3xl px-2 shadow-sm shadow-[#2F7824]">
-                                        <h1 class="text-[#2F7824]">
-                                            +14%
-                                        </h1>
-                                    </div>
+                                    <h1 class="font-semibold text-[26px]">
+                                        {{lowestPriceToday}} <span class="text-[20px] font-medium">snt/kWh</span>
+                                    </h1>
                                 </div>
                             </div>
-
-                            <!-- description -->
-                            <div class="col-span-2 row-start-3 flex items-end">
-                                <h1 class="text-[14px] text-gray-700">
-                                    Compared to last week
-                                </h1>
-                            </div>
-
                         </div>
 
                         <!-- highest today -->
-                        <div class="hover:-translate-y-1 hover:scale-100 transition ease-in-out duration-300 bg-white grid grid-rows-3 grid-cols-1 shadow-md rounded-3xl p-4">
+                        <div class="hover:-translate-y-1 hover:scale-100 transition ease-in-out duration-300 bg-white grid grid-rows-1 grid-cols-1 shadow-md rounded-3xl p-6">
 
                             <!-- title -->
                             <div class="">
                                 <h1 class="font-medium text-[17px]">
-                                    Highest today, {{formatDate highestPriceTodayTimeslot}}
+                                    Highest Today, {{formatDate highestPriceTodayTimeslot}}
                                 </h1>
                             </div>
 
                             <!-- price -->
-                            <div class="flex row-start-2">
-
-                                <div class="mr-4">
-                                    <h1 class="font-semibold text-[20px]">
-                                        {{highestPriceToday}} <span class="text-[16px] font-medium">snt/kWh</span>
-                                    </h1>
-                                </div>
+                            <div class="">
 
                                 <div class="">
-                                    <div class="bg-[#C3FCBB] rounded-3xl px-2 shadow-sm shadow-[#2F7824]">
-                                        <h1 class="text-[#2F7824]">
-                                            +14%
-                                        </h1>
-                                    </div>
+                                    <h1 class="font-semibold text-[26px]">
+                                        {{highestPriceToday}} <span class="text-[20px] font-medium">snt/kWh</span>
+                                    </h1>
                                 </div>
                             </div>
-
-                            <!-- description -->
-                            <div class="col-span-2 row-start-3 flex items-end">
-                                <h1 class="text-[14px] text-gray-700">
-                                    Compared to last week
-                                </h1>
-                            </div>
-
                         </div>
-
                     </div>
 
                     <!-- text -->
                     <div class="mt-6">
                         <!-- title -->
                         <h1 class="font-medium text-[22px]">
-                            Price development
+                            Price Development
                         </h1>
 
                         <!-- description -->
@@ -194,126 +129,131 @@
 
                 </div>
 
-                <!-- right content / ? -->
+                <!-- right content / Current Price Estimations -->
                 <div class="lg:ml-12 pt-6 lg:pt-0">
-                    <div class="hover:-translate-y-1 hover:scale-100 transition ease-in-out duration-300 bg-[#98BDFF] rounded-3xl shadow-md flex flex-col p-8">
+                    <div class="hover:-translate-y-1 hover:scale-100 transition ease-in-out duration-300 bg-[#98BDFF] rounded-3xl shadow-md flex flex-col p-3 sm:p-8">
                         
                         <!-- title -->
                         <div>
                             <h1 class="font-medium text-[22px]">
-                                What data goes here?
+                                Current Price Estimations
                             </h1>
                         </div>
 
                         <!-- description -->
                         <div class="row-start-2">
                             <h1 class="mt-3">
-                                This is the description.
+                                In this list you can see rough price estimations based on the current hour's electricity price.
                             </h1>
                         </div>
 
-                        <!-- Last week -->
-                        <div class="bg-white grid grid-rows-2 grid-cols-1 shadow-md rounded-3xl p-4 my-2">
-
-                            <!-- title -->
-                            <div class="">
-                                <h1 class="font-medium text-[17px]">
-                                    last week comparison?
-                                </h1>
-                            </div>
-
-                            <!-- price -->
-                            <div class="flex row-start-2">
-
-                                <div class="mr-4">
-                                    <h1 class="font-semibold text-[20px]">
-                                        {{priceNow}} <span class="text-[16px] font-medium">snt/kWh</span>
-                                    </h1>
-                                </div>
-
-                                <div class="">
-                                    <div class="bg-[#C3FCBB] rounded-3xl px-2 shadow-sm shadow-[#2F7824]">
-                                        <h1 class="text-[#2F7824]">
-                                            +14%
+                        <!-- Charging Car -->
+                        <div class="bg-white shadow-md rounded-3xl p-4 my-2">
+                            
+                            <div class="flex justify-between">
+                                <!-- Left Section, Icon, Title, Description -->
+                                <div class="flex">
+                                    <!-- Icon -->
+                                    <div class="pr-3 flex items-center justify-center">
+                                        <img src="/icons/electric-vehicle.png"/>
+                                    </div>
+                                    <!-- Title and Description -->
+                                    <div class="flex-col">
+                                        <!-- Title -->
+                                        <h1 class="font-medium text-[15px] sm:text-[17px]">
+                                            Fully Charge Electric Car, 35-100 kWh
+                                        </h1>
+                                        <!-- Description -->
+                                        <h1 class="text-[13px] sm:text-[14px] text-gray-700">
+                                            Cost based on car's kWh usage
                                         </h1>
                                     </div>
                                 </div>
-                            </div>
 
-                        </div>
-
-                        <!-- Last month -->
-                        <div class="bg-white grid grid-rows-2 grid-cols-1 shadow-md rounded-3xl p-4 my-2">
-
-                            <!-- title -->
-                            <div class="">
-                                <h1 class="font-medium text-[17px]">
-                                    Last month comparison?
-                                </h1>
-                            </div>
-
-                            <!-- price -->
-                            <div class="flex row-start-2">
-
-                                <div class="mr-4">
-                                    <h1 class="font-semibold text-[20px]">
-                                        {{priceNow}} <span class="text-[16px] font-medium">snt/kWh</span>
+                                <!-- Right Section, Price -->
+                                <div class="flex items-center justify-center">
+                                    <h1 class="font-semibold text-[18px] sm:text-[20px]">
+                                        {{EVChargingPriceLow}}-{{EVChargingPriceHigh}} <span class="text-[16px] font-medium">€</span>
                                     </h1>
                                 </div>
-
-                                <div class="">
-                                    <div class="bg-[#C3FCBB] rounded-3xl px-2 shadow-sm shadow-[#2F7824]">
-                                        <h1 class="text-[#2F7824]">
-                                            +14%
+                            </div>
+                        </div>
+                        <!-- Coffee Making -->
+                        <div class="bg-white shadow-md rounded-3xl p-4 my-2">
+                            
+                            <div class="flex justify-between">
+                                <!-- Left Section, Icon, Title, Description -->
+                                <div class="flex">
+                                    <!-- Icon -->
+                                    <div class="pr-3 flex items-center justify-center">
+                                        <img src="/icons/coffee-machine.png"/>
+                                    </div>
+                                    <!-- Title and Description -->
+                                    <div class="flex-col">
+                                        <!-- Title -->
+                                        <h1 class="font-medium text-[15px] sm:text-[17px]">
+                                            Brew a Cup of Coffee, 0.5 kWh
+                                        </h1>
+                                        <!-- Description -->
+                                        <h1 class="text-[13px] sm:text-[14px] text-gray-700">
+                                            Price for brewing a cup of coffee
                                         </h1>
                                     </div>
                                 </div>
-                            </div>
 
-                        </div>
-
-                        <!-- Last year -->
-                        <div class="bg-white grid grid-rows-2 grid-cols-1 shadow-md rounded-3xl p-4 my-2">
-
-                            <!-- title -->
-                            <div class="">
-                                <h1 class="font-medium text-[17px]">
-                                    Last year comparison?
-                                </h1>
-                            </div>
-
-                            <!-- price -->
-                            <div class="flex row-start-2">
-
-                                <div class="mr-4">
-                                    <h1 class="font-semibold text-[20px]">
-                                        {{priceNow}} <span class="text-[16px] font-medium">snt/kWh</span>
+                                <!-- Right Section, Price -->
+                                <div class="flex items-center justify-center">
+                                    <h1 class="font-semibold text-[18px] sm:text-[20px]">
+                                        {{CoffeeCupPrice}} <span class="text-[16px] font-medium">€</span>
                                     </h1>
                                 </div>
-
-                                <div class="">
-                                    <div class="bg-[#C3FCBB] rounded-3xl px-2 shadow-sm shadow-[#2F7824]">
-                                        <h1 class="text-[#2F7824]">
-                                            +14%
+                            </div>
+                        </div>
+                        <!-- Dishwasher -->
+                        <div class="bg-white shadow-md rounded-3xl p-4 my-2">
+                            
+                            <div class="flex justify-between">
+                                <!-- Left Section, Icon, Title, Description -->
+                                <div class="flex">
+                                    <!-- Icon -->
+                                    <div class="pr-3 flex items-center justify-center">
+                                        <img src="/icons/dishwasher.png"/>
+                                    </div>
+                                    <!-- Title and Description -->
+                                    <div class="flex-col">
+                                        <!-- Title -->
+                                        <h1 class="font-medium text-[15px] sm:text-[17px]">
+                                            Dishwasher Load, 1.3 kWh
+                                        </h1>
+                                        <!-- Description -->
+                                        <h1 class="text-[13px] sm:text-[14px] text-gray-700">
+                                            Cost for running a single dishwasher load
                                         </h1>
                                     </div>
                                 </div>
+
+                                <!-- Right Section, Price -->
+                                <div class="flex items-center justify-center">
+                                    <h1 class="font-semibold text-[18px] sm:text-[20px]">
+                                        {{DishwasherPrice}} <span class="text-[16px] font-medium">€</span>
+                                    </h1>
+                                </div>
                             </div>
-
                         </div>
-
                     </div>
                 </div>
-                
             </div>
+        </div>
+                
+    </div>
 
             <!-- bottom content -->
             <!-- Things that should go here: choose chart or table, download as, choose start date, choose compare to previous year, "choose day, week, year", some info box? -->
             <div id="bottom-container" class="w-full h-[1050px]">
-                <div class="bg-white w-full h-full sm:py-12 sm:px-12 rounded-3xl flex flex-col">
+                <div class="bg-white w-full h-full sm:py-12 sm:px-12 2xl:px-36 rounded-3xl flex flex-col">
                     <!-- Title -->
                     <h1 class="font-medium text-[22px]">
-                        Electricity price now and at chosen timeperiod
+                        Electricity Price Now & At Chosen Timeperiod
                     </h1>
                     <!-- Selections -->
                     <div class="md:flex-row flex-col flex w-full pt-6 items-start md:items-end">

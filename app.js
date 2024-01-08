@@ -204,6 +204,13 @@ app.get('/:lang/spot-prices', (req, res) => {
       let lowestPriceToday = lowestPriceTodayResult.rows[0]['price'];
       let lowestPriceTodayTimeslot = lowestPriceTodayResult.rows[0]['timeslot'];
 
+      let EVChargingPriceLow = Math.round(priceNow * 35 / 100);
+      let EVChargingPriceHigh = Math.round(priceNow * 100 / 100);
+
+      let CoffeeCupPrice = parseFloat(priceNow * 0.5 / 100).toFixed(2);
+
+      let DishwasherPrice = parseFloat(priceNow * 1.3 / 100).toFixed(2);
+
       let pricesTodayTable = pricesTodayResult.rows;
       let comparePricesTodayTable = comparePricesTodayResult.rows;
 
@@ -227,6 +234,13 @@ app.get('/:lang/spot-prices', (req, res) => {
         'lowestPriceToday': lowestPriceToday,
         'lowestPriceTodayTimeslot': lowestPriceTodayTimeslot,
         
+        'EVChargingPriceLow': EVChargingPriceLow,
+        'EVChargingPriceHigh': EVChargingPriceHigh,
+
+        'CoffeeCupPrice': CoffeeCupPrice,
+
+        'DishwasherPrice': DishwasherPrice,
+
         'tableData': tableData,
         'pricesTodayTable': pricesTodayTable,
         'comparePricesTodayTable': comparePricesTodayTable,
