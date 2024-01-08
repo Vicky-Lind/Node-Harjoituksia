@@ -62,7 +62,10 @@ Handlebars.registerHelper('json', function(context) {
 
 // REITTIEN MÄÄRITYKSET
 // --------------------
-
+// A default url that doesn't include lang part, will be redirected to the finnish version
+app.get('/', function(req, res){
+  res.redirect('/fi');
+});
 app.get('/:lang/', (req, res) => {
   const lang = req.params.lang;
   Promise.all([priceMicroservices.selectXFromY('price', 'current_prices'),
