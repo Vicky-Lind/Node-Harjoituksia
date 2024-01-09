@@ -7,7 +7,7 @@ Web-palvelinten toimintaan liittyviä esimerkkejä toteutettuna Node.js kirjasto
         - Make it look nicer..
     2. ✅Fix the homepage on smaller screens
         - Make it look nicer
-        
+
         NOTE: This happened because height for that div was set to "full", hence why it stretched.
     3. ✅Finish the General Page!!
     4. ✅Fix General page on mobile
@@ -25,7 +25,6 @@ Web-palvelinten toimintaan liittyviä esimerkkejä toteutettuna Node.js kirjasto
     6. 🟩Update the Weather Data in General page
     7. 🟩Add "Kipuraja" for user to set
     8. 🟩Create & train AI price prediction
-    9. 🟩
 
   
 ## Ideas to add
