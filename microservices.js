@@ -117,6 +117,22 @@ class WeatherMicroservices {
     this.pool = pool;
     this.message = '';
   }
+  
+  async fetchFinGridData() {
+    await fetch('https://beta-data.fingrid.fi/api/datasets/254/data?startTime=2023-12-04T09:37:00&endTime=2023-12-04T09:37:00&format=json&locale=en&sortBy=startTime&x-api-key=66bf4276bd8f4daea3803c4bb5fd962d')
+    .then(response => {
+        console.log(response.status);
+        return response.text();
+    })
+    .then(text => {
+        console.log(text);
+    })
+    .catch(err => console.error(err));
+  }
+  async selectXFromY(selectItem, fromItem) {
+    let resultset = await pool.query(`SELECT ${selectItem} FROM public.${fromItem}`);
+    return resultset;
+  }
   async fetchAndCalculateWindData(uVectorData, vVectorData) {
     // Reset all values
     let windAngle = 0; // Wind blows from opposite direction to vector
@@ -166,8 +182,9 @@ class WeatherMicroservices {
           value: 'wml2:value'
         }];
 
-        const windSpeedSqlClause = `INSERT INTO public.${windSpeedDBTable} VALUES ($1, $2, $3) ON CONFLICT DO NOTHING RETURNING *`;
-        const windDirectionSqlClause = `INSERT INTO public.${windDirectionDBTable} VALUES ($1, $2, $3) ON CONFLICT DO NOTHING RETURNING *`;
+        const timeAdded = new Date();
+        const windSpeedSqlClause = `INSERT INTO public.${windSpeedDBTable} VALUES ($1, $2, $3, $4) ON CONFLICT DO NOTHING`;
+        const windDirectionSqlClause = `INSERT INTO public.${windDirectionDBTable} VALUES ($1, $2, $3, $4) ON CONFLICT DO NOTHING`;
 
         // Log the start of the operation
         this.message = `Started fetching ${windSpeedStr} and ${windDirectionStr} observation data`;
@@ -192,7 +209,7 @@ class WeatherMicroservices {
         // Fetch and calculate wind data
         const windData = await this.fetchAndCalculateWindData(element.value, element2.value);
 
-        let values = [element.time, windData.windSpeed, place];
+        let values = [element.time, windData.windSpeed, place, timeAdded];
 
         // Function for running SQL operations asynchronously
         const runQuery = async () => {
@@ -217,7 +234,7 @@ class WeatherMicroservices {
         // Fetch and calculate wind data
         const windData = await this.fetchAndCalculateWindData(element.value, element2.value);
 
-        let values = [element.time, windData.windAngle, place];
+        let values = [element.time, windData.windAngle, place, timeAdded];
 
         // Function for running SQL operations asynchronously
         const runQuery = async () => {
@@ -250,7 +267,7 @@ class WeatherMicroservices {
           value: 'wml2:value'
         }];
         const place = placeObs;
-        const sqlClause = `INSERT INTO public.${DBTable} VALUES ($1, $2, $3) ON CONFLICT DO NOTHING RETURNING *`;
+        const sqlClause = `INSERT INTO public.${DBTable} VALUES ($1, $2, $3) ON CONFLICT DO NOTHING`;
 
         // Log the start of the operation
         this.message = `Started fetching ${what} observation data`;
@@ -297,13 +314,14 @@ class WeatherMicroservices {
           time: 'wml2:time',
           value: 'wml2:value'
         }];
+        const timeAdded = new Date();
         const place = placeObs;
-        const sqlClause = `INSERT INTO public.${DBTable} VALUES ($1, $2, $3) ON CONFLICT DO NOTHING RETURNING *`;
+        const sqlClause = `INSERT INTO public.${DBTable} VALUES ($1, $2, $3, $4) ON CONFLICT DO NOTHING`;
         
         // Log the start of the operation
         this.message = `Started fetching ${what} forecast data`;
         console.log(this.message);
-        log.log(this.message);
+        log.log(this.message); 
 
         const response = await axios.get(WEATHER_ENDPOINT);
         const xml = response.data;
@@ -312,7 +330,7 @@ class WeatherMicroservices {
             
         // Loop through result data and pick elements
         result.forEach(async (element) => {
-          const values = [element.time, element.value, place];
+          const values = [element.time, element.value, place, timeAdded];
 
           // Function for running SQL operations asynchronously
           const runQuery = async () => {
@@ -335,23 +353,6 @@ class WeatherMicroservices {
       }
     }, null, true, 'Europe/Helsinki');
   }
-
-  async fetchFinGridData() {
-    await fetch('https://beta-data.fingrid.fi/api/datasets/254/data?startTime=2023-12-04T09:37:00&endTime=2023-12-04T09:37:00&format=json&locale=en&sortBy=startTime&x-api-key=66bf4276bd8f4daea3803c4bb5fd962d')
-    .then(response => {
-        console.log(response.status);
-        return response.text();
-    })
-    .then(text => {
-        console.log(text);
-    })
-    .catch(err => console.error(err));
-}
-
-  async selectXFromY(selectItem, fromItem) {
-    let resultset = await pool.query(`SELECT ${selectItem} FROM public.${fromItem}`);
-    return resultset;
-  }
 }
 
 // Create an instance of the Microservices class
@@ -360,11 +361,49 @@ const weatherMicroservices = new WeatherMicroservices(pool);
 
 priceMicroservices.scheduleLatestPriceDataFetch();
 
-weatherMicroservices.scheduleTemplateWindForecast('turku', 'Turku Artukainen');
-
 weatherMicroservices.scheduleTemplateObservation('Temperature', 'Turku', 't2m', 'Turku Artukainen');
 
+weatherMicroservices.scheduleTemplateWindForecast('espoo', 'Espoo');
+weatherMicroservices.scheduleTemplateForecast('Temperature', 'Espoo', 'temperature', 'Espoo');
+weatherMicroservices.scheduleTemplateForecast('Precipitation1h', 'Espoo', 'precipitation1h', 'Espoo');
+weatherMicroservices.scheduleTemplateForecast('Humidity', 'Espoo', 'humidity', 'Espoo');
+
+weatherMicroservices.scheduleTemplateWindForecast('helsinki', 'Helsinki');
+weatherMicroservices.scheduleTemplateForecast('Temperature', 'Helsinki', 'temperature', 'Helsinki');
+weatherMicroservices.scheduleTemplateForecast('Precipitation1h', 'Helsinki', 'precipitation1h', 'Helsinki');
+weatherMicroservices.scheduleTemplateForecast('Humidity', 'Helsinki', 'humidity', 'Helsinki');
+
+weatherMicroservices.scheduleTemplateWindForecast('jyväskylä', 'Jyväskylä');
+weatherMicroservices.scheduleTemplateForecast('Temperature', 'Jyväskylä', 'temperature', 'Jyväskylä');
+weatherMicroservices.scheduleTemplateForecast('Precipitation1h', 'Jyväskylä', 'precipitation1h', 'Jyväskylä');
+weatherMicroservices.scheduleTemplateForecast('Humidity', 'Jyväskylä', 'humidity', 'Jyväskylä');
+
+weatherMicroservices.scheduleTemplateWindForecast('kuopio', 'Kuopio');
+weatherMicroservices.scheduleTemplateForecast('Temperature', 'Kuopio', 'temperature', 'Kuopio');
+weatherMicroservices.scheduleTemplateForecast('Precipitation1h', 'Kuopio', 'precipitation1h', 'Kuopio');
+weatherMicroservices.scheduleTemplateForecast('Humidity', 'Kuopio', 'humidity', 'Kuopio');
+
+weatherMicroservices.scheduleTemplateWindForecast('oulu', 'Oulu');
+weatherMicroservices.scheduleTemplateForecast('Temperature', 'Oulu', 'temperature', 'Oulu');
+weatherMicroservices.scheduleTemplateForecast('Precipitation1h', 'Oulu', 'precipitation1h', 'Oulu');
+weatherMicroservices.scheduleTemplateForecast('Humidity', 'Oulu', 'humidity', 'Oulu');
+
+weatherMicroservices.scheduleTemplateWindForecast('tampere', 'Tampere');
+weatherMicroservices.scheduleTemplateForecast('Temperature', 'Tampere', 'temperature', 'Tampere');
+weatherMicroservices.scheduleTemplateForecast('Precipitation1h', 'Tampere', 'precipitation1h', 'Tampere');
+weatherMicroservices.scheduleTemplateForecast('Humidity', 'Tampere', 'humidity', 'Tampere');
+
+weatherMicroservices.scheduleTemplateWindForecast('turku', 'Turku Artukainen');
 weatherMicroservices.scheduleTemplateForecast('Temperature', 'Turku', 'temperature', 'Turku Artukainen');
+weatherMicroservices.scheduleTemplateForecast('Precipitation1h', 'Turku', 'precipitation1h', 'Turku Artukainen');
+weatherMicroservices.scheduleTemplateForecast('Humidity', 'Turku', 'humidity', 'Turku Artukainen');
+
+weatherMicroservices.scheduleTemplateWindForecast('vantaa', 'Vantaa');
+weatherMicroservices.scheduleTemplateForecast('Temperature', 'Vantaa', 'temperature', 'Vantaa');
+weatherMicroservices.scheduleTemplateForecast('Precipitation1h', 'Vantaa', 'precipitation1h', 'Vantaa');
+weatherMicroservices.scheduleTemplateForecast('Humidity', 'Vantaa', 'humidity', 'Vantaa');
+
+weatherMicroservices.scheduleTemplateWindForecast();
 
 // weatherMicroservices.fetchFinGridData();
 // Export the Microservices class

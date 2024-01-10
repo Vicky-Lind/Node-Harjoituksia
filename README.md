@@ -20,11 +20,25 @@ Web-palvelinten toimintaan liittyviä esimerkkejä toteutettuna Node.js kirjasto
         - Translate all texts
         - Translate all buttons, links chart/table elements & icons..etc.
     3. 🟩Create the Weather Page
-    4. 🟩Create Settings Page
-    5. 🟩Create dark/light theme
-    6. 🟩Update the Weather Data in General page
-    7. 🟩Add "Kipuraja" for user to set
-    8. 🟩Create & train AI price prediction
+        Forecast:
+        - Temperature
+        - Precipitation1h
+        - WindSpeed (WindUMS, WindVMS)
+        - WindDirection
+        - Humidity
+        Observations:
+        - Temperature
+        - Precipitation1h
+        - WindSpeed (WindUMS, WindVMS)
+        - WindDirection
+        - Humidity
+        - TotalCloudCover
+    4. 🟩Add location change to General Page!!
+    5. 🟩Create Settings Page
+    6. 🟩Create dark/light theme
+    7. 🟩Update the Weather Data in General page
+    8. 🟩Add "Kipuraja" for user to set
+    9. 🟩Create & train AI price prediction
 
   
 ## Ideas to add
