@@ -187,7 +187,7 @@ class WeatherMicroservices {
         const windDirectionSqlClause = `INSERT INTO public.${windDirectionDBTable} VALUES ($1, $2, $3, $4) ON CONFLICT DO NOTHING`;
 
         // Log the start of the operation
-        this.message = `Started fetching ${windSpeedStr} and ${windDirectionStr} observation data`;
+        this.message = `Started fetching ${windSpeedStr} and ${windDirectionStr} forecast data for ${place}`;
         console.log(this.message);
         log.log(this.message);
 
@@ -319,7 +319,7 @@ class WeatherMicroservices {
         const sqlClause = `INSERT INTO public.${DBTable} VALUES ($1, $2, $3, $4) ON CONFLICT DO NOTHING`;
         
         // Log the start of the operation
-        this.message = `Started fetching ${what} forecast data`;
+        this.message = `Started fetching ${what} forecast data for ${place}`;
         console.log(this.message);
         log.log(this.message); 
 

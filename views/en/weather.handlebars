@@ -9,7 +9,7 @@
 </head>
 <body>
     <!-- main container -->
-    <div class="bg-[#EAF0FD] flex w-full h-screen">
+    <div class="bg-[#EAF0FD] flex w-full h-min-h-screen">
 
         <!-- main content -->
         <div class="w-full h-full px-1 sm:px-12 xl:px-14 2xl:px-36 lg:py-4 md:py-2">
@@ -40,17 +40,17 @@
             </div>
                 
             <!-- middle content -->
-            <div class="flex flex-col sm:pt-6 sm:mb-6 pb-6 max-w-screen overflow-x-auto scrolling-touch">
+            <div class="flex flex-col pt-6 mb-6 pb-6 sm:pb-none overflow-x-auto scrolling-touch sm:overflow-x-none sm:scrolling-touch-none">
 
                 <!-- Days -->
                 <div class="flex items-center">
                     <!-- Today -->
-                    <div class="bg-[#B5D0FF] px-8 py-6 rounded-3xl shadow-md mr-6 flex-none hover:-translate-y-1 hover:scale-100 transition ease-in-out duration-300">
-                        <h1 class="font-semibold pb-4 ">Today, Tuesday</h1>
+                    <div class="bg-[#B5D0FF] px-10 py-8 2xl:px-12 2xl:py-12 rounded-3xl shadow-md mr-6 flex-none hover:-translate-y-1 hover:scale-100 transition ease-in-out duration-300">
+                        <h1 class="font-semibold pb-4 text-lg">Now, Tuesday</h1>
 
-                        <div class="pb-8">
+                        <div class="pb-12">
                             <div class="flex items-center justify-between">
-                                <h1 class="font-semibold text-[34px] pr-14">-13°C</h1>
+                                <h1 class="font-semibold text-[34px] pr-24">-13°C</h1>
                                 <img src="/icons/weather/cloudy.png" alt="">
                             </div>
 
@@ -77,168 +77,207 @@
                     </div>
 
                     <!-- Days -->
-                    <div class="bg-white px-6 py-4 mr-3 rounded-3xl shadow-md flex-none hover:-translate-y-1 hover:scale-100 transition ease-in-out duration-300">
-                        <h1 class="font-semibold pb-4">Wednesday</h1>
+                    <div id="scroll-container" class="flex sm:overflow-x-auto sm:scrolling-touch sm:pb-6 sm:pt-6">
+                        <div class="bg-white px-8 py-4 mr-3 2xl:px-12 2xl:py-8 rounded-3xl shadow-md flex-none hover:-translate-y-1 hover:scale-100 transition ease-in-out duration-300 2xl:w-[550px]">
+                            <h1 class="font-semibold pb-2 text-lg">Wednesday</h1>
 
-                        <div class="pb-8">
-                            <div class="flex items-center justify-between">
-                                <h1 class="font-semibold text-[34px] pr-10">-13°C</h1>
-                                <img src="/icons/weather/cloudy.png" alt="">
+                            <div class="pb-3">
+                                <div class="flex items-center justify-between">
+                                    <h1 class="font-semibold text-[34px] pr-44">-13°C - 14°C</h1>
+                                    <img src="/icons/weather/cloudy.png" alt="">
+                                </div>
+                                <h1>min - max</h1>
+                                <h1>Cloudy</h1>
                             </div>
 
-                            <h1>Cloudy</h1>
-                        </div>
-
-                        <!-- Wind Speed -->
-                        <div class="flex justify-between">
-                            <h1>Wind</h1>
-                            <h1 class="font-semibold">13 m/s</h1>
-                        </div>
-
-                        <!-- Wind Direction -->
-                        <div class="flex justify-between">
-                            <h1>Wind Direction</h1>
-                            <h1 class="font-semibold">NE</h1>
-                        </div>
-
-                        <!-- Humidity -->
-                        <div class="flex justify-between">
-                            <h1>Humidity</h1>
-                            <h1 class="font-semibold">13%</h1>
-                        </div>
-                    </div>
-
-                    <div class="bg-white px-6 py-4 mr-3  rounded-3xl shadow-md flex-none hover:-translate-y-1 hover:scale-100 transition ease-in-out duration-300">
-                        <h1 class="font-semibold pb-4">Wednesday</h1>
-
-                        <div class="pb-8">
-                            <div class="flex items-center justify-between">
-                                <h1 class="font-semibold text-[34px] pr-10">-13°C</h1>
-                                <img src="/icons/weather/cloudy.png" alt="">
+                            <!-- Wind Speed -->
+                            <div class="flex justify-between">
+                                <h1>Wind</h1>
+                                <h1 class="font-semibold">13 m/s</h1>
                             </div>
 
-                            <h1>Cloudy</h1>
-                        </div>
-
-                        <!-- Wind Speed -->
-                        <div class="flex justify-between">
-                            <h1>Wind</h1>
-                            <h1 class="font-semibold">13 m/s</h1>
-                        </div>
-
-                        <!-- Wind Direction -->
-                        <div class="flex justify-between">
-                            <h1>Wind Direction</h1>
-                            <h1 class="font-semibold">NE</h1>
-                        </div>
-
-                        <!-- Humidity -->
-                        <div class="flex justify-between">
-                            <h1>Humidity</h1>
-                            <h1 class="font-semibold">13%</h1>
-                        </div>
-                    </div>
-
-                    <div class="bg-white px-6 py-4 mr-3  rounded-3xl shadow-md flex-none hover:-translate-y-1 hover:scale-100 transition ease-in-out duration-300">
-                        <h1 class="font-semibold pb-4">Wednesday</h1>
-
-                        <div class="pb-8">
-                            <div class="flex items-center justify-between">
-                                <h1 class="font-semibold text-[34px] pr-10">-13°C</h1>
-                                <img src="/icons/weather/cloudy.png" alt="">
+                            <!-- Wind Direction -->
+                            <div class="flex justify-between">
+                                <h1>Wind Direction</h1>
+                                <h1 class="font-semibold">NE</h1>
                             </div>
 
-                            <h1>Cloudy</h1>
+                            <!-- Humidity -->
+                            <div class="flex justify-between">
+                                <h1>Humidity</h1>
+                                <h1 class="font-semibold">13%</h1>
+                            </div>
                         </div>
 
-                        <!-- Wind Speed -->
-                        <div class="flex justify-between">
-                            <h1>Wind</h1>
-                            <h1 class="font-semibold">13 m/s</h1>
-                        </div>
+                        <div class="bg-white px-8 py-4 mr-3 2xl:px-12 2xl:py-8 rounded-3xl shadow-md flex-none hover:-translate-y-1 hover:scale-100 transition ease-in-out duration-300 2xl:w-[550px]">
+                            <h1 class="font-semibold pb-2 text-lg">Wednesday</h1>
 
-                        <!-- Wind Direction -->
-                        <div class="flex justify-between">
-                            <h1>Wind Direction</h1>
-                            <h1 class="font-semibold">NE</h1>
-                        </div>
-
-                        <!-- Humidity -->
-                        <div class="flex justify-between">
-                            <h1>Humidity</h1>
-                            <h1 class="font-semibold">13%</h1>
-                        </div>
-                    </div>
-
-                    <div class="bg-white px-6 py-4 mr-3  rounded-3xl shadow-md flex-none hover:-translate-y-1 hover:scale-100 transition ease-in-out duration-300">
-                        <h1 class="font-semibold pb-4">Wednesday</h1>
-
-                        <div class="pb-8">
-                            <div class="flex items-center justify-between">
-                                <h1 class="font-semibold text-[34px] pr-10">-13°C</h1>
-                                <img src="/icons/weather/cloudy.png" alt="">
+                            <div class="pb-3">
+                                <div class="flex items-center justify-between">
+                                    <h1 class="font-semibold text-[34px] pr-44">-13°C - 14°C</h1>
+                                    <img src="/icons/weather/cloudy.png" alt="">
+                                </div>
+                                <h1>min - max</h1>
+                                <h1>Cloudy</h1>
                             </div>
 
-                            <h1>Cloudy</h1>
-                        </div>
+                            <!-- Wind Speed -->
+                            <div class="flex justify-between">
+                                <h1>Wind</h1>
+                                <h1 class="font-semibold">13 m/s</h1>
+                            </div>
 
-                        <!-- Wind Speed -->
-                        <div class="flex justify-between">
-                            <h1>Wind</h1>
-                            <h1 class="font-semibold">13 m/s</h1>
-                        </div>
+                            <!-- Wind Direction -->
+                            <div class="flex justify-between">
+                                <h1>Wind Direction</h1>
+                                <h1 class="font-semibold">NE</h1>
+                            </div>
 
-                        <!-- Wind Direction -->
-                        <div class="flex justify-between">
-                            <h1>Wind Direction</h1>
-                            <h1 class="font-semibold">NE</h1>
-                        </div>
-
-                        <!-- Humidity -->
-                        <div class="flex justify-between">
-                            <h1>Humidity</h1>
-                            <h1 class="font-semibold">13%</h1>
+                            <!-- Humidity -->
+                            <div class="flex justify-between">
+                                <h1>Humidity</h1>
+                                <h1 class="font-semibold">13%</h1>
+                            </div>
                         </div>
                     </div>
+                </div>
+            </div>
 
-                    <div class="bg-white px-6 py-4 mr-3  rounded-3xl shadow-md flex-none hover:-translate-y-1 hover:scale-100 transition ease-in-out duration-300">
-                    <h1 class="font-semibold pb-4">Wednesday</h1>
+            <!-- bottom content -->
+            <div class="md:flex items-start">
+                <!-- Today Full Hourly Table -->
+                <div class="bg-[#B5D0FF] px-10 py-8 rounded-3xl shadow-md sm:mr-6 hover:-translate-y-1 hover:scale-100 transition ease-in-out duration-300 w-[315px]">
+                    
+                    <h1 class="font-semibold pb-4 text-lg">Today Hourly</h1>
 
-                    <div class="pb-8">
-                        <div class="flex items-center justify-between">
-                            <h1 class="font-semibold text-[34px] pr-10">-13°C</h1>
-                            <img src="/icons/weather/cloudy.png" alt="">
-                        </div>
-
-                        <h1>Cloudy</h1>
+                    <div class="">
+                        <table class="table-auto">
+                            <tr class="border-b border-gray-400">
+                                <td class="pr-6">01:00</td>
+                                <td class="pr-6"><img src="/icons/weather/cloudy.png" alt=""></td>
+                                <td class="pr-6">-11°C</td>
+                                <td>12m/s</td>
+                            </tr>
+                            <tr class="border-b border-gray-400">
+                                <td class="pr-6">01:00</td>
+                                <td class="pr-6"><img src="/icons/weather/cloudy.png" alt=""></td>
+                                <td class="pr-6">-11°C</td>
+                                <td>12m/s</td>
+                            </tr>
+                            <tr class="border-b border-gray-400">
+                                <td class="pr-6">01:00</td>
+                                <td class="pr-6"><img src="/icons/weather/cloudy.png" alt=""></td>
+                                <td class="pr-6">-11°C</td>
+                                <td>12m/s</td>
+                            </tr>
+                            <tr class="border-b border-gray-400">
+                                <td class="pr-6">01:00</td>
+                                <td class="pr-6"><img src="/icons/weather/cloudy.png" alt=""></td>
+                                <td class="pr-6">-11°C</td>
+                                <td>12m/s</td>
+                            </tr>
+                            <tr class="border-b border-gray-400">
+                                <td class="pr-6">01:00</td>
+                                <td class="pr-6"><img src="/icons/weather/cloudy.png" alt=""></td>
+                                <td class="pr-6">-11°C</td>
+                                <td>12m/s</td>
+                            </tr>
+                            <tr class="border-b border-gray-400">
+                                <td class="pr-6">01:00</td>
+                                <td class="pr-6"><img src="/icons/weather/cloudy.png" alt=""></td>
+                                <td class="pr-6">-11°C</td>
+                                <td>12m/s</td>
+                            </tr>
+                            <tr class="border-b border-gray-400">
+                                <td class="pr-6">01:00</td>
+                                <td class="pr-6"><img src="/icons/weather/cloudy.png" alt=""></td>
+                                <td class="pr-6">-11°C</td>
+                                <td>12m/s</td>
+                            </tr>
+                            <tr class="border-b border-gray-400">
+                                <td class="pr-6">01:00</td>
+                                <td class="pr-6"><img src="/icons/weather/cloudy.png" alt=""></td>
+                                <td class="pr-6">-11°C</td>
+                                <td>12m/s</td>
+                            </tr>
+                            <tr class="border-b border-gray-400">
+                                <td class="pr-6">01:00</td>
+                                <td class="pr-6"><img src="/icons/weather/cloudy.png" alt=""></td>
+                                <td class="pr-6">-11°C</td>
+                                <td>12m/s</td>
+                            </tr>
+                            <tr class="border-b border-gray-400">
+                                <td class="pr-6">01:00</td>
+                                <td class="pr-6"><img src="/icons/weather/cloudy.png" alt=""></td>
+                                <td class="pr-6">-11°C</td>
+                                <td>12m/s</td>
+                            </tr>
+                            <tr class="border-b border-gray-400">
+                                <td class="pr-6">01:00</td>
+                                <td class="pr-6"><img src="/icons/weather/cloudy.png" alt=""></td>
+                                <td class="pr-6">-11°C</td>
+                                <td>12m/s</td>
+                            </tr>
+                            <tr class="border-b border-gray-400">
+                                <td class="pr-6">01:00</td>
+                                <td class="pr-6"><img src="/icons/weather/cloudy.png" alt=""></td>
+                                <td class="pr-6">-11°C</td>
+                                <td>12m/s</td>
+                            </tr>
+                        </table>
                     </div>
+                </div>
+                <!-- Now Forward Mixed Chart -->
+                <div class="bg-white px-10 py-8 rounded-3xl shadow-md mr-6 hover:-translate-y-1 hover:scale-100 transition ease-in-out duration-300 w-full">
+                    <h1 class="font-semibold pb-4 text-lg">Now Forward</h1>
 
-                    <!-- Wind Speed -->
-                    <div class="flex justify-between">
-                        <h1>Wind</h1>
-                        <h1 class="font-semibold">13 m/s</h1>
-                    </div>
-
-                    <!-- Wind Direction -->
-                    <div class="flex justify-between">
-                        <h1>Wind Direction</h1>
-                        <h1 class="font-semibold">NE</h1>
-                    </div>
-
-                    <!-- Humidity -->
-                    <div class="flex justify-between">
-                        <h1>Humidity</h1>
-                        <h1 class="font-semibold">13%</h1>
-                    </div>
+                    <div class="w-full h-[500px] sm:h-[300px]">
+                        <canvas id="mixedChart" class=""></canvas>
                     </div>
                 </div>
             </div>
         </div>
     </div>
     <script>
+        const mixedChart = new Chart(document.getElementById('mixedChart'), {
+            data: {
+                datasets: [{
+                    type: 'bar',
+                    label: 'Bar Dataset',
+                    data: [10, 20, 30, 40]
+                }, {
+                    type: 'line',
+                    label: 'Line Dataset',
+                    data: [50, 50, 50, 50],
+                }],
+                labels: ['January', 'February', 'March', 'April']
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: true
+                    }
+                },
+                scales: {
+                    x: {
+                        grid: {
+                            display: false
+                        }
+                    },
+                    y: {
+                        grid: {
+                            display: true
+                        }
+                    }
+                }
+            }
+        });
+
 
         window.addEventListener("load", function() {
-            const container = document.querySelector('.scrolling-touch');
+            const container = document.getElementById('scroll-container');
 
             container.addEventListener('wheel', function(e) {
                 if (e.deltaY != 0) {
