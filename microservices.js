@@ -1,29 +1,16 @@
 // LIBRARIES AND MODULES
 // ---------------------
 
-// The pg-pool library for PostgreSQL Server
-const Pool = require('pg').Pool
-
-// The node-cron library to schedule API call to porssisahko.net
-const cron = require('cron')
-
-// Axios for using http or https requests to get data
-const axios = require('axios');
-
-// Camaro for transforming XML to JSON
-// ! Should one find alternative or?...
-const { transform } = require('camaro');
+const Pool = require('pg').Pool // Postgres library
+const cron = require('cron') // Cron scheduler
+const axios = require('axios'); // For using http/https requests
+const { transform } = require('camaro'); // XML to JSON
 
 // File system
 const log = require('./logger')
 const fs = require('fs')
 
-// APP SETTINGS
-// ------------
-// Read settings from JSON file
 const settings = JSON.parse(fs.readFileSync('settings.json', 'utf8'))
-
-// Create a new pool for Postgres connections
 const pool = new Pool(
   settings.database
 )
@@ -37,7 +24,10 @@ class PriceMicroservices {
     this.lastFetchedDate = settings.lastFetchedPriceDate;
     this.message = '';
   }
-
+  async selectXFromY(selectItem, fromItem) {
+    let resultset = await pool.query(`SELECT ${selectItem} FROM public.${fromItem}`);
+    return resultset;
+  }
   // Fetch latest price data from porssisahko.net and save to database
   async fetchLatestPriceData() {
     const LATEST_PRICES_ENDPOINT = 'https://api.porssisahko.net/v1/latest-prices.json';
@@ -45,7 +35,6 @@ class PriceMicroservices {
     const json = await response.json();
     return json;
   }
-  
   scheduleLatestPriceDataFetch() {
     const job = new cron.CronJob(settings.scheduler.priceTimepattern, async () => {
       try {
@@ -76,20 +65,16 @@ class PriceMicroservices {
               } else {
                 this.message = 'Skipped an existing row';
               }
-              console.log(this.message);
             });
           });
 
           this.lastFetchedDate = dateStr; // Set fetch date to current date
-
           // Update lastFetchedDate in settings
           settings.lastFetchedPriceDate = this.lastFetchedDate;
           
           // Write updated settings back to JSON file
           fs.writeFileSync('settings.json', JSON.stringify(settings, null, 2));
-
           this.message = 'Fetched at ' + this.lastFetchedDate;
-          console.log(this.message);
           log.log(this.message);
         } else {
           this.message = 'Data was already fetched earlier today';
@@ -106,10 +91,6 @@ class PriceMicroservices {
     'Europe/Helsinki'
     );
   }
-  async selectXFromY(selectItem, fromItem) {
-    let resultset = await pool.query(`SELECT ${selectItem} FROM public.${fromItem}`);
-    return resultset;
-  }
 }
 
 class WeatherMicroservices {
@@ -117,7 +98,6 @@ class WeatherMicroservices {
     this.pool = pool;
     this.message = '';
   }
-  
   async fetchFinGridData() {
     await fetch('https://beta-data.fingrid.fi/api/datasets/254/data?startTime=2023-12-04T09:37:00&endTime=2023-12-04T09:37:00&format=json&locale=en&sortBy=startTime&x-api-key=66bf4276bd8f4daea3803c4bb5fd962d')
     .then(response => {
@@ -161,8 +141,13 @@ class WeatherMicroservices {
     // calculate wind speed according to the Pythagoras theorem
     windSpeed = Math.sqrt(uVectorData**2 + vVectorData**2);
     
-    // Return all calculated parameters
     return { windSpeed, windAngle };
+  }
+  async fetchWeatherFromCityX(cityParam, cityDBName) {
+    weatherMicroservices.scheduleTemplateWindForecast(cityParam, cityDBName);
+    weatherMicroservices.scheduleTemplateForecast('Temperature', cityParam, 'temperature', cityDBName);
+    weatherMicroservices.scheduleTemplateForecast('Precipitation1h', cityParam, 'precipitation1h', cityDBName);
+    weatherMicroservices.scheduleTemplateForecast('Humidity', cityParam, 'humidity', cityDBName);
   }
   scheduleTemplateWindForecast(placeParam, placeObs) {
     const job = new cron.CronJob(settings.scheduler.weatherTimepattern, async () => {
@@ -170,7 +155,6 @@ class WeatherMicroservices {
         const windSpeedStr = 'wind speed';
         const windDirectionStr = 'wind direction';
         const place = placeObs;
-
         const windSpeedDBTable = windSpeedStr.replace(" ", "_") + '_forecast';
         const windDirectionDBTable = windDirectionStr.replace(" ", "_") + '_forecast';
 
@@ -192,8 +176,8 @@ class WeatherMicroservices {
         log.log(this.message);
 
         // Fetch uVector and vVector data
-        const uVectorResponse = await axios.get(WIND_VMS_ENDPOINT);
-        const vVectorResponse = await axios.get(WIND_UMS_ENDPOINT);
+        const uVectorResponse = await axios.get(WIND_UMS_ENDPOINT)
+        const vVectorResponse = await axios.get(WIND_VMS_ENDPOINT)
 
         const xml = uVectorResponse.data;
         const xml2 = vVectorResponse.data;
@@ -223,7 +207,6 @@ class WeatherMicroservices {
           } else {
             this.message = 'Skipped an existing row';
           }
-          console.log(this.message);
         });
       }
 
@@ -248,7 +231,6 @@ class WeatherMicroservices {
           } else {
             this.message = 'Skipped an existing row';
           }
-          console.log(this.message);
         });
       }
     } catch (error) {
@@ -274,7 +256,7 @@ class WeatherMicroservices {
         console.log(this.message);
         log.log(this.message);
 
-        const response = await axios.get(WEATHER_ENDPOINT);
+        const response = await axios.get(WEATHER_ENDPOINT)
         const xml = response.data;
 
         const result = await transform(xml, template);
@@ -295,7 +277,6 @@ class WeatherMicroservices {
             } else {
               this.message = 'Skipped an existing row';
             }
-            console.log(this.message);
           })
           
         });
@@ -325,7 +306,6 @@ class WeatherMicroservices {
 
         const response = await axios.get(WEATHER_ENDPOINT);
         const xml = response.data;
-
         const result = await transform(xml, template);
             
         // Loop through result data and pick elements
@@ -344,7 +324,6 @@ class WeatherMicroservices {
             } else {
               this.message = 'Skipped an existing row';
             }
-            console.log(this.message);
           })
           
         });
@@ -360,51 +339,16 @@ const priceMicroservices = new PriceMicroservices(pool);
 const weatherMicroservices = new WeatherMicroservices(pool);
 
 priceMicroservices.scheduleLatestPriceDataFetch();
-
 weatherMicroservices.scheduleTemplateObservation('Temperature', 'Turku', 't2m', 'Turku Artukainen');
-
-weatherMicroservices.scheduleTemplateWindForecast('espoo', 'Espoo');
-weatherMicroservices.scheduleTemplateForecast('Temperature', 'Espoo', 'temperature', 'Espoo');
-weatherMicroservices.scheduleTemplateForecast('Precipitation1h', 'Espoo', 'precipitation1h', 'Espoo');
-weatherMicroservices.scheduleTemplateForecast('Humidity', 'Espoo', 'humidity', 'Espoo');
-
-weatherMicroservices.scheduleTemplateWindForecast('helsinki', 'Helsinki');
-weatherMicroservices.scheduleTemplateForecast('Temperature', 'Helsinki', 'temperature', 'Helsinki');
-weatherMicroservices.scheduleTemplateForecast('Precipitation1h', 'Helsinki', 'precipitation1h', 'Helsinki');
-weatherMicroservices.scheduleTemplateForecast('Humidity', 'Helsinki', 'humidity', 'Helsinki');
-
-weatherMicroservices.scheduleTemplateWindForecast('jyväskylä', 'Jyväskylä');
-weatherMicroservices.scheduleTemplateForecast('Temperature', 'Jyväskylä', 'temperature', 'Jyväskylä');
-weatherMicroservices.scheduleTemplateForecast('Precipitation1h', 'Jyväskylä', 'precipitation1h', 'Jyväskylä');
-weatherMicroservices.scheduleTemplateForecast('Humidity', 'Jyväskylä', 'humidity', 'Jyväskylä');
-
-weatherMicroservices.scheduleTemplateWindForecast('kuopio', 'Kuopio');
-weatherMicroservices.scheduleTemplateForecast('Temperature', 'Kuopio', 'temperature', 'Kuopio');
-weatherMicroservices.scheduleTemplateForecast('Precipitation1h', 'Kuopio', 'precipitation1h', 'Kuopio');
-weatherMicroservices.scheduleTemplateForecast('Humidity', 'Kuopio', 'humidity', 'Kuopio');
-
-weatherMicroservices.scheduleTemplateWindForecast('oulu', 'Oulu');
-weatherMicroservices.scheduleTemplateForecast('Temperature', 'Oulu', 'temperature', 'Oulu');
-weatherMicroservices.scheduleTemplateForecast('Precipitation1h', 'Oulu', 'precipitation1h', 'Oulu');
-weatherMicroservices.scheduleTemplateForecast('Humidity', 'Oulu', 'humidity', 'Oulu');
-
-weatherMicroservices.scheduleTemplateWindForecast('tampere', 'Tampere');
-weatherMicroservices.scheduleTemplateForecast('Temperature', 'Tampere', 'temperature', 'Tampere');
-weatherMicroservices.scheduleTemplateForecast('Precipitation1h', 'Tampere', 'precipitation1h', 'Tampere');
-weatherMicroservices.scheduleTemplateForecast('Humidity', 'Tampere', 'humidity', 'Tampere');
-
-weatherMicroservices.scheduleTemplateWindForecast('turku', 'Turku Artukainen');
-weatherMicroservices.scheduleTemplateForecast('Temperature', 'Turku', 'temperature', 'Turku Artukainen');
-weatherMicroservices.scheduleTemplateForecast('Precipitation1h', 'Turku', 'precipitation1h', 'Turku Artukainen');
-weatherMicroservices.scheduleTemplateForecast('Humidity', 'Turku', 'humidity', 'Turku Artukainen');
-
-weatherMicroservices.scheduleTemplateWindForecast('vantaa', 'Vantaa');
-weatherMicroservices.scheduleTemplateForecast('Temperature', 'Vantaa', 'temperature', 'Vantaa');
-weatherMicroservices.scheduleTemplateForecast('Precipitation1h', 'Vantaa', 'precipitation1h', 'Vantaa');
-weatherMicroservices.scheduleTemplateForecast('Humidity', 'Vantaa', 'humidity', 'Vantaa');
-
-weatherMicroservices.scheduleTemplateWindForecast();
+weatherMicroservices.fetchWeatherFromCityX('Espoo', 'Espoo');
+weatherMicroservices.fetchWeatherFromCityX('Helsinki', 'Helsinki');
+weatherMicroservices.fetchWeatherFromCityX('Jyväskylä', 'Jyväskylä');
+weatherMicroservices.fetchWeatherFromCityX('Kuopio', 'Kuopio');
+weatherMicroservices.fetchWeatherFromCityX('Oulu', 'Oulu');
+weatherMicroservices.fetchWeatherFromCityX('Tampere', 'Tampere');
+weatherMicroservices.fetchWeatherFromCityX('Turku', 'Turku Artukainen');
+weatherMicroservices.fetchWeatherFromCityX('Vantaa', 'Vantaa');
 
 // weatherMicroservices.fetchFinGridData();
 // Export the Microservices class
-module.exports = {PriceMicroservices, WeatherMicroservices};
+module.exports = { PriceMicroservices, WeatherMicroservices};
